@@ -26,6 +26,18 @@ resolve_composer_bin() {
         return
     fi
 
+    if [ -x "$HOME/bin/composer" ]; then
+        printf '%s\n' "$HOME/bin/composer"
+
+        return
+    fi
+
+    if [ -x /usr/local/bin/composer ]; then
+        printf '%s\n' "/usr/local/bin/composer"
+
+        return
+    fi
+
     if [ -x /opt/cpanel/composer/bin/composer ]; then
         printf '%s\n' "/opt/cpanel/composer/bin/composer"
 
