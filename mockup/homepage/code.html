@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300..800;1,300..800&amp;family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#f3f0ef",
+                      "background": "#fcf9f8",
+                      "tertiary": "#854036",
+                      "on-primary-fixed-variant": "#005140",
+                      "on-surface-variant": "#3e4945",
+                      "primary-fixed-dim": "#82d6bb",
+                      "error": "#ba1a1a",
+                      "surface-container": "#f0edec",
+                      "surface-tint": "#016b55",
+                      "surface-container-low": "#f6f3f2",
+                      "on-tertiary-fixed-variant": "#74332a",
+                      "on-background": "#1c1b1b",
+                      "secondary-fixed-dim": "#adcec0",
+                      "on-primary-container": "#b1ffe4",
+                      "on-secondary-fixed-variant": "#2f4c43",
+                      "inverse-surface": "#313030",
+                      "surface-container-high": "#ebe7e7",
+                      "on-error-container": "#93000a",
+                      "on-surface": "#1c1b1b",
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#fcf9f8",
+                      "on-secondary-container": "#4c6b60",
+                      "surface-variant": "#e5e2e1",
+                      "on-tertiary-fixed": "#3c0804",
+                      "secondary-container": "#c8eadc",
+                      "surface": "#fcf9f8",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb4a8",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#012018",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-primary": "#82d6bb",
+                      "outline": "#6e7a74",
+                      "on-tertiary-container": "#ffebe8",
+                      "primary": "#00604c",
+                      "surface-dim": "#dcd9d9",
+                      "tertiary-container": "#a3574c",
+                      "primary-fixed": "#9ef3d7",
+                      "on-primary-fixed": "#002018",
+                      "on-primary": "#ffffff",
+                      "surface-container-highest": "#e5e2e1",
+                      "primary-container": "#1f7a63",
+                      "secondary": "#46645a",
+                      "outline-variant": "#bec9c3",
+                      "secondary-fixed": "#c8eadc",
+                      "tertiary-fixed": "#ffdad5",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Newsreader", "serif"],
+                      "body": ["Public Sans", "sans-serif"],
+                      "label": ["Public Sans", "sans-serif"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; background-color: #fcf9f8; color: #1c1b1b; }
+        .font-serif { font-family: 'Newsreader', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-[#FCF9F8]/80 dark:bg-stone-950/80 backdrop-blur-md">
+<nav class="max-w-screen-2xl mx-auto flex justify-between items-center px-6 md:px-12 py-6">
+<div class="font-serif italic text-2xl font-bold text-[#1C1B1B] dark:text-[#FCF9F8] tracking-tighter">
+                GIRI FOUNDATION
+            </div>
+<div class="hidden md:flex items-center space-x-10">
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 hover:text-[#00604C] transition-opacity duration-300" href="#">Programs</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 hover:text-[#00604C] transition-opacity duration-300" href="#">Stories</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 hover:text-[#00604C] transition-opacity duration-300" href="#">About</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 hover:text-[#00604C] transition-opacity duration-300" href="#">Contact</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="bg-[#1F7A63] text-white px-8 py-2.5 rounded-lg font-body font-medium hover:opacity-90 transition-all active:scale-95 duration-200">
+                    Donate
+                </button>
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative px-6 md:px-12 py-12 md:py-24 max-w-screen-2xl mx-auto overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-6 z-10">
+<h1 class="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tight mb-8">
+                        Empowering communities through <span class="italic text-primary">authentic</span> action.
+                    </h1>
+<p class="font-body text-xl text-on-surface-variant max-w-lg mb-10 leading-relaxed">
+                        We build sustainable futures by partnering directly with local leaders to solve the most pressing challenges in rural development.
+                    </p>
+<div class="flex flex-wrap gap-6 items-center">
+<button class="bg-primary-container text-on-primary px-10 py-4 rounded-lg text-lg font-medium shadow-sm hover:shadow-md transition-all">
+                            Donate Now
+                        </button>
+<button class="font-label uppercase tracking-[0.05em] text-sm font-semibold flex items-center gap-2 group">
+                            Explore Programs
+                            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="lg:col-span-6 relative h-[500px] md:h-[700px]">
+<div class="absolute inset-0 bg-surface-container-low rounded-2xl overflow-hidden shadow-2xl">
+<img alt="Community fieldwork" class="w-full h-full object-cover" data-alt="Candid emotional photo of a community worker talking with children in a vibrant rural village setting with warm natural sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYAXT5rTtNx73L5tx8Y1oUhQ0iStPTPGAIIhWkjSplUTrc8-LuA00FECmkTjIW_v_opW74vieJK5Z2MdbQ6WGWyHpOSswK-MZnxWUisiUU3fj9Zlxwqx95spmPfmh09dRqRLYCA4mm5raGDE56Oq_UcLF0M_eETnZVWxohO5WeHduMaEPr6Qx12EVBkihqR6MzpLNqxUuj3NZfHApAfB7BZQ8iSd4zZ7B7mJReAronLqvSABIyC1MRGJTr_MP99Zj7_DHsYYN2H6Q"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Stats -->
+<section class="bg-surface-container-low py-24 md:py-32">
+<div class="max-w-screen-2xl mx-auto px-6 md:px-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
+<div class="flex flex-col items-start">
+<span class="font-serif text-7xl md:text-8xl text-primary font-bold -tracking-widest mb-4">10k+</span>
+<span class="font-label uppercase tracking-widest text-xs font-bold text-on-surface-variant">Lives Impacted</span>
+<p class="mt-4 text-on-surface-variant font-body">Measured through direct community engagement and long-term support systems.</p>
+</div>
+<div class="flex flex-col items-start">
+<span class="font-serif text-7xl md:text-8xl text-primary font-bold -tracking-widest mb-4">42</span>
+<span class="font-label uppercase tracking-widest text-xs font-bold text-on-surface-variant">Rural Centers</span>
+<p class="mt-4 text-on-surface-variant font-body">Establishing hubs for education, healthcare, and sustainable agricultural practices.</p>
+</div>
+<div class="flex flex-col items-start">
+<span class="font-serif text-7xl md:text-8xl text-primary font-bold -tracking-widest mb-4">85%</span>
+<span class="font-label uppercase tracking-widest text-xs font-bold text-on-surface-variant">Direct Allocation</span>
+<p class="mt-4 text-on-surface-variant font-body">Ensuring that your contribution goes straight to the ground where it's needed most.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- About Preview (Asymmetric) -->
+<section class="py-24 md:py-48 max-w-screen-2xl mx-auto px-6 md:px-12">
+<div class="flex flex-col md:flex-row gap-20 items-start">
+<div class="md:w-1/2">
+<span class="font-label uppercase tracking-[0.2em] text-xs font-bold text-primary mb-6 block">Our Philosophy</span>
+<h2 class="font-serif text-4xl md:text-6xl leading-tight mb-8">A legacy of wisdom, a future of self-reliance.</h2>
+<p class="font-body text-xl text-on-surface-variant leading-relaxed mb-8">
+                        The Giri Foundation was born from the belief that true empowerment doesn't come from external aid alone, but from the cultivation of internal agency within a community.
+                    </p>
+<button class="border-b-2 border-primary-container pb-1 text-primary-container font-semibold hover:opacity-70 transition-opacity">
+                        Read Our Full Story
+                    </button>
+</div>
+<div class="md:w-1/2 flex flex-col gap-8 md:mt-24">
+<div class="bg-surface-container-highest p-12 rounded-xl">
+<p class="font-serif italic text-2xl text-on-surface mb-6">"Change happens when we stop looking at communities as problems to solve, and start seeing them as partners to build with."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img alt="Director" data-alt="Close up portrait of a middle-aged woman with a warm expression and professional attire against a soft neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd4z7nTQSjqfuAqRvGhbXN6gwkqG9sMxWvi1s8d4w2jvRtNS6OrDAJzNLGusyazVuZsAgIO19QzbEeBrUcG1xEnVD9queWEfW8OxzETEJqADLd9OWejXJxn-xSdyxKgF889qvd_eMZWP6jkUrKRJznz2u48VasacRHqBQYVFqMsbZIZ4yw_A-Rqei5CXHGemWQ8S-8miFwwoq3cDk8rctPMdYwGL-ev7SZnHcyIDUwIgEUkV9Gf0VMMY0jbp8bjwUPT_-qVkxHGVw"/>
+</div>
+<div>
+<p class="font-bold text-sm">Amara Giri</p>
+<p class="text-xs text-on-surface-variant">Founder &amp; Director</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Program Highlights (Asymmetrical Bento) -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-screen-2xl mx-auto px-6 md:px-12">
+<div class="flex justify-between items-end mb-16">
+<div>
+<span class="font-label uppercase tracking-[0.2em] text-xs font-bold text-primary mb-4 block">Active Initiatives</span>
+<h2 class="font-serif text-4xl md:text-5xl">Where your support lands.</h2>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto md:h-[800px]">
+<!-- Main Feature -->
+<div class="md:col-span-7 relative group overflow-hidden rounded-2xl bg-on-background">
+<img alt="Agriculture Program" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700" data-alt="Lush green tiered rice fields in the morning mist with local farmers working in the distance in a serene landscape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY-8DQxaKqT4iHnRjetnRkhxgQH0vqCwfWOhUxUtKjILWuxofPEFtZfRu2EWVV7ZIEZZfwW59b62QRfjcyYRmkyqYsGOggiTRPc08ToZLHC90relVl4CVwU-1aMGqa6tlrubx8w9z_tO9SNTnmhoILqtbVObSDmv5X6mVe3p_a4gkCu70ai_EFhaoPepbmsyUZ7c8OUz-0kkgk1wq-dlVv_x_uxO2fgH2CyO1vPvJbb9K6EabvPbo0MLL8hCoHtnRUCrwap1l2c-Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-10 text-white">
+<span class="font-label text-xs uppercase tracking-widest bg-primary-container px-3 py-1 rounded-md mb-4 inline-block">Sustainability</span>
+<h3 class="font-serif text-3xl md:text-4xl mb-4">Regenerative Agriculture</h3>
+<p class="font-body text-white/80 max-w-md mb-6">Equipping farmers with climate-resilient techniques and ancestral wisdom to restore soil health.</p>
+<a class="text-sm font-bold flex items-center gap-2 hover:underline" href="#">View Program Detail <span class="material-symbols-outlined">north_east</span></a>
+</div>
+</div>
+<!-- Secondary Items -->
+<div class="md:col-span-5 grid grid-rows-2 gap-8">
+<div class="relative group overflow-hidden rounded-2xl bg-on-background">
+<img alt="Education Program" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Sunlit classroom with children engaged in learning with colorful books and a smiling teacher in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDulTC4UKy__dFz8ljhhzPeZgOyBvqQ4UES-BfkH0gKK9LCW4HS5isAz7JeuecPzaFfdhRNOieKf5nn2I8Tnghd0L7Fbzqh-F2314b6yxKfi_1A7NQ4nLzhCnIWrQX2QVrXkMrItxOJ5di85G1CswseKxf_QDJT7I2zQzb9wlGP9nokeSb4B9x6ShDMwjyC4mL8IELJS_FKFDQGNEFDoqkDiItAZOX44peD9xo2rthzHoJCO6BCx9sJXtw1U9CeuwDafuMXjccr5S0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/90 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 text-white">
+<h3 class="font-serif text-2xl mb-2">The Literacy Project</h3>
+<p class="font-body text-white/70 text-sm mb-4">Building community libraries and mobile digital classrooms.</p>
+<a class="text-xs font-bold flex items-center gap-2 hover:underline" href="#">Learn More <span class="material-symbols-outlined">north_east</span></a>
+</div>
+</div>
+<div class="relative group overflow-hidden rounded-2xl bg-on-background">
+<img alt="Health Program" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Close up of medical equipment in a clean, modern rural clinic with a doctor's hand visible in the frame" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCtdWj5Ioa6lNDF4yOK7es9i47ayuvDTpMqE7Z2EtXt40oOCYjWLrZaiX2ELu8Gzr-jL-WdHc8TdJtGZcoIxDRt_yU2oAbZ72ej9f7S_hG6ZglG622W-XXkRwwtohs15qlICLYcxehoofBhNJ6tH2cd8oQ3-ioBX6721Rm7-SmSvTz_y8Kbtr-ec7vgFQLsqfoXbgBS6l27CMpO9NKgZ-EopOrKZS5lDbt1I__39fbKNt3rIkua9sXV33TXBOj9wXOWh9I7qWudAE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/90 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 text-white">
+<h3 class="font-serif text-2xl mb-2">Holistic Health Hubs</h3>
+<p class="font-body text-white/70 text-sm mb-4">Integrating modern medicine with traditional wellness practices.</p>
+<a class="text-xs font-bold flex items-center gap-2 hover:underline" href="#">Learn More <span class="material-symbols-outlined">north_east</span></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Donation Campaign Progress -->
+<section class="py-24 max-w-screen-xl mx-auto px-6">
+<div class="bg-surface-container-lowest p-8 md:p-16 rounded-2xl border border-outline-variant/30 shadow-sm text-center">
+<span class="font-label uppercase tracking-widest text-xs font-bold text-tertiary mb-6 block">Current Campaign</span>
+<h2 class="font-serif text-3xl md:text-5xl mb-12">Solar Power for GIRI Central School</h2>
+<div class="max-w-3xl mx-auto mb-8">
+<div class="flex justify-between font-label text-sm font-bold mb-4">
+<span class="text-primary">$42,500 Raised</span>
+<span class="text-on-surface-variant">Goal: $60,000</span>
+</div>
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 71%"></div>
+</div>
+<div class="mt-4 flex justify-between text-xs text-on-surface-variant">
+<span>71% Complete</span>
+<span>18 Days Left</span>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary px-12 py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-shadow">
+                    Contribute to this Project
+                </button>
+</div>
+</section>
+<!-- Latest Stories (Magazine Style) -->
+<section class="py-24 md:py-32 max-w-screen-2xl mx-auto px-6 md:px-12">
+<div class="flex justify-between items-center mb-16">
+<h2 class="font-serif text-4xl md:text-5xl">Latest Stories</h2>
+<a class="font-label uppercase tracking-widest text-sm font-bold text-primary border-b-2 border-primary" href="#">View All News</a>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<!-- Article 1 -->
+<article class="flex flex-col gap-6 group">
+<div class="aspect-[4/5] overflow-hidden rounded-sm">
+<img alt="Story 1" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Grayscale moody portrait of a craftsman working with wood in a rustic workshop with soft morning light filtering through windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYyyVl42JfDzWpzZXJqHG4VFy3Tzf_6wl81_1r7CjbepdBNaXNe4g_oXsnYYFZQBVo5k8mJdw6mJisDftyrtH6ligCAPD4sbOem-AX-Oj9dGDcmLzGuguhVMLJsh1Z3p5cnB4a0kzpC2QkWzzwiWHKJieJ5w6F5pwd9COiKsz5Jh-_J23hJZtMEla6AVzF7B4HEmIki4OjrSU7CboKZgwyavXi-MHmFwhWCyqXx8Y0G4HW6aE8s35lu2BTqnryuOgaf3j267P94vs"/>
+</div>
+<div>
+<time class="font-label text-xs font-bold text-on-surface-variant">OCTOBER 12, 2024</time>
+<h3 class="font-serif text-2xl mt-3 mb-4 group-hover:text-primary transition-colors">The Weaver’s Revival: Restoring local textile heritage.</h3>
+<p class="font-body text-on-surface-variant text-sm line-clamp-3">In the heart of the village, a collective of women is breathing life into age-old weaving techniques that were nearly lost to time...</p>
+</div>
+</article>
+<!-- Article 2 -->
+<article class="flex flex-col gap-6 group">
+<div class="aspect-[4/5] overflow-hidden rounded-sm">
+<img alt="Story 2" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Distant view of a group of volunteers and community members building a structure together under a bright blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHXzebGqbKNslfyvLTvw4ah4aivWt6xC1vjqtlpnfSS5xEp7pAg178lGzggLqDVXJN9L8VLcWm5e8xcju3HjdwckhBcgyx2Gh3a_RNkfiXn1RWjl2T3OBUzrlY_LcoGPjcxecAFZjqmOBZV64SKVEVYEoxNyLRP6Wb7TcAqxZteFciPO3R5BSoSvdUaTISm1NJVFU19DKVCmvoswBOrEdo_fmyfTWKk9BHdJy6vbXDf6Qry2PiKI9D3v1VlvjkbfLK-rlSVj6JYk0"/>
+</div>
+<div>
+<time class="font-label text-xs font-bold text-on-surface-variant">SEPTEMBER 28, 2024</time>
+<h3 class="font-serif text-2xl mt-3 mb-4 group-hover:text-primary transition-colors">Monsoon Resilience: How we prepared for the rains.</h3>
+<p class="font-body text-on-surface-variant text-sm line-clamp-3">Our engineers worked alongside local families to reinforce irrigation channels, protecting crops from record-breaking precipitation...</p>
+</div>
+</article>
+<!-- Article 3 -->
+<article class="flex flex-col gap-6 group">
+<div class="aspect-[4/5] overflow-hidden rounded-sm">
+<img alt="Story 3" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Overhead view of a meeting table with maps, diagrams, and several pairs of hands pointing to different sections of a project plan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX2kFJ55NOwQWsSbAqASXL8vmzaTgSvvedZM3yGmyvKCOxMjTYU5xFxG4kAbdLcmC3SRHhDUsaXPJISz2BWYV2mQ55V8K6E8uENVo6ISAopzIiMfeYI8jWkItXMHQhLzFfk9oOFjy6l59XkivfLXO7HH9jO_1gpV3vCvCb5wbXKap6N5jghoJJdV8Xvt7x7mQVCqVksGMlX7VJJrQJrP0OZUzvZ8Ruya1_5BMG16SjTP8OZlHDyV1m62LCJK44yR9C7dQrgMDckLM"/>
+</div>
+<div>
+<time class="font-label text-xs font-bold text-on-surface-variant">AUGUST 15, 2024</time>
+<h3 class="font-serif text-2xl mt-3 mb-4 group-hover:text-primary transition-colors">Data and Dignity: A new approach to tracking impact.</h3>
+<p class="font-body text-on-surface-variant text-sm line-clamp-3">Moving beyond spreadsheets, we explore how qualitative storytelling is becoming our most important metric for success.</p>
+</div>
+</article>
+</div>
+</section>
+<!-- Partner Logos -->
+<section class="py-16 border-t border-outline-variant/20 max-w-screen-2xl mx-auto px-6 md:px-12">
+<div class="flex flex-wrap justify-between items-center opacity-30 gap-12 grayscale">
+<span class="font-serif text-2xl font-bold tracking-tighter">GLOBAL ALLIANCE</span>
+<span class="font-serif text-2xl font-bold tracking-tighter">TRUST CO.</span>
+<span class="font-serif text-2xl font-bold tracking-tighter">UNITY FUND</span>
+<span class="font-serif text-2xl font-bold tracking-tighter">VILLAGE COLLECTIVE</span>
+<span class="font-serif text-2xl font-bold tracking-tighter">PEACE CORPS INT.</span>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-24 bg-[#F6F3F2] dark:bg-stone-900 border-t border-outline-variant/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-16 px-6 md:px-12 py-24 max-w-screen-2xl mx-auto">
+<div class="md:col-span-1">
+<div class="font-serif text-xl text-[#1C1B1B] dark:text-[#FCF9F8] mb-6">GIRI FOUNDATION</div>
+<p class="font-body text-sm text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 leading-relaxed">
+                    Building a world where community resilience is the foundation for global progress.
+                </p>
+</div>
+<div>
+<h4 class="font-label uppercase tracking-[0.05em] text-xs font-bold text-[#00604C] mb-8">Resources</h4>
+<ul class="flex flex-col gap-4">
+<li><a class="font-label uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Impact Reports</a></li>
+<li><a class="font-label uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Press Kit</a></li>
+<li><a class="font-label uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label uppercase tracking-[0.05em] text-xs font-bold text-[#00604C] mb-8">Legal</h4>
+<ul class="flex flex-col gap-4">
+<li><a class="font-label uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Privacy Policy</a></li>
+<li><a class="font-label uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label uppercase tracking-[0.05em] text-xs font-bold text-[#00604C] mb-8">Connect</h4>
+<div class="flex gap-6">
+<a class="text-[#1C1B1B]/60 hover:text-[#00604C]" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-[#1C1B1B]/60 hover:text-[#00604C]" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+<a class="text-[#1C1B1B]/60 hover:text-[#00604C]" href="#"><span class="material-symbols-outlined">share</span></a>
+</div>
+</div>
+</div>
+<div class="px-6 md:px-12 py-8 border-t border-outline-variant/10 text-center">
+<p class="font-label uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60">© 2024 GIRI FOUNDATION. ALL RIGHTS RESERVED.</p>
+</div>
+</footer>
+
+```</body></html>

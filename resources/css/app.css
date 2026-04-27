@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300..800;1,300..800&family=Public+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Public Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Newsreader', ui-serif, Georgia, serif;
+}
+
+:root {
+    --surface: #fcf9f8;
+    --surface-muted: #f6f3f2;
+    --surface-card: #ffffff;
+    --ink: #1c1b1b;
+    --ink-muted: #5e6863;
+    --outline: #bec9c3;
+    --primary: #00604c;
+    --primary-soft: #1f7a63;
+    --secondary-soft: #c8eadc;
+    --secondary-ink: #34554a;
+    --tertiary: #854036;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--surface);
+    color: var(--ink);
+}
+
+::selection {
+    background: var(--secondary-soft);
+    color: var(--secondary-ink);
+}
+
+.font-editorial {
+    font-family: var(--font-serif);
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.section-label {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.surface-card {
+    background: var(--surface-card);
+    box-shadow: 0 12px 40px rgba(15, 15, 15, 0.04);
+}
+
+.ghost-border {
+    border-color: rgba(190, 201, 195, 0.4);
+}
+
+.editorial-prose p + p {
+    margin-top: 1.5rem;
+}
+
+.team-member-dialog {
+    margin: auto;
+}
+
+.team-member-dialog::backdrop {
+    background: rgba(12, 24, 20, 0.56);
+    backdrop-filter: blur(8px);
+}

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f3f0ef",
+                    "background": "#fcf9f8",
+                    "tertiary": "#854036",
+                    "on-primary-fixed-variant": "#005140",
+                    "on-surface-variant": "#3e4945",
+                    "primary-fixed-dim": "#82d6bb",
+                    "error": "#ba1a1a",
+                    "surface-container": "#f0edec",
+                    "surface-tint": "#016b55",
+                    "surface-container-low": "#f6f3f2",
+                    "on-tertiary-fixed-variant": "#74332a",
+                    "on-background": "#1c1b1b",
+                    "secondary-fixed-dim": "#adcec0",
+                    "on-primary-container": "#b1ffe4",
+                    "on-secondary-fixed-variant": "#2f4c43",
+                    "inverse-surface": "#313030",
+                    "surface-container-high": "#ebe7e7",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#1c1b1b",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary-container": "#4c6b60",
+                    "surface-variant": "#e5e2e1",
+                    "on-tertiary-fixed": "#3c0804",
+                    "secondary-container": "#c8eadc",
+                    "surface": "#fcf9f8",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb4a8",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#012018",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#82d6bb",
+                    "outline": "#6e7a74",
+                    "on-tertiary-container": "#ffebe8",
+                    "primary": "#00604c",
+                    "surface-dim": "#dcd9d9",
+                    "tertiary-container": "#a3574c",
+                    "primary-fixed": "#9ef3d7",
+                    "on-primary-fixed": "#002018",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e5e2e1",
+                    "primary-container": "#1f7a63",
+                    "secondary": "#46645a",
+                    "outline-variant": "#bec9c3",
+                    "secondary-fixed": "#c8eadc",
+                    "tertiary-fixed": "#ffdad5",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "serif"],
+                    "body": ["Public Sans", "sans-serif"],
+                    "label": ["Public Sans", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; background-color: #FCF9F8; color: #1C1B1B; }
+        .font-serif { font-family: 'Newsreader', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-[#FCF9F8]/80 dark:bg-stone-950/80 backdrop-blur-md">
+<div class="max-w-screen-2xl mx-auto flex justify-between items-center px-12 py-6">
+<a class="font-serif italic text-2xl font-bold text-[#1C1B1B] dark:text-[#FCF9F8]" href="#">GIRI FOUNDATION</a>
+<nav class="hidden md:flex items-center gap-10">
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 dark:text-[#FCF9F8]/70 hover:text-[#00604C] hover:opacity-80 transition-all duration-300" href="#">Programs</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 dark:text-[#FCF9F8]/70 hover:text-[#00604C] hover:opacity-80 transition-all duration-300" href="#">Stories</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 dark:text-[#FCF9F8]/70 hover:text-[#00604C] hover:opacity-80 transition-all duration-300" href="#">About</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 dark:text-[#FCF9F8]/70 hover:text-[#00604C] hover:opacity-80 transition-all duration-300" href="#">Contact</a>
+</nav>
+<div class="flex items-center gap-6">
+<button class="bg-[#1F7A63] text-white px-6 py-2.5 rounded-lg font-body font-medium hover:opacity-90 transition-opacity scale-95 duration-200 ease-in-out">Donate</button>
+</div>
+</div>
+</header>
+<main class="pt-40 pb-24 px-6 md:px-12 max-w-screen-2xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-24 flex flex-col md:flex-row gap-16 items-end">
+<div class="flex-1">
+<span class="uppercase tracking-[0.2em] text-xs font-bold text-primary mb-6 block">Resource Library</span>
+<h1 class="font-serif text-6xl md:text-8xl tracking-tight leading-[1.1] mb-8">Documents &amp; <br/><span class="italic font-light">Insights</span></h1>
+<p class="font-body text-xl text-on-surface-variant max-w-xl leading-relaxed">
+                    Access our official publications, transparency reports, and policy frameworks. We believe in open knowledge as a foundation for collective progress.
+                </p>
+</div>
+<div class="hidden md:block w-1/3 aspect-[4/5] bg-surface-container-low rounded-xl overflow-hidden relative group">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 transition-transform duration-700" data-alt="Minimalist overhead shot of elegant stationery, aged paper, and a fountain pen on a warm stone surface with soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjqmoicqlwS658XMb2X2a-R-_t_lxB8HW52vpVnfNEJtvDWSJ7I5BGqD8-PIw6oo1i9z_BBltlbisyMTUZsoC1TIPGngp6fThku3ZDsPzRHTJXibXHUbHBO3SD_Ez0Gphu-29lDimRYjWGddJ4RRUcWMavX01854Q55h1LuLESpXpDiPKlnoyZEtdjMLO0Fr2tv2EHItxpIyXDik62JaVB3R2Y1TmGi85miOxnFxjZZJJ12ACV0I0z2L_K49Bfu93NGZP2FFcVJC0"/>
+<div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+</div>
+</section>
+<!-- Filter / Search Cluster -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16 pb-8 border-b border-outline-variant/30">
+<div class="flex flex-wrap gap-4">
+<button class="px-6 py-2 rounded-full bg-primary-container text-on-primary-container font-medium text-sm transition-all">All Files</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-secondary-container transition-all">Annual Reports</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-secondary-container transition-all">Policies</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-secondary-container transition-all">Research</button>
+</div>
+<div class="relative w-full md:w-80">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-transparent border-0 border-b border-outline-variant/50 focus:border-primary focus:ring-0 transition-all font-body" placeholder="Search by title..." type="text"/>
+</div>
+</div>
+<!-- Document Table -->
+<div class="w-full overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="text-left border-b border-outline-variant/20">
+<th class="pb-6 pr-6 font-label uppercase tracking-widest text-[10px] font-bold text-outline">Title</th>
+<th class="pb-6 px-6 font-label uppercase tracking-widest text-[10px] font-bold text-outline">Date</th>
+<th class="pb-6 px-6 font-label uppercase tracking-widest text-[10px] font-bold text-outline">Category</th>
+<th class="pb-6 pl-6 font-label uppercase tracking-widest text-[10px] font-bold text-outline text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="group hover:bg-surface-container-low/50 transition-colors">
+<td class="py-8 pr-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+</div>
+<div>
+<h3 class="font-serif text-xl text-on-surface group-hover:text-primary transition-colors">2023 Annual Impact Narrative</h3>
+<p class="text-xs text-outline font-body mt-1">PDF • 12.4 MB</p>
+</div>
+</div>
+</td>
+<td class="py-8 px-6 font-body text-sm text-on-surface-variant">March 14, 2024</td>
+<td class="py-8 px-6">
+<span class="px-3 py-1 bg-surface-container-low text-on-secondary-container text-[10px] font-bold uppercase tracking-wider rounded-md">Annual Report</span>
+</td>
+<td class="py-8 pl-6 text-right">
+<button class="inline-flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest hover:opacity-70 transition-opacity">
+<span>Download</span>
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-surface-container-low/50 transition-colors">
+<td class="py-8 pr-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<h3 class="font-serif text-xl text-on-surface group-hover:text-primary transition-colors">Ethical Governance Framework</h3>
+<p class="text-xs text-outline font-body mt-1">PDF • 4.2 MB</p>
+</div>
+</div>
+</td>
+<td class="py-8 px-6 font-body text-sm text-on-surface-variant">January 05, 2024</td>
+<td class="py-8 px-6">
+<span class="px-3 py-1 bg-surface-container-low text-on-secondary-container text-[10px] font-bold uppercase tracking-wider rounded-md">Policy</span>
+</td>
+<td class="py-8 pl-6 text-right">
+<button class="inline-flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest hover:opacity-70 transition-opacity">
+<span>Download</span>
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-surface-container-low/50 transition-colors">
+<td class="py-8 pr-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+</div>
+<div>
+<h3 class="font-serif text-xl text-on-surface group-hover:text-primary transition-colors">Quarterly Environmental Audit Q4</h3>
+<p class="text-xs text-outline font-body mt-1">PDF • 8.1 MB</p>
+</div>
+</div>
+</td>
+<td class="py-8 px-6 font-body text-sm text-on-surface-variant">December 20, 2023</td>
+<td class="py-8 px-6">
+<span class="px-3 py-1 bg-surface-container-low text-on-secondary-container text-[10px] font-bold uppercase tracking-wider rounded-md">Research</span>
+</td>
+<td class="py-8 pl-6 text-right">
+<button class="inline-flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest hover:opacity-70 transition-opacity">
+<span>Download</span>
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-surface-container-low/50 transition-colors">
+<td class="py-8 pr-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="visibility">visibility</span>
+</div>
+<div>
+<h3 class="font-serif text-xl text-on-surface group-hover:text-primary transition-colors">Data Privacy &amp; Donor Rights</h3>
+<p class="text-xs text-outline font-body mt-1">PDF • 2.8 MB</p>
+</div>
+</div>
+</td>
+<td class="py-8 px-6 font-body text-sm text-on-surface-variant">October 12, 2023</td>
+<td class="py-8 px-6">
+<span class="px-3 py-1 bg-surface-container-low text-on-secondary-container text-[10px] font-bold uppercase tracking-wider rounded-md">Policy</span>
+</td>
+<td class="py-8 pl-6 text-right">
+<button class="inline-flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest hover:opacity-70 transition-opacity">
+<span>Download</span>
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Featured Resource / Callout -->
+<div class="mt-32 p-12 bg-surface-container-lowest relative overflow-hidden group">
+<div class="relative z-10 grid md:grid-cols-2 gap-16 items-center">
+<div>
+<span class="font-label text-primary text-[10px] font-bold tracking-[0.3em] uppercase mb-4 block">Major Release</span>
+<h2 class="font-serif text-4xl mb-6">Foundation Strategic Plan <br/>2024—2029</h2>
+<p class="font-body text-on-surface-variant leading-relaxed mb-8">
+                        Our roadmap for the next five years, detailing our commitment to systemic change and sustainable community development projects worldwide.
+                    </p>
+<button class="px-8 py-4 bg-primary text-white font-bold uppercase tracking-widest text-xs rounded-lg hover:opacity-90 transition-opacity">Access Strategic Plan</button>
+</div>
+<div class="relative aspect-video rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Cinematic shot of architect's table with blueprints and wooden models in warm afternoon light, signifying planning and vision" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYxISs-qLPjV1Sxt2-Bbm7URxj5-X4v9iOK5sFdOTsW72RHC9XkKCWOtUjzsfEZpVr2o6f5jSsgWFE_Ns2BxJK18DzNsZTd8iDjwLDk2eBkpg36lw8jVFfKLrKppffKf1nFSTE6EuTb-BZCOZ1ScBHteceBUsAao1WLzWJ9tM8RfvVHKYoReXkx3Y4KeHRghi4yX63Dm193hyDweIuwwPz4iH2A_38dzyi83rCB3-bwptb3SFBleS1Tn8tWwkWs3asH9m61RNEicw"/>
+</div>
+</div>
+<!-- Decorative atmospheric blur -->
+<div class="absolute -right-24 -bottom-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-1000"></div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-24 bg-[#F6F3F2] dark:bg-stone-900">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-16 px-12 py-24 max-w-screen-2xl mx-auto">
+<div class="col-span-1">
+<h2 class="font-serif text-xl text-[#1C1B1B] dark:text-[#FCF9F8] mb-8">GIRI FOUNDATION</h2>
+<p class="font-body text-xs leading-loose text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 uppercase tracking-widest">
+                    Pioneering humane solutions <br/> for a resilient future.
+                </p>
+</div>
+<div>
+<h4 class="font-label uppercase tracking-[0.05em] text-xs font-bold text-[#00604C] mb-8">Foundation</h4>
+<ul class="space-y-4">
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Impact Reports</a></li>
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Careers</a></li>
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Press Kit</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label uppercase tracking-[0.05em] text-xs font-bold text-[#00604C] mb-8">Legal</h4>
+<ul class="space-y-4">
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Privacy Policy</a></li>
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label uppercase tracking-[0.05em] text-xs font-bold text-[#00604C] mb-8">Contact</h4>
+<p class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60">
+                    London, United Kingdom<br/>
+                    hello@girifoundation.org
+                </p>
+</div>
+</div>
+<div class="px-12 py-8 border-t border-outline-variant/10 max-w-screen-2xl mx-auto">
+<p class="font-sans uppercase tracking-[0.05em] text-[10px] font-medium text-[#1C1B1B]/40 dark:text-[#FCF9F8]/40">
+                © 2024 GIRI FOUNDATION. ALL RIGHTS RESERVED.
+            </p>
+</div>
+</footer>
+</body></html>

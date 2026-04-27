@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Programs | GIRI FOUNDATION</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f3f0ef",
+                    "background": "#fcf9f8",
+                    "tertiary": "#854036",
+                    "on-primary-fixed-variant": "#005140",
+                    "on-surface-variant": "#3e4945",
+                    "primary-fixed-dim": "#82d6bb",
+                    "error": "#ba1a1a",
+                    "surface-container": "#f0edec",
+                    "surface-tint": "#016b55",
+                    "surface-container-low": "#f6f3f2",
+                    "on-tertiary-fixed-variant": "#74332a",
+                    "on-background": "#1c1b1b",
+                    "secondary-fixed-dim": "#adcec0",
+                    "on-primary-container": "#b1ffe4",
+                    "on-secondary-fixed-variant": "#2f4c43",
+                    "inverse-surface": "#313030",
+                    "surface-container-high": "#ebe7e7",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#1c1b1b",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary-container": "#4c6b60",
+                    "surface-variant": "#e5e2e1",
+                    "on-tertiary-fixed": "#3c0804",
+                    "secondary-container": "#c8eadc",
+                    "surface": "#fcf9f8",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb4a8",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#012018",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#82d6bb",
+                    "outline": "#6e7a74",
+                    "on-tertiary-container": "#ffebe8",
+                    "primary": "#00604c",
+                    "surface-dim": "#dcd9d9",
+                    "tertiary-container": "#a3574c",
+                    "primary-fixed": "#9ef3d7",
+                    "on-primary-fixed": "#002018",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e5e2e1",
+                    "primary-container": "#1f7a63",
+                    "secondary": "#46645a",
+                    "outline-variant": "#bec9c3",
+                    "secondary-fixed": "#c8eadc",
+                    "tertiary-fixed": "#ffdad5",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "serif"],
+                    "body": ["Public Sans", "sans-serif"],
+                    "label": ["Public Sans", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #FCF9F8;
+            color: #1C1B1B;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Newsreader', serif;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-secondary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-[#FCF9F8]/80 dark:bg-stone-950/80 backdrop-blur-md">
+<nav class="max-w-screen-2xl mx-auto flex justify-between items-center px-12 py-6">
+<div class="font-serif italic text-2xl font-bold text-[#1C1B1B] dark:text-[#FCF9F8]">GIRI FOUNDATION</div>
+<div class="hidden md:flex items-center space-x-10">
+<a class="text-[#00604C] font-semibold border-b-2 border-[#1F7A63] pb-1 font-serif text-lg tracking-tight transition-opacity duration-300" href="#">Programs</a>
+<a class="text-[#1C1B1B]/70 dark:text-[#FCF9F8]/70 hover:text-[#00604C] font-serif text-lg tracking-tight hover:opacity-80 transition-opacity duration-300" href="#">Stories</a>
+<a class="text-[#1C1B1B]/70 dark:text-[#FCF9F8]/70 hover:text-[#00604C] font-serif text-lg tracking-tight hover:opacity-80 transition-opacity duration-300" href="#">About</a>
+<a class="text-[#1C1B1B]/70 dark:text-[#FCF9F8]/70 hover:text-[#00604C] font-serif text-lg tracking-tight hover:opacity-80 transition-opacity duration-300" href="#">Contact</a>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2.5 rounded-lg font-label uppercase tracking-widest text-xs font-semibold hover:opacity-90 transition-all active:scale-95 duration-200">
+                Donate
+            </button>
+</nav>
+</header>
+<main class="pt-32">
+<!-- Hero Section -->
+<section class="px-12 max-w-screen-2xl mx-auto mb-24">
+<div class="flex flex-col md:flex-row items-end gap-12">
+<div class="md:w-3/5">
+<span class="font-label uppercase tracking-[0.2em] text-xs font-bold text-primary mb-6 block">Our Initiatives</span>
+<h1 class="text-6xl md:text-8xl font-headline tracking-tighter leading-tight text-on-background">
+                        Archiving <br/><span class="italic text-primary">Potential.</span>
+</h1>
+</div>
+<div class="md:w-2/5 pb-4">
+<p class="text-xl font-body leading-relaxed text-on-surface-variant max-w-md">
+                        We curate long-term programs designed to restore ecological balance and empower local craftmanship through sustainable intervention.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Categories / Filtering -->
+<section class="px-12 max-w-screen-2xl mx-auto mb-16">
+<div class="flex flex-wrap items-center gap-4 py-8 border-y border-outline-variant/30">
+<span class="font-label uppercase tracking-widest text-[10px] font-bold text-on-surface-variant mr-4">Filter By</span>
+<button class="bg-primary-container text-on-primary px-5 py-2 rounded-full text-xs font-label uppercase tracking-widest font-semibold">All Programs</button>
+<button class="bg-surface-container-low text-on-surface-variant px-5 py-2 rounded-full text-xs font-label uppercase tracking-widest font-semibold hover:bg-surface-variant transition-colors">Regenerative Agriculture</button>
+<button class="bg-surface-container-low text-on-surface-variant px-5 py-2 rounded-full text-xs font-label uppercase tracking-widest font-semibold hover:bg-surface-variant transition-colors">Education</button>
+<button class="bg-surface-container-low text-on-surface-variant px-5 py-2 rounded-full text-xs font-label uppercase tracking-widest font-semibold hover:bg-surface-variant transition-colors">Craft Preservation</button>
+<button class="bg-surface-container-low text-on-surface-variant px-5 py-2 rounded-full text-xs font-label uppercase tracking-widest font-semibold hover:bg-surface-variant transition-colors">Medical Relief</button>
+</div>
+</section>
+<!-- Featured Program Section (Asymmetric) -->
+<section class="mb-32 px-12 max-w-screen-2xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-0 items-center">
+<div class="md:col-span-7 z-10">
+<div class="bg-surface-container-lowest p-12 md:p-20 shadow-[0_12px_40px_rgba(15,15,15,0.04)]">
+<div class="flex items-center gap-3 mb-6">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg text-[10px] font-label uppercase tracking-widest font-bold">Featured Initiative</span>
+<span class="text-primary font-label text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span> Active
+                            </span>
+</div>
+<h2 class="text-4xl md:text-6xl font-headline mb-8 leading-tight">The Sacred Grove <br/>Restoration Project</h2>
+<p class="text-lg text-on-surface-variant mb-10 leading-relaxed max-w-lg">
+                            Re-establishing indigenous biodiversity across 400 hectares of degraded forest land. This program integrates ancient planting wisdom with modern soil science.
+                        </p>
+<div class="flex items-center gap-12 mb-12">
+<div>
+<span class="block font-label text-[10px] uppercase tracking-widest text-outline mb-1">Location</span>
+<span class="font-body font-semibold">Western Ghats, India</span>
+</div>
+<div>
+<span class="block font-label text-[10px] uppercase tracking-widest text-outline mb-1">Duration</span>
+<span class="font-body font-semibold">10 Year Cycle</span>
+</div>
+</div>
+<a class="inline-flex items-center gap-2 font-label uppercase tracking-[0.15em] text-xs font-bold text-primary group" href="#">
+                            Explore Project Details
+                            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_right_alt</span>
+</a>
+</div>
+</div>
+<div class="md:col-span-6 md:-ml-24">
+<div class="aspect-[4/5] w-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+<img alt="Forest Restoration" class="w-full h-full object-cover" data-alt="lush tropical forest canopy with morning mist rising from the trees in soft ethereal natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFYhN-0c03inkP_Cj4j0eXzi40fhIUrVWMjwQLmjwJc2IRCyelpZ4fkIsPskNXwH1gDtcQ_8FL0RoXOpPvwpDkf7BOp6euGW-nVvskrOkMgh3OTdZjejNdFapYm-ALh31j1skBMT1_Cxw5PfN2GCYYJrxf3K6P2a6vWM-NARlnmiuGbYvq0QRnZHKML3p5p6iE7N9saXHxyiQtFDqSqik9ykkNV5yaRNDduQYFjUFwh9GEf4tuE3gr8J4U7sECm2i63aTIJgAbZh8"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Program List -->
+<section class="bg-surface-container-low py-32">
+<div class="max-w-screen-2xl mx-auto px-12">
+<div class="flex justify-between items-baseline mb-16 border-b border-outline-variant/30 pb-8">
+<h3 class="text-3xl font-headline italic">Ongoing Engagements</h3>
+<span class="font-label text-xs text-on-surface-variant">Showing 8 Programs</span>
+</div>
+<div class="space-y-4">
+<!-- List Item 1 -->
+<div class="group relative bg-surface-container-lowest overflow-hidden transition-all hover:bg-white border-b border-outline-variant/10">
+<div class="flex flex-col md:flex-row items-center p-8 gap-8">
+<div class="w-full md:w-32 aspect-square flex-shrink-0 grayscale group-hover:grayscale-0 transition-all">
+<img alt="Weaving" class="w-full h-full object-cover" data-alt="hands of a weaver working on a traditional wooden loom with rich indigo dyed threads" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfmPSkkCP_g1f1jZmEfumcs2FJLhJT0S4V19rnmSvoaLMnz0kcIC7JhocfLwAG3ZTXBB4qpOjovG9u0ajlMljt2p89tNIC6euiCPn5DXDocptAYWVlvFxSaWRzTfSTTJQCYsl-rk8gDx22LoaQA-zj9ZrsMSrpTKX8yFuzj1BqtNJ7VWiKcRY3utD5U5WUdU1M8Mn-LSB0YvZF3ZOjcYtmoTq2_RV5P45QkEPvpDVXXA__a-dEjL7C0N3iUziGi-i6VHCiircAYWE"/>
+</div>
+<div class="flex-grow">
+<div class="flex flex-wrap items-center gap-4 mb-2">
+<h4 class="text-2xl font-headline group-hover:text-primary transition-colors">Indigo Weaver's Collective</h4>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[9px] font-label uppercase tracking-tighter">Craft Preservation</span>
+</div>
+<p class="text-on-surface-variant max-w-2xl text-sm leading-relaxed">Securing living wages and international markets for the remaining master indigo dyers of the Kachchh region through design workshops.</p>
+</div>
+<div class="text-right flex flex-col items-end gap-2">
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Kachchh, Gujarat</span>
+<span class="text-xs font-label font-bold text-primary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span> In Progress
+                                </span>
+</div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="group relative bg-surface-container-lowest overflow-hidden transition-all hover:bg-white border-b border-outline-variant/10">
+<div class="flex flex-col md:flex-row items-center p-8 gap-8">
+<div class="w-full md:w-32 aspect-square flex-shrink-0 grayscale group-hover:grayscale-0 transition-all">
+<img alt="Education" class="w-full h-full object-cover" data-alt="smiling children in a bright classroom sitting around a large low wooden table with art supplies" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbyT9v50pQe6krhgn0RPTOPKriV-VLwcrtmvujtjfGZY04VRDXml1xVTw6enMhRiH-sf9Ma1xqbGQityAiAv7sgGzgJEjfa7x7sUOeYZ4bCgzG6An-servGtlKMzSqj288F6RmwzMwBPcFDY69ZqXc4PH52p5sYc7I79tG45Iy-fYcWkH8TyM2c4nH2QF6SUQPbt9Rtgi9UcZSQcofFkfKG58LqRTWhku4ySpdXTXpCQGKRDAYbnBb9UdD7ENb48d3tqR2b2Uci2c"/>
+</div>
+<div class="flex-grow">
+<div class="flex flex-wrap items-center gap-4 mb-2">
+<h4 class="text-2xl font-headline group-hover:text-primary transition-colors">Foundations for Tomorrow</h4>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[9px] font-label uppercase tracking-tighter">Education</span>
+</div>
+<p class="text-on-surface-variant max-w-2xl text-sm leading-relaxed">Providing high-quality early childhood education and nutrition programs to remote tribal communities in Odisha.</p>
+</div>
+<div class="text-right flex flex-col items-end gap-2">
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Tribal Odisha</span>
+<span class="text-xs font-label font-bold text-primary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span> Expanding
+                                </span>
+</div>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="group relative bg-surface-container-lowest overflow-hidden transition-all hover:bg-white border-b border-outline-variant/10">
+<div class="flex flex-col md:flex-row items-center p-8 gap-8">
+<div class="w-full md:w-32 aspect-square flex-shrink-0 grayscale group-hover:grayscale-0 transition-all">
+<img alt="Agriculture" class="w-full h-full object-cover" data-alt="a local organic farmer inspecting vibrant green vegetable crops in a sun-drenched terraced field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMx7MyTwE-77J5uLuYYkmXiLq8TuEQALt4rtbPGHIRq7YZsd6Q4w83IOs7g4ZHtchJIONiGfLSgyIlQmp7kiLc48l3y7mYE4YoV9rTg3UkfdHgzkFKTqP-uIS8d_B5yC1QS0kJ-Ug8R_eN397HET_dsgpl74VYhTW7AIXpGzuJ2l-EbkmfgS_jBgNiSGpS234Q0sgGtolHA2gH7UG1kIKZQdHCIqW-XCXLCtglxJ-R1hogy3zQWV3SHSIpwd-D5dWlghQeWiMgdLo"/>
+</div>
+<div class="flex-grow">
+<div class="flex flex-wrap items-center gap-4 mb-2">
+<h4 class="text-2xl font-headline group-hover:text-primary transition-colors">Seed Sovereignty Network</h4>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[9px] font-label uppercase tracking-tighter">Agriculture</span>
+</div>
+<p class="text-on-surface-variant max-w-2xl text-sm leading-relaxed">A community-led seed bank initiative protecting ancient heirloom varieties from commercial extinction.</p>
+</div>
+<div class="text-right flex flex-col items-end gap-2">
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Deccan Plateau</span>
+<span class="text-xs font-label font-bold text-primary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span> Active
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Featured (Asymmetric Reverse) -->
+<section class="py-32 px-12 max-w-screen-2xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+<div class="md:col-span-5 order-2 md:order-1">
+<div class="aspect-[3/4] overflow-hidden">
+<img alt="Medical Relief" class="w-full h-full object-cover" data-alt="modern clean medical mobile unit parked in a rural village square with doctors treating patients under a tree" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAodo9C9RXzfN4yKOiDcwJc0wv2uQVLZPMwHX9ydjDGjTDb_J7Niq8CwQcOh1SZqcLL8Np9WUdCwmi7mD_oSjCADjrsx_bLWqQSuIKhGQ7oVMbvzP5Lt4tgDS9qITh2NVKJjMMcGkaxFu-u7Mxka5fDtpbrDUriuXrFul5pBnkEpFKPWa8y98mgYMXQZEfwITd1vbbi9GhBFG19S5tgfMhgxhQf11irvHlZvp4UX0028w3o91OPCYPhkA_0NS3yhBJgaRekkD8a__o"/>
+</div>
+</div>
+<div class="md:col-span-7 order-1 md:order-2">
+<span class="font-label uppercase tracking-[0.2em] text-[10px] font-bold text-tertiary mb-6 block">Critical Response</span>
+<h2 class="text-5xl md:text-7xl font-headline mb-8 tracking-tighter">Mobile Health <br/>Sanctuaries</h2>
+<p class="text-xl text-on-surface-variant leading-relaxed mb-12">
+                        While our primary work is long-term archival, we recognize that immediate health is the baseline for any future. Our mobile units provide specialized care to the most remote settlements.
+                    </p>
+<div class="grid grid-cols-2 gap-8 py-8 border-t border-outline-variant/30">
+<div>
+<span class="block text-4xl font-headline text-primary mb-2">12k+</span>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Lives Touched Yearly</span>
+</div>
+<div>
+<span class="block text-4xl font-headline text-primary mb-2">45</span>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Villages Reached</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Callout -->
+<section class="bg-primary text-on-primary py-24 mx-12 rounded-xl mb-32 overflow-hidden relative">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<img alt="Background Texture" class="w-full h-full object-cover" data-alt="abstract overlay of forest textures and organic patterns in deep green" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJrRgvBT2DHEg0yx-bn6RP1qSfS7n_N8E4Jey94vI6uxIUWmW2Kh-NR2hsXNr_V0HYzCONe77D38Vq4sBtpdw7g1l9bca9j8nnD2cQDWlSPgHFmvK9rsD2jgKUbitEcJTDNUqySyxKq74Y2-ZfK3wZlHC9Q9LggN_FPuCH5sC6Aov48ndOTm1gechglND0jCTEmzf1lJa3Xb9Lw90hXNHN2GJ0oBj7Azqd_tKuMvprmdWEgx-Kmvp5nuqKwijlMKup_yVhru73scE"/>
+</div>
+<div class="max-w-4xl mx-auto text-center relative z-10 px-6">
+<h2 class="text-4xl md:text-5xl font-headline mb-8 italic">"We do not inherit the earth from our ancestors; we borrow it from our children."</h2>
+<button class="bg-surface-container-lowest text-primary px-10 py-4 rounded-lg font-label uppercase tracking-widest text-xs font-bold hover:scale-105 transition-transform duration-300">
+                    Sponsor a Program
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#F6F3F2] dark:bg-stone-900 w-full mt-24">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-16 px-12 py-24 max-w-screen-2xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="font-serif text-xl text-[#1C1B1B] dark:text-[#FCF9F8] mb-8">GIRI FOUNDATION</div>
+<p class="text-xs font-label uppercase tracking-widest text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 leading-relaxed">
+                    Dedicated to the preservation of cultural wisdom and the regeneration of our collective future.
+                </p>
+</div>
+<div>
+<h5 class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#00604C] dark:text-[#1F7A63] mb-6">Navigation</h5>
+<ul class="space-y-4">
+<li><a class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Impact Reports</a></li>
+<li><a class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Privacy Policy</a></li>
+<li><a class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#00604C] dark:text-[#1F7A63] mb-6">Connect</h5>
+<ul class="space-y-4">
+<li><a class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Press Kit</a></li>
+<li><a class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 hover:text-[#00604C] underline underline-offset-4 transition-all" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#00604C] dark:text-[#1F7A63] mb-6">Headquarters</h5>
+<p class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60 leading-loose">
+                    12 Archival Way<br/>
+                    Creative District<br/>
+                    London, UK
+                </p>
+</div>
+</div>
+<div class="px-12 py-8 border-t border-outline-variant/10 max-w-screen-2xl mx-auto text-center md:text-left">
+<span class="text-xs font-label uppercase tracking-[0.05em] font-medium text-[#1C1B1B]/60 dark:text-[#FCF9F8]/60">© 2024 GIRI FOUNDATION. ALL RIGHTS RESERVED.</span>
+</div>
+</footer>
+</body></html>

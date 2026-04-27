@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f3f0ef",
+                        "background": "#fcf9f8",
+                        "tertiary": "#854036",
+                        "on-primary-fixed-variant": "#005140",
+                        "on-surface-variant": "#3e4945",
+                        "primary-fixed-dim": "#82d6bb",
+                        "error": "#ba1a1a",
+                        "surface-container": "#f0edec",
+                        "surface-tint": "#016b55",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-fixed-variant": "#74332a",
+                        "on-background": "#1c1b1b",
+                        "secondary-fixed-dim": "#adcec0",
+                        "on-primary-container": "#b1ffe4",
+                        "on-secondary-fixed-variant": "#2f4c43",
+                        "inverse-surface": "#313030",
+                        "surface-container-high": "#ebe7e7",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#fcf9f8",
+                        "on-secondary-container": "#4c6b60",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-fixed": "#3c0804",
+                        "secondary-container": "#c8eadc",
+                        "surface": "#fcf9f8",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#012018",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#82d6bb",
+                        "outline": "#6e7a74",
+                        "on-tertiary-container": "#ffebe8",
+                        "primary": "#00604c",
+                        "surface-dim": "#dcd9d9",
+                        "tertiary-container": "#a3574c",
+                        "primary-fixed": "#9ef3d7",
+                        "on-primary-fixed": "#002018",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-container": "#1f7a63",
+                        "secondary": "#46645a",
+                        "outline-variant": "#bec9c3",
+                        "secondary-fixed": "#c8eadc",
+                        "tertiary-fixed": "#ffdad5",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Public Sans', sans-serif; }
+        h1, h2, h3, .serif { font-family: 'Newsreader', serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-secondary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-[#FCF9F8]/80 dark:bg-stone-950/80 backdrop-blur-md">
+<div class="max-w-screen-2xl mx-auto flex justify-between items-center px-12 py-6">
+<div class="font-serif italic text-2xl font-bold text-[#1C1B1B] dark:text-[#FCF9F8]">
+                GIRI FOUNDATION
+            </div>
+<div class="hidden md:flex space-x-12 items-center">
+<a class="font-serif text-lg tracking-tight text-[#00604C] font-semibold border-b-2 border-[#1F7A63] pb-1" href="#">Programs</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 hover:text-[#00604C] transition-opacity duration-300" href="#">Stories</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 hover:text-[#00604C] transition-opacity duration-300" href="#">About</a>
+<a class="font-serif text-lg tracking-tight text-[#1C1B1B]/70 hover:text-[#00604C] transition-opacity duration-300" href="#">Contact</a>
+</div>
+<button class="bg-primary-container text-on-primary px-8 py-3 rounded-lg font-label uppercase tracking-[0.05em] text-sm font-medium hover:opacity-80 transition-opacity duration-300">
+                Donate
+            </button>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<header class="relative h-[870px] w-full overflow-hidden mb-24">
+<img alt="Program context" class="w-full h-full object-cover grayscale-[0.2] hover:scale-105 transition-transform duration-[2000ms] ease-out" data-alt="Candid, cinematic wide shot of school children in an open-air classroom in rural Southeast Asia with dappled afternoon sunlight and lush greenery background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkEmFYGApAh39LbQfu8ksMi1OCKUa_iIvtUKjD4llb2vy5iMtERFQcsEhXNlmacgclhsujkrOOyAcUcMXubKgAR4SRMkbSvwnxhFdre_iSS4FMp3_vRXjhpoWZJ1Wbo1CF5IUDn1U2yxYvrMW6MFVAs6MxOlHjvbZeZ0lCheFin0LwqO6V6_LgmvklBnqLKFtykfygDAy6Jdmk155xZKQWTDTC0q0AUOUPO-eDFhO7cX_nJjGC46ThAMa7gK3HyckQg65d5NV3URw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-12 left-12 max-w-4xl">
+<span class="inline-block px-4 py-1 mb-6 rounded-full bg-secondary-container text-on-secondary-container font-label uppercase tracking-[0.1em] text-xs font-bold">
+                    Primary Initiative
+                </span>
+<h1 class="text-6xl md:text-8xl font-headline italic tracking-tighter leading-none mb-8 text-on-surface">
+                    The Scholar’s Pathway
+                </h1>
+<div class="flex flex-wrap gap-12 items-end">
+<div class="flex flex-col">
+<span class="font-label uppercase text-[10px] tracking-[0.2em] text-on-surface-variant mb-2">Location</span>
+<span class="font-headline text-2xl italic">Lombok Regency, ID</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label uppercase text-[10px] tracking-[0.2em] text-on-surface-variant mb-2">Beneficiaries</span>
+<span class="font-headline text-2xl italic">1,200+ Annual</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label uppercase text-[10px] tracking-[0.2em] text-on-surface-variant mb-2">Duration</span>
+<span class="font-headline text-2xl italic">Ongoing Effort</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Grid: Overview & Key Info -->
+<section class="max-w-screen-2xl mx-auto px-12 grid grid-cols-1 md:grid-cols-12 gap-24 items-start mb-48">
+<div class="md:col-span-7">
+<h2 class="font-label uppercase text-xs tracking-[0.2em] text-primary mb-8 font-bold">The Mission</h2>
+<p class="font-headline text-4xl leading-snug text-on-surface mb-12 italic">
+                    Bridging the gap between potential and opportunity by providing foundational academic support and digital literacy to children in underserved coastal communities.
+                </p>
+<div class="space-y-8 font-body text-lg text-on-surface-variant leading-relaxed max-w-2xl">
+<p>
+                        The Scholar's Pathway is more than an educational program; it is a commitment to the long-term resilience of the Lombok coastline. We operate on the belief that education is the primary tool for environmental and economic stewardship.
+                    </p>
+<p>
+                        By integrating traditional curricula with modern technology and ecological awareness, we prepare the next generation to lead their communities toward a sustainable future. Our centers serve as hubs for learning, creativity, and community gathering.
+                    </p>
+</div>
+</div>
+<div class="md:col-span-5 bg-surface-container-low p-12 rounded-xl">
+<h3 class="font-label uppercase text-xs tracking-[0.2em] text-on-surface-variant mb-12 font-bold">At a Glance</h3>
+<ul class="space-y-12">
+<li class="flex items-start gap-6">
+<span class="material-symbols-outlined text-primary text-3xl">school</span>
+<div>
+<h4 class="font-headline text-xl mb-2">Academic Excellence</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Providing high-quality tutoring in mathematics, languages, and sciences after regular school hours.</p>
+</div>
+</li>
+<li class="flex items-start gap-6">
+<span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+<div>
+<h4 class="font-headline text-xl mb-2">Digital Literacy</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Introducing students to computing basics and digital research through our mobile laptop labs.</p>
+</div>
+</li>
+<li class="flex items-start gap-6">
+<span class="material-symbols-outlined text-primary text-3xl">eco</span>
+<div>
+<h4 class="font-headline text-xl mb-2">Ecology &amp; Conservation</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Hands-on marine biology and coastal preservation lessons built into the core curriculum.</p>
+</div>
+</li>
+</ul>
+<div class="mt-16">
+<button class="w-full bg-primary py-5 text-on-primary font-label uppercase tracking-[0.1em] text-sm font-bold rounded-lg hover:opacity-90 transition-opacity">
+                        Support this program
+                    </button>
+<p class="text-[10px] text-center mt-4 uppercase tracking-[0.05em] text-on-surface-variant/60">Tax-deductible contributions under 501(c)(3)</p>
+</div>
+</div>
+</section>
+<!-- Gallery: Bento/Editorial Layout -->
+<section class="mb-48">
+<div class="max-w-screen-2xl mx-auto px-12 mb-16 flex justify-between items-end">
+<h2 class="font-headline text-5xl italic tracking-tight">Moments of Impact</h2>
+<a class="font-label uppercase text-xs tracking-widest text-primary font-bold border-b border-primary/30 pb-1" href="#">View Archive</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[800px] px-4 md:px-12">
+<div class="md:col-span-2 md:row-span-2 rounded-lg overflow-hidden relative group">
+<img alt="Education scene" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Close up of a young student focused intently on writing in a notebook, soft side lighting from a nearby window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBec1pJ4_kRV7Iy2EnlGg8KwASf8OAzbs6g2_DSaDLO3ZcgijXmufFKzQh-M4q9nOBiH5-vT0Y90bt3TQlLxzaes0Rf2vz74fCGs9DdS_MxxXnVZVb59_tFuboaUkdTMhmGZeLAxolkzh2AzZeddX7Kh5gApN2vffCt7M1hq3lqnQxX0IaDbHnXSskz-ntZ9yXPDZdNTAq7gXbndUC6X0v9iUEp9REuw_zecLJga3CqYZKhcUWY1IsBoxllOLUe2DKn2oW2oD8IeUQ"/>
+<div class="absolute inset-0 bg-on-background/10 group-hover:bg-transparent transition-colors"></div>
+</div>
+<div class="md:col-span-1 md:row-span-1 rounded-lg overflow-hidden relative group">
+<img alt="Classroom equipment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Artistically arranged row of clean wooden school desks in an airy, minimalist tropical classroom with open windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi-4QmdDguTAQekNX6JRa7Ugzn_HzIazQEuBRrYDqcJ4t7E02NTBsuEVun9G2w1SZX9OZTVaIS0OjwwumEDXZx3lqX9TZK7H92FrWqJ4TpsMCG981ofBQKjCp7S5lgcuf1zdhvztsKnH4-Jr65fp9mCOBK-xf0TKO9I58zdK57Xslo7CjWjb7V9UL_roz2IwmL146GaCfzSrlASXmq0xb_wVx8rtvtFi7FlkxHb8oPEM1J_qIl0Lx7NTmIllfdr3RWsxlsyKr1fSU"/>
+</div>
+<div class="md:col-span-1 md:row-span-1 rounded-lg overflow-hidden relative group">
+<img alt="Group activity" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Group of diverse educators and community leaders standing together in front of a colorful mural, smiling and engaged in conversation" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGuEHJT4ZS_nKHhVU_ZG0_pkqQZRRujkpjnSG4rBlxBsFEi2FkB4tirwJA6aFgSdBTsiLKUEE-QbfZUM3RCqiMqP_3SREhJeIOomWC0HL0nThJKTQ08sJoYI1R-Wc0IpnMfKAOS7qjKLt7lBmUrcpZEZljfRV4jcsfZJU1wj-xs7p5MB05vM1gFny_H_q_kYZ_ry2ueKdo3xJeY0eKA5E8uXX5h6EXwfIZBBKFOeNNR2ihVoShsr-ylyyjL5UiGijV1pELSyGCpeY"/>
+</div>
+<div class="md:col-span-2 md:row-span-1 rounded-lg overflow-hidden relative group">
+<img alt="Environmental lesson" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Students participating in a beach restoration project, planting mangroves in the sand at low tide during late afternoon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrqYwRUkhL2lZ1xERQzt0HnE-2ybW_78uCB9RghgMNJPFfnVLkRTvBW3-WVn9lP_FWsqet0xhwgf3rrvkyHt1Xxr2H38rRAYpkbpzE3rLMkL_wL3I_6rf95r8sNoD9FnpDHlGGbdLsG4tAtxB7EoReWObpNHkCIVN0bSEWLPSPVhfg6UxaSXig64mMl5EuCznF451NSdnzRwNZIAwuoG-QlkhVJDXnW3GjJdpdvxwBZxKxQocUAQmPn1F95lae_06havWt-0L_bwk"/>
+</div>
+</div>
+</section>
+<!-- Related Updates -->
+<section class="bg-surface-container-low py-32">
+<div class="max-w-screen-2xl mx-auto px-12">
+<div class="mb-16">
+<h2 class="font-headline text-5xl italic tracking-tight mb-4">Latest Dispatch</h2>
+<div class="h-px w-24 bg-primary"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Update 1 -->
+<div class="group cursor-pointer">
+<div class="overflow-hidden rounded-lg aspect-video mb-6">
+<img alt="Update photo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Top-down shot of collaborative workspace with papers and hands, warm aesthetic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCigIR9RD8xKX7wPqN0ZudUDaLeupBSsJa5-zmpjTGerYgKyMVO1eGHWWoweYOFHd0m4HjwPkqheNYHJmSuhvfnsUUJarKgJkZNdN_oYCWEaQzMDHB1r-jnYKU2V9k8p5fnDNM3EXxmm6ijj0SD73VRSiLvOQt2rhbn4mUwrkcE01ADofr_1DEyKCJwYz3exbd6Z9dLmfTrPv1rrhckgmybFFxTeX4ZLPrR3opgAIZqUh2InzEpG7d-YG9WVi-a38zHqNH1VVJayEM"/>
+</div>
+<span class="font-label uppercase text-[10px] tracking-[0.2em] text-primary mb-2 block font-bold">Field Report • Oct 2024</span>
+<h3 class="font-headline text-2xl italic mb-4 group-hover:underline decoration-primary/30 underline-offset-8">Expanding the Digital Hub in Serangan</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed line-clamp-3">New satellite connection and ten additional workstations have arrived to support our growing secondary student population...</p>
+</div>
+<!-- Update 2 -->
+<div class="group cursor-pointer">
+<div class="overflow-hidden rounded-lg aspect-video mb-6">
+<img alt="Update photo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Candid photograph of a community meeting with local elders and young volunteers sitting in a circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPDYzlbArXLxTsSoam8cyE4LSSIv7UTSiJljI1O5rfYdGyNgAOktqzkboAh2rOoh0BMSoeaFzHgZt01D4gFvb4p5ztVwZN4puqgzeK1hHQdV7L2SMqdA03w5SXidVP7BIsRX9-gCPt9A9qZqXqxL-IhyUsxbUZwKkt3ccFIAq0L_IamSARyHWSJJYHiuLtiFtEy-iPS8c0LDQQKJ1WLQI8QITC2GJ5TSgjZFO5dUJ6PYFL2e6FUmRP7S13zdpXBzbGXIhk1I23gJ4"/>
+</div>
+<span class="font-label uppercase text-[10px] tracking-[0.2em] text-primary mb-2 block font-bold">Community • Sep 2024</span>
+<h3 class="font-headline text-2xl italic mb-4 group-hover:underline decoration-primary/30 underline-offset-8">The Annual Community Harvest Festival</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed line-clamp-3">Celebrating our first harvest from the community garden project managed entirely by the Scholar's Pathway youth council...</p>
+</div>
+<!-- Update 3 -->
+<div class="group cursor-pointer">
+<div class="overflow-hidden rounded-lg aspect-video mb-6">
+<img alt="Update photo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Group of students and mentors brainstorming around a large whiteboard with sketches and sticky notes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrPbTMMOpOplOeonWZcFS1Wv52nYPnW92EbbzX8-owalO0rFcWAsGW4lbKYHXc-3g55P8HJ1bAB1Xl04sAI6yQ3WEXnscqN2Gh43xT9TU-g0bNiL-7k7MOpUBpIdS67clYKT2Sja0NziizFLdVRSK6ifEXEbYrj5EG9UD2FvPf-hgtW_3QwOF61y1NV3lfgwJdhTB0Ge1RS29ZKpR3fbjVOpDpfEefajriM5WIy7qlhktRGsXL33OuVsfh2yuSZeK1bdcWetS1RNQ"/>
+</div>
+<span class="font-label uppercase text-[10px] tracking-[0.2em] text-primary mb-2 block font-bold">Innovation • Aug 2024</span>
+<h3 class="font-headline text-2xl italic mb-4 group-hover:underline decoration-primary/30 underline-offset-8">Mentorship Program Launch</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed line-clamp-3">Pairing local professionals with graduating seniors to provide career guidance and internship placement in Jakarta and beyond...</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA Section -->
+<section class="max-w-screen-2xl mx-auto px-12 py-48 text-center">
+<div class="max-w-3xl mx-auto">
+<h2 class="font-headline text-6xl italic mb-12">Will you help us write the next chapter?</h2>
+<p class="font-body text-on-surface-variant text-xl mb-16 leading-relaxed">Every contribution ensures that a child has access to the resources they need to thrive in a rapidly changing world.</p>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<button class="bg-primary-container text-on-primary px-12 py-5 rounded-lg font-label uppercase tracking-[0.1em] text-sm font-bold shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        Become a Partner
+                    </button>
+<button class="text-primary font-label uppercase tracking-[0.1em] text-sm font-bold px-12 py-5 border border-outline-variant/30 rounded-lg hover:bg-surface-container-low transition-colors">
+                        Sponsor a Student
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-24 bg-[#F6F3F2] dark:bg-stone-900">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-16 px-12 py-24 max-w-screen-2xl mx-auto">
+<div class="md:col-span-1">
+<div class="font-serif text-xl text-[#1C1B1B] dark:text-[#FCF9F8] mb-8">GIRI FOUNDATION</div>
+<p class="text-[10px] font-medium font-sans uppercase tracking-[0.05em] text-[#1C1B1B]/60 leading-loose">
+                    EMPOWERING COMMUNITIES THROUGH INTENTIONAL ACTION AND SUSTAINABLE ARCHITECTURE OF LEARNING.
+                </p>
+</div>
+<div>
+<h4 class="font-sans uppercase tracking-[0.15em] text-[10px] font-bold text-[#00604C] mb-8">Navigation</h4>
+<ul class="space-y-4">
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Impact Reports</a></li>
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Careers</a></li>
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Press Kit</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-sans uppercase tracking-[0.15em] text-[10px] font-bold text-[#00604C] mb-8">Legal</h4>
+<ul class="space-y-4">
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Privacy Policy</a></li>
+<li><a class="font-sans uppercase tracking-[0.05em] text-xs font-medium text-[#1C1B1B]/60 hover:text-[#00604C] underline-offset-4 transition-all" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-sans uppercase tracking-[0.15em] text-[10px] font-bold text-[#00604C] mb-8">Newsletter</h4>
+<div class="flex border-b border-outline-variant/30 pb-2">
+<input class="bg-transparent border-none focus:ring-0 text-xs w-full uppercase tracking-widest" placeholder="YOUR EMAIL" type="email"/>
+<button class="material-symbols-outlined text-primary">arrow_forward</button>
+</div>
+</div>
+</div>
+<div class="max-w-screen-2xl mx-auto px-12 py-8 border-t border-outline-variant/10 text-center">
+<p class="font-sans uppercase tracking-[0.05em] text-[10px] font-medium text-[#1C1B1B]/40">
+                © 2024 GIRI FOUNDATION. ALL RIGHTS RESERVED.
+            </p>
+</div>
+</footer>
+
+```</body></html>
