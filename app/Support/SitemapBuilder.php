@@ -8,6 +8,29 @@ use App\Models\Program;
 
 class SitemapBuilder
 {
+    public function toXml(): string
+    {
+        $lines = [
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ];
+
+        foreach ($this->build() as $url) {
+            $lines[] = '    <url>';
+            $lines[] = '        <loc>'.htmlspecialchars($url['loc'], ENT_XML1).'</loc>';
+
+            if ($url['lastmod']) {
+                $lines[] = '        <lastmod>'.htmlspecialchars($url['lastmod'], ENT_XML1).'</lastmod>';
+            }
+
+            $lines[] = '    </url>';
+        }
+
+        $lines[] = '</urlset>';
+
+        return implode("\n", $lines);
+    }
+
     /**
      * @return list<array{loc: string, lastmod: string|null}>
      */

@@ -9,10 +9,7 @@ class SitemapController extends Controller
 {
     public function __invoke(SitemapBuilder $sitemapBuilder): Response
     {
-        return response()
-            ->view('seo.sitemap', [
-                'urls' => $sitemapBuilder->build(),
-            ])
+        return response($sitemapBuilder->toXml())
             ->header('Content-Type', 'application/xml; charset=UTF-8');
     }
 }
