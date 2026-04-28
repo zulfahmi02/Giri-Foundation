@@ -19,6 +19,31 @@ run() {
     "$@"
 }
 
+run_composer_install() {
+    local composer_cmd="$1"
+    shift || true
+
+    local -a composer_install_command=(
+        "$composer_cmd" install
+        --no-dev
+        --no-interaction
+        --prefer-dist
+        --optimize-autoloader
+    )
+
+    if run "${composer_install_command[@]}"; then
+        return
+    fi
+
+    log "Composer install failed. Retrying without scripts for proc_open-restricted hosting."
+    run "${composer_install_command[@]}" --no-scripts
+
+    if [ ! -f "$APP_ROOT/bootstrap/cache/packages.php" ] || [ ! -f "$APP_ROOT/bootstrap/cache/services.php" ]; then
+        log "Missing bootstrap/cache package manifest after --no-scripts install. Copy packages.php and services.php from a working release before switching the live app root."
+        exit 1
+    fi
+}
+
 resolve_composer_bin() {
     if command -v "$COMPOSER_BIN" >/dev/null 2>&1; then
         printf '%s\n' "$COMPOSER_BIN"
@@ -141,7 +166,7 @@ main() {
     mkdir -p "$APP_ROOT/storage" "$APP_ROOT/bootstrap/cache"
     chmod -R ug+rwx "$APP_ROOT/storage" "$APP_ROOT/bootstrap/cache" || true
 
-    run "$composer_cmd" install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+    run_composer_install "$composer_cmd"
 
     if [ "$BUILD_FRONTEND" = "1" ]; then
         if command -v npm >/dev/null 2>&1; then
