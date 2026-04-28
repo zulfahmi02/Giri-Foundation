@@ -37,11 +37,7 @@ run_composer_install() {
 
     log "Composer install failed. Retrying without scripts for proc_open-restricted hosting."
     run "${composer_install_command[@]}" --no-scripts
-
-    if [ ! -f "$APP_ROOT/bootstrap/cache/packages.php" ] || [ ! -f "$APP_ROOT/bootstrap/cache/services.php" ]; then
-        log "Missing bootstrap/cache package manifest after --no-scripts install. Copy packages.php and services.php from a working release before switching the live app root."
-        exit 1
-    fi
+    run "$PHP_BIN" artisan package:discover --ansi
 }
 
 resolve_composer_bin() {

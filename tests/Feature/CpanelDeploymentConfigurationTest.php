@@ -16,6 +16,7 @@ test('cpanel deployment files exist and reference the deploy script', function (
         ->and($deployScript)->toContain('--no-interaction')
         ->and($deployScript)->toContain('--no-scripts')
         ->and($deployScript)->toContain('proc_open-restricted hosting')
+        ->and($deployScript)->toContain('artisan package:discover --ansi')
         ->and($deployScript)->toContain('artisan optimize:clear')
         ->and($deployScript)->toContain('artisan migrate --force --no-interaction')
         ->and($deployScript)->toContain('artisan optimize')
