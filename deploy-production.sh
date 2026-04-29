@@ -68,24 +68,21 @@ ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
     DEPLOY_COMPOSER_BIN="$DEPLOY_COMPOSER_BIN" \
     DEPLOY_RUN_MIGRATIONS="$DEPLOY_RUN_MIGRATIONS" \
     DEPLOY_RESTART_QUEUES="$DEPLOY_RESTART_QUEUES" \
+    DEPLOY_WEB_ROOT="${DEPLOY_WEB_ROOT:-$HOME/public_html}" \
+    DEPLOY_BUILD_FRONTEND="${DEPLOY_BUILD_FRONTEND:-0}" \
     'bash -se' <<'BASH'
 set -Eeuo pipefail
 
 cd "$DEPLOY_PATH"
 
-"$DEPLOY_COMPOSER_BIN" install --no-dev --prefer-dist --optimize-autoloader --no-scripts
-"$DEPLOY_PHP_BIN" artisan package:discover --ansi
-"$DEPLOY_PHP_BIN" artisan optimize:clear
+export CPANEL_PHP_BIN="$DEPLOY_PHP_BIN"
+export CPANEL_COMPOSER_BIN="$DEPLOY_COMPOSER_BIN"
+export CPANEL_RUN_MIGRATIONS="$DEPLOY_RUN_MIGRATIONS"
+export CPANEL_RESTART_QUEUES="$DEPLOY_RESTART_QUEUES"
+export CPANEL_WEB_ROOT="$DEPLOY_WEB_ROOT"
+export CPANEL_BUILD_FRONTEND="$DEPLOY_BUILD_FRONTEND"
 
-if [ "$DEPLOY_RUN_MIGRATIONS" = "1" ]; then
-    "$DEPLOY_PHP_BIN" artisan migrate --force --no-interaction
-fi
-
-"$DEPLOY_PHP_BIN" artisan optimize
-
-if [ "$DEPLOY_RESTART_QUEUES" = "1" ]; then
-    "$DEPLOY_PHP_BIN" artisan queue:restart || true
-fi
+/bin/bash ./cpanel-deploy.sh
 BASH
 
 log "Deployment finished successfully."

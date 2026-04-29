@@ -35,9 +35,7 @@ test('cpanel deployment files exist and reference the deploy script', function (
         ->and($productionDeployScript)->toContain('tar-over-SSH sync')
         ->and($productionDeployScript)->toContain("mkdir -p '\$DEPLOY_PATH'")
         ->and($productionDeployScript)->toContain('find . -mindepth 1 -maxdepth 1')
-        ->and($productionDeployScript)->toContain('artisan package:discover --ansi')
-        ->and($productionDeployScript)->toContain('artisan optimize:clear')
-        ->and($productionDeployScript)->toContain('artisan migrate --force --no-interaction')
-        ->and($productionDeployScript)->toContain('artisan optimize')
-        ->and($productionDeployScript)->toContain('queue:restart');
+        ->and($productionDeployScript)->toContain('CPANEL_WEB_ROOT')
+        ->and($productionDeployScript)->toContain('CPANEL_BUILD_FRONTEND')
+        ->and($productionDeployScript)->toContain('/bin/bash ./cpanel-deploy.sh');
 });
