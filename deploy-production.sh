@@ -53,21 +53,7 @@ sync_project_files() {
         --exclude='storage' \
         --exclude='vendor' \
         -cf - . | ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
-            DEPLOY_PATH="$DEPLOY_PATH" \
-            'bash -se' <<'BASH'
-set -Eeuo pipefail
-
-cd "$DEPLOY_PATH"
-
-find . -mindepth 1 -maxdepth 1 \
-    ! -name '.env' \
-    ! -name '.git' \
-    ! -name 'storage' \
-    ! -name 'vendor' \
-    -exec rm -rf {} +
-
-tar -xf -
-BASH
+            "DEPLOY_PATH='$DEPLOY_PATH' bash -lc 'set -Eeuo pipefail; cd \"\$DEPLOY_PATH\"; find . -mindepth 1 -maxdepth 1 ! -name \".env\" ! -name \".git\" ! -name \"storage\" ! -name \"vendor\" -exec rm -rf {} +; tar -xf -'"
 }
 
 log "Syncing local project to ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}"
