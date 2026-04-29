@@ -36,6 +36,7 @@ test('cpanel deployment files exist and reference the deploy script', function (
         ->and($productionDeployScript)->toContain("mkdir -p '\$DEPLOY_PATH'")
         ->and($productionDeployScript)->toContain('find . -mindepth 1 -maxdepth 1')
         ->and($productionDeployScript)->toContain('CPANEL_WEB_ROOT')
+        ->and($productionDeployScript)->toContain("REMOTE_WEB_ROOT_DEFAULT='\$HOME/public_html'")
         ->and($productionDeployScript)->toContain('CPANEL_BUILD_FRONTEND')
         ->and($productionDeployScript)->toContain('/bin/bash ./cpanel-deploy.sh');
 });
