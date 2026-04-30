@@ -20,8 +20,8 @@ use App\Models\Tag;
 use App\Models\TeamMember;
 use App\Models\User;
 use App\Models\Video;
-use App\Support\TeamMemberStructureSlots;
 use App\Support\PageContentDefaults;
+use App\Support\TeamMemberStructureSlots;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -65,14 +65,14 @@ class GiriFoundationSeeder extends Seeder
             [
                 'name' => 'GIRI FOUNDATION',
                 'short_description' => 'Yayasan Giri Nusantara Sejahtera adalah lembaga independen yang fokus pada pemberdayaan masyarakat.',
-                'full_description' => 'Yayasan Giri Nusantara Sejahtera, disingkat GNS, adalah lembaga independen yang berfokus pada pemberdayaan masyarakat. Yayasan ini didirikan di Bojonegoro pada 10 November 2024 dan berkedudukan di Bojonegoro, Provinsi Jawa Timur.' . "\n\n" . 'GNS berasaskan Pancasila, berlandaskan Undang-Undang Dasar 1945, Anggaran Dasar, Anggaran Rumah Tangga, serta ketetapan dan keputusan organ yayasan. Dalam menjalankan kegiatan, GNS bersifat independen dan tidak berafiliasi dengan organisasi politik, organisasi keagamaan, maupun organisasi lain yang tidak memiliki hubungan langsung dengan yayasan.' . "\n\n" . 'Ruang lingkup kerja yayasan mencakup pendidikan, ekonomi, lingkungan, gender, kesehatan, kebudayaan, riset, dan digitalisasi melalui kajian, pengabdian, advokasi, peningkatan kapasitas, kerja sama, publikasi, dan pelayanan keahlian bagi masyarakat.',
+                'full_description' => 'Yayasan Giri Nusantara Sejahtera, disingkat GNS, adalah lembaga independen yang berfokus pada pemberdayaan masyarakat. Yayasan ini didirikan di Bojonegoro pada 10 November 2024 dan berkedudukan di Bojonegoro, Provinsi Jawa Timur.'."\n\n".'GNS berasaskan Pancasila, berlandaskan Undang-Undang Dasar 1945, Anggaran Dasar, Anggaran Rumah Tangga, serta ketetapan dan keputusan organ yayasan. Dalam menjalankan kegiatan, GNS bersifat independen dan tidak berafiliasi dengan organisasi politik, organisasi keagamaan, maupun organisasi lain yang tidak memiliki hubungan langsung dengan yayasan.'."\n\n".'Ruang lingkup kerja yayasan mencakup pendidikan, ekonomi, lingkungan, gender, kesehatan, kebudayaan, riset, dan digitalisasi melalui kajian, pengabdian, advokasi, peningkatan kapasitas, kerja sama, publikasi, dan pelayanan keahlian bagi masyarakat.',
                 'vision' => 'Terwujudnya kesejahteraan masyarakat Indonesia.',
                 'mission' => 'Meningkatkan sumber daya manusia; mendorong kemandirian ekonomi masyarakat; melestarikan lingkungan; menguatkan kesetaraan gender; mendorong peningkatan kualitas kesehatan yang merata; melestarikan kebudayaan; serta mengembangkan kerja berbasis riset dan digitalisasi.',
-                'values' => 'Pancasila' . "\n" . 'Independensi' . "\n" . 'Asah Asih Asuh' . "\n" . 'Musyawarah Mufakat' . "\n" . 'Transparansi dan Akuntabilitas',
+                'values' => 'Pancasila'."\n".'Independensi'."\n".'Asah Asih Asuh'."\n".'Musyawarah Mufakat'."\n".'Transparansi dan Akuntabilitas',
                 'founded_date' => '2024-11-10',
-                'email' => 'info@giri.foundation',
-                'phone' => null,
-                'whatsapp_number' => null,
+                'email' => 'girinusantarasejahtera@gmail.com',
+                'phone' => '+62 856-0772-7415',
+                'whatsapp_number' => '+62 856-0772-7415',
                 'address' => 'Bojonegoro, Provinsi Jawa Timur, Indonesia',
                 'google_maps_embed' => 'https://maps.google.com/?q=Bojonegoro+Jawa+Timur',
                 'logo_url' => null,

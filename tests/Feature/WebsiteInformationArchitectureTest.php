@@ -144,6 +144,15 @@ test('legacy public routes remain reachable', function (string $uri) {
     '/donate',
 ]);
 
+test('contact page shows the configured organization contact information', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $this->get('/contact')
+        ->assertSuccessful()
+        ->assertSee('girinusantarasejahtera@gmail.com')
+        ->assertSee('+62 856-0772-7415');
+});
+
 test('editor can access the new video and division resources', function () {
     $this->seed(GiriFoundationSeeder::class);
 
