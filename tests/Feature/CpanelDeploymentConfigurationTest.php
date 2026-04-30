@@ -15,6 +15,8 @@ test('cpanel deployment files exist and reference the deploy script', function (
 
     expect($deploymentConfig)->toContain('deployment:')
         ->and($deploymentConfig)->toContain('/bin/bash ./cpanel-deploy.sh')
+        ->and($workflowConfig)->toContain('workflow_dispatch:')
+        ->and($workflowConfig)->not->toContain('push:')
         ->and($workflowConfig)->toContain('rsync -az --delete')
         ->and($workflowConfig)->toContain('Run deployment on server')
         ->and($workflowConfig)->toContain('/bin/bash ./cpanel-deploy.sh')
@@ -31,6 +33,8 @@ test('cpanel deployment files exist and reference the deploy script', function (
         ->and($deployScript)->toContain('artisan queue:restart')
         ->and($deployScript)->toContain('public_html')
         ->and($deployScript)->toContain('robots.txt')
+        ->and($deployScript)->toContain('Syncing public storage uploads into')
+        ->and($deployScript)->not->toContain('ln -sfn "$APP_ROOT/storage/app/public" "$WEB_ROOT/storage"')
         ->and($productionDeployScript)->toContain('rsync -az --delete')
         ->and($productionDeployScript)->toContain('tar-over-SSH sync')
         ->and($productionDeployScript)->toContain("mkdir -p '\$DEPLOY_PATH'")

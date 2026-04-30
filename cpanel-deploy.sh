@@ -142,9 +142,20 @@ TXT
     fi
 }
 
-link_public_storage() {
-    rm -rf "$WEB_ROOT/storage"
-    ln -sfn "$APP_ROOT/storage/app/public" "$WEB_ROOT/storage"
+sync_public_storage() {
+    log "Syncing public storage uploads into $WEB_ROOT/storage"
+
+    mkdir -p "$WEB_ROOT/storage"
+
+    if command -v rsync >/dev/null 2>&1; then
+        run rsync -a --delete "$APP_ROOT/storage/app/public/" "$WEB_ROOT/storage/"
+
+        return
+    fi
+
+    log "rsync not available, falling back to cp -R for storage uploads"
+    find "$WEB_ROOT/storage" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+    find "$APP_ROOT/storage/app/public" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$WEB_ROOT/storage/" \;
 }
 
 main() {
@@ -182,7 +193,7 @@ main() {
     sync_public_assets
     write_public_index
     write_public_robots_txt
-    link_public_storage
+    sync_public_storage
 
     run "$PHP_BIN" artisan optimize
 
