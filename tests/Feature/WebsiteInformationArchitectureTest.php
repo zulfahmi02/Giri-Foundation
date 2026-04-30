@@ -15,6 +15,8 @@ test('home page navigation uses the refreshed information architecture', functio
     $this->get('/')
         ->assertSuccessful()
         ->assertSeeInOrder(['Beranda', 'Program', 'Media', 'Publikasi', 'Tentang', 'Kontak'])
+        ->assertSee('Buka menu navigasi')
+        ->assertSee('data-mobile-nav', false)
         ->assertDontSee('Cerita');
 });
 

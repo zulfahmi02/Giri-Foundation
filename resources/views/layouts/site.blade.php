@@ -90,83 +90,84 @@
                 }
             </style>
         @endif
+        <style>
+            [data-mobile-nav] > summary {
+                list-style: none;
+            }
+
+            [data-mobile-nav] > summary::-webkit-details-marker {
+                display: none;
+            }
+        </style>
     </head>
     <body class="bg-[var(--surface)] text-[var(--ink)]">
+        @php
+            $navigationLinks = [
+                ['label' => 'Beranda', 'route' => 'home', 'pattern' => 'home'],
+                ['label' => 'Program', 'route' => 'programs.index', 'pattern' => 'programs.*'],
+                ['label' => 'Media', 'route' => 'media.index', 'pattern' => 'media.*'],
+                ['label' => 'Publikasi', 'route' => 'publications.index', 'pattern' => 'publications.*'],
+                ['label' => 'Tentang', 'route' => 'about', 'pattern' => 'about'],
+                ['label' => 'Kontak', 'route' => 'contact.show', 'pattern' => 'contact.*'],
+            ];
+        @endphp
         <header class="sticky top-0 z-50 border-b border-[color:rgba(190,201,195,0.25)] bg-[color:rgba(252,249,248,0.84)] backdrop-blur-xl">
-            <nav class="mx-auto grid w-full grid-cols-[auto_1fr] items-center gap-8 px-6 py-5 sm:w-[88vw] lg:gap-10 lg:px-10 xl:px-12">
-                <a href="{{ route('home') }}" class="flex items-center gap-4 justify-self-start">
+            <nav class="mx-auto grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 sm:w-[88vw] md:grid-cols-[auto_1fr] md:gap-8 lg:gap-10 lg:px-10 xl:px-12">
+                <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-4 justify-self-start">
                     <span class="overflow-hidden rounded-xl shadow-sm ring-1 ring-black/5">
                         <img src="{{ $logoUrl }}" alt="{{ $siteName }}" class="h-14 w-14 object-cover sm:h-16 sm:w-16">
                     </span>
-                    <span class="font-editorial text-2xl font-bold italic tracking-tight">
+                    <span class="truncate font-editorial text-xl font-bold italic tracking-tight sm:text-2xl">
                         {{ $siteName }}
                     </span>
                 </a>
 
                 <div class="hidden min-w-0 md:flex md:justify-center">
                     <div class="flex items-center justify-center gap-8 lg:gap-9 xl:gap-10">
-                        <a
-                            href="{{ route('home') }}"
-                            @class([
-                                'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
-                                'text-[var(--primary)]' => request()->routeIs('home'),
-                                'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs('home'),
-                            ])
-                        >
-                            Beranda
-                        </a>
-                        <a
-                            href="{{ route('programs.index') }}"
-                            @class([
-                                'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
-                                'text-[var(--primary)]' => request()->routeIs('programs.*'),
-                                'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs('programs.*'),
-                            ])
-                        >
-                            Program
-                        </a>
-                        <a
-                            href="{{ route('media.index') }}"
-                            @class([
-                                'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
-                                'text-[var(--primary)]' => request()->routeIs('media.*'),
-                                'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs('media.*'),
-                            ])
-                        >
-                            Media
-                        </a>
-                        <a
-                            href="{{ route('publications.index') }}"
-                            @class([
-                                'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
-                                'text-[var(--primary)]' => request()->routeIs('publications.*'),
-                                'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs('publications.*'),
-                            ])
-                        >
-                            Publikasi
-                        </a>
-                        <a
-                            href="{{ route('about') }}"
-                            @class([
-                                'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
-                                'text-[var(--primary)]' => request()->routeIs('about'),
-                                'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs('about'),
-                            ])
-                        >
-                            Tentang
-                        </a>
-                        <a
-                            href="{{ route('contact.show') }}"
-                            @class([
-                                'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
-                                'text-[var(--primary)]' => request()->routeIs('contact.*'),
-                                'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs('contact.*'),
-                            ])
-                        >
-                            Kontak
-                        </a>
+                        @foreach ($navigationLinks as $navigationLink)
+                            <a
+                                href="{{ route($navigationLink['route']) }}"
+                                @class([
+                                    'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
+                                    'text-[var(--primary)]' => request()->routeIs($navigationLink['pattern']),
+                                    'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs($navigationLink['pattern']),
+                                ])
+                            >
+                                {{ $navigationLink['label'] }}
+                            </a>
+                        @endforeach
                     </div>
                 </div>
+
+                <details class="relative justify-self-end md:hidden" data-mobile-nav>
+                    <summary class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl border border-[color:rgba(190,201,195,0.4)] bg-white/90 text-[var(--ink)] shadow-sm transition hover:border-[var(--primary)] hover:text-[var(--primary)]">
+                        <span class="sr-only">Buka menu navigasi</span>
+                        <span class="material-symbols-outlined text-[2rem]">menu</span>
+                    </summary>
+
+                    <div class="absolute right-0 top-[calc(100%+1rem)] w-[min(20rem,calc(100vw-3rem))] overflow-hidden rounded-[1.75rem] border border-[color:rgba(190,201,195,0.45)] bg-white shadow-[0_24px_60px_rgba(17,24,39,0.14)]">
+                        <div class="border-b border-[color:rgba(190,201,195,0.35)] px-5 py-4">
+                            <p class="section-label">Navigasi</p>
+                            <p class="mt-2 font-editorial text-2xl text-[var(--ink)]">{{ $siteName }}</p>
+                        </div>
+
+                        <div class="px-3 py-3">
+                            @foreach ($navigationLinks as $navigationLink)
+                                <a
+                                    href="{{ route($navigationLink['route']) }}"
+                                    @class([
+                                        'flex items-center justify-between rounded-2xl px-4 py-3 font-editorial text-xl transition-colors',
+                                        'bg-[var(--secondary-soft)] text-[var(--primary)]' => request()->routeIs($navigationLink['pattern']),
+                                        'text-[color:rgba(28,27,27,0.78)] hover:bg-[var(--surface-muted)] hover:text-[var(--primary)]' => ! request()->routeIs($navigationLink['pattern']),
+                                    ])
+                                >
+                                    <span>{{ $navigationLink['label'] }}</span>
+                                    <span class="material-symbols-outlined text-xl">north_east</span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </details>
             </nav>
         </header>
 

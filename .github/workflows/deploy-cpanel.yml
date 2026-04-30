@@ -27,7 +27,36 @@ jobs:
       - name: Trust cPanel host
         run: ssh-keyscan -p "${{ secrets.CPANEL_PORT }}" "${{ secrets.CPANEL_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Push branch to cPanel managed repository
+      - name: Sync repository to server
         env:
-          CPANEL_REMOTE: ssh://${{ secrets.CPANEL_USER }}@${{ secrets.CPANEL_HOST }}:${{ secrets.CPANEL_PORT }}${{ secrets.CPANEL_REPO_PATH }}
-        run: git push "$CPANEL_REMOTE" HEAD:main
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_REPO_PATH: ${{ secrets.CPANEL_REPO_PATH }}
+        run: |
+          rsync -az --delete \
+            --exclude='.env' \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='bootstrap/cache/*.php' \
+            --exclude='node_modules/' \
+            --exclude='storage/' \
+            --exclude='vendor/' \
+            -e "ssh -p ${CPANEL_PORT}" \
+            ./ "${CPANEL_USER}@${CPANEL_HOST}:${CPANEL_REPO_PATH}/"
+
+      - name: Run deployment on server
+        env:
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_REPO_PATH: ${{ secrets.CPANEL_REPO_PATH }}
+        run: |
+          ssh -p "${CPANEL_PORT}" "${CPANEL_USER}@${CPANEL_HOST}" "
+            export CPANEL_COMPOSER_BIN=\$HOME/bin/composer
+            export CPANEL_WEB_ROOT=\$HOME/public_html
+            export CPANEL_RUN_MIGRATIONS=1
+            export CPANEL_BUILD_FRONTEND=0
+            cd '${CPANEL_REPO_PATH}'
+            /bin/bash ./cpanel-deploy.sh
+          "
