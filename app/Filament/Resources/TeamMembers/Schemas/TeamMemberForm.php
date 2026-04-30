@@ -4,11 +4,12 @@ namespace App\Filament\Resources\TeamMembers\Schemas;
 
 use App\Models\Division;
 use App\Models\TeamMember;
+use App\Support\FilamentSlugGenerator;
 use App\Support\TeamMemberStructureSlots;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -37,9 +38,12 @@ class TeamMemberForm
                 Section::make('Data Personil')
                     ->description('Isi informasi utama personil yang akan ditampilkan di panel dan halaman publik.')
                     ->schema([
-                        TextInput::make('name')
-                            ->label('Nama personil')
-                            ->required(),
+                        FilamentSlugGenerator::source(
+                            TextInput::make('name')
+                                ->label('Nama personil')
+                                ->required(),
+                            shouldGenerate: fn (Get $get): bool => ! $get('is_structural'),
+                        ),
                         TextInput::make('email')
                             ->label('Email')
                             ->email(),

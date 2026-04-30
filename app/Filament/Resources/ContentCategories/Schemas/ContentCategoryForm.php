@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\ContentCategories\Schemas;
 
+use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class ContentCategoryForm
@@ -13,8 +14,10 @@ class ContentCategoryForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
+                FilamentSlugGenerator::source(
+                    TextInput::make('name')
+                        ->required(),
+                ),
                 TextInput::make('slug')
                     ->required(),
                 Select::make('type')

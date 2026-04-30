@@ -3,10 +3,11 @@
 namespace App\Filament\Resources\DonationCampaigns\Schemas;
 
 use App\Support\AdminStateOptions;
+use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
@@ -16,8 +17,10 @@ class DonationCampaignForm
     {
         return $schema
             ->components([
-                TextInput::make('title')
-                    ->required(),
+                FilamentSlugGenerator::source(
+                    TextInput::make('title')
+                        ->required(),
+                ),
                 TextInput::make('slug')
                     ->required(),
                 Textarea::make('short_description')

@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\Partners\Schemas;
 
-use Filament\Forms\Components\TextInput;
+use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
@@ -13,8 +14,10 @@ class PartnerForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
+                FilamentSlugGenerator::source(
+                    TextInput::make('name')
+                        ->required(),
+                ),
                 TextInput::make('slug')
                     ->required(),
                 Textarea::make('logo_url')

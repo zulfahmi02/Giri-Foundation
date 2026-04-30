@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\Videos\Schemas;
 
+use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class VideoForm
@@ -14,8 +15,10 @@ class VideoForm
     {
         return $schema
             ->components([
-                TextInput::make('title')
-                    ->required(),
+                FilamentSlugGenerator::source(
+                    TextInput::make('title')
+                        ->required(),
+                ),
                 TextInput::make('slug')
                     ->required(),
                 Textarea::make('summary')

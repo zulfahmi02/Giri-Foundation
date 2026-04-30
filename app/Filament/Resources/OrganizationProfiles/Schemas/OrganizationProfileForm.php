@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\OrganizationProfiles\Schemas;
 
+use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class OrganizationProfileForm
@@ -13,8 +14,10 @@ class OrganizationProfileForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
+                FilamentSlugGenerator::source(
+                    TextInput::make('name')
+                        ->required(),
+                ),
                 TextInput::make('slug')
                     ->required(),
                 Textarea::make('short_description')

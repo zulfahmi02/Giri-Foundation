@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tags\Schemas;
 
+use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -11,8 +12,10 @@ class TagForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
+                FilamentSlugGenerator::source(
+                    TextInput::make('name')
+                        ->required(),
+                ),
                 TextInput::make('slug')
                     ->required(),
             ]);
