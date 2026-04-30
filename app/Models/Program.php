@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ProgramFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +13,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Program extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProgramFactory> */
+    /** @use HasFactory<ProgramFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**
@@ -53,6 +55,15 @@ class Program extends Model
             'is_featured' => 'boolean',
             'published_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (Program $program): void {
+            if ($program->status === 'published' && blank($program->published_at)) {
+                $program->published_at = now();
+            }
+        });
     }
 
     public function scopePublished(Builder $query): void
