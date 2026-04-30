@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Clusters\Inbox;
+namespace App\Filament\Clusters\Contact;
 
 use App\Models\Consultation;
 use App\Models\ContactMessage;
@@ -10,13 +10,13 @@ use Filament\Clusters\Cluster;
 use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Support\Icons\Heroicon;
 
-class InboxCluster extends Cluster
+class ContactCluster extends Cluster
 {
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
 
-    protected static ?string $navigationLabel = 'Inbox';
+    protected static ?string $navigationLabel = 'Kontak';
 
-    protected static ?int $navigationSort = 40;
+    protected static ?int $navigationSort = 60;
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 

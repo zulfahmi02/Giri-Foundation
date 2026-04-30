@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tags;
 
+use App\Filament\Clusters\Publications\PublicationsCluster;
 use App\Filament\Resources\Tags\Pages\CreateTag;
 use App\Filament\Resources\Tags\Pages\EditTag;
 use App\Filament\Resources\Tags\Pages\ListTags;
@@ -20,11 +21,11 @@ class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Editorial\EditorialCluster::class;
+    protected static ?string $cluster = PublicationsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Cerita';
+    protected static string|\UnitEnum|null $navigationGroup = 'Publikasi';
 
     protected static ?int $navigationSort = 30;
 

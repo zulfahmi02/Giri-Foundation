@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContactMessages;
 
+use App\Filament\Clusters\Contact\ContactCluster;
 use App\Filament\Resources\ContactMessages\Pages\CreateContactMessage;
 use App\Filament\Resources\ContactMessages\Pages\EditContactMessage;
 use App\Filament\Resources\ContactMessages\Pages\ListContactMessages;
@@ -20,11 +21,11 @@ class ContactMessageResource extends Resource
 {
     protected static ?string $model = ContactMessage::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Inbox\InboxCluster::class;
+    protected static ?string $cluster = ContactCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inbox';
+    protected static string|\UnitEnum|null $navigationGroup = 'Kontak';
 
     protected static ?int $navigationSort = 10;
 

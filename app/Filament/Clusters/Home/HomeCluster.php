@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Filament\Clusters\Website;
+namespace App\Filament\Clusters\Home;
 
 use BackedEnum;
 use Filament\Clusters\Cluster;
 use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Support\Icons\Heroicon;
 
-class WebsiteCluster extends Cluster
+class HomeCluster extends Cluster
 {
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
-    protected static ?string $navigationLabel = 'Website';
+    protected static ?string $navigationLabel = 'Beranda';
 
     protected static ?int $navigationSort = 10;
 

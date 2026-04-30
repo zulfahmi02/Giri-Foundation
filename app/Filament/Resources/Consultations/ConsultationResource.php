@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Consultations;
 
+use App\Filament\Clusters\Contact\ContactCluster;
 use App\Filament\Resources\Consultations\Pages\CreateConsultation;
 use App\Filament\Resources\Consultations\Pages\EditConsultation;
 use App\Filament\Resources\Consultations\Pages\ListConsultations;
@@ -20,11 +21,11 @@ class ConsultationResource extends Resource
 {
     protected static ?string $model = Consultation::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Inbox\InboxCluster::class;
+    protected static ?string $cluster = ContactCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inbox';
+    protected static string|\UnitEnum|null $navigationGroup = 'Kontak';
 
     protected static ?int $navigationSort = 30;
 

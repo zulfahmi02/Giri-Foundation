@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Divisions;
 
+use App\Filament\Clusters\About\AboutCluster;
 use App\Filament\Resources\Divisions\Pages\CreateDivision;
 use App\Filament\Resources\Divisions\Pages\EditDivision;
 use App\Filament\Resources\Divisions\Pages\ListDivisions;
@@ -20,7 +21,7 @@ class DivisionResource extends Resource
 {
     protected static ?string $model = Division::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Website\WebsiteCluster::class;
+    protected static ?string $cluster = AboutCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

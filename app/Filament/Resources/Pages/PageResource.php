@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Pages;
 
+use App\Filament\Clusters\Home\HomeCluster;
 use App\Filament\Resources\Pages\Pages\CreatePage;
 use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Pages\Pages\ListPages;
@@ -20,15 +21,15 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Website\WebsiteCluster::class;
+    protected static ?string $cluster = HomeCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Website';
+    protected static string|\UnitEnum|null $navigationGroup = 'Beranda';
 
-    protected static ?int $navigationSort = 40;
+    protected static ?int $navigationSort = 10;
 
-    protected static ?string $navigationLabel = 'Halaman';
+    protected static ?string $navigationLabel = 'Konten Halaman';
 
     protected static ?string $modelLabel = 'halaman';
 

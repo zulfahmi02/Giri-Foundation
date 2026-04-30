@@ -12,7 +12,7 @@ class ProgramsCluster extends Cluster
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRocketLaunch;
 
-    protected static ?string $navigationLabel = 'Program & Mitra';
+    protected static ?string $navigationLabel = 'Program';
 
     protected static ?int $navigationSort = 20;
 

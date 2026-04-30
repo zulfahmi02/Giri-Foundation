@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TeamMembers;
 
+use App\Filament\Clusters\About\AboutCluster;
 use App\Filament\Resources\TeamMembers\Pages\CreateTeamMember;
 use App\Filament\Resources\TeamMembers\Pages\EditTeamMember;
 use App\Filament\Resources\TeamMembers\Pages\ListTeamMembers;
@@ -20,13 +21,13 @@ class TeamMemberResource extends Resource
 {
     protected static ?string $model = TeamMember::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Website\WebsiteCluster::class;
+    protected static ?string $cluster = AboutCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Website';
+    protected static string|\UnitEnum|null $navigationGroup = 'Tentang';
 
-    protected static ?int $navigationSort = 30;
+    protected static ?int $navigationSort = 20;
 
     protected static ?string $navigationLabel = 'Tim';
 

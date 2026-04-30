@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Clusters\Editorial;
+namespace App\Filament\Clusters\Publications;
 
 use App\Models\Content;
 use BackedEnum;
@@ -8,13 +8,13 @@ use Filament\Clusters\Cluster;
 use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Support\Icons\Heroicon;
 
-class EditorialCluster extends Cluster
+class PublicationsCluster extends Cluster
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
 
-    protected static ?string $navigationLabel = 'Editorial';
+    protected static ?string $navigationLabel = 'Publikasi';
 
-    protected static ?int $navigationSort = 30;
+    protected static ?int $navigationSort = 40;
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 

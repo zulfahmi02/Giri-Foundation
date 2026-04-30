@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrganizationStats;
 
+use App\Filament\Clusters\Home\HomeCluster;
 use App\Filament\Resources\OrganizationStats\Pages\CreateOrganizationStat;
 use App\Filament\Resources\OrganizationStats\Pages\EditOrganizationStat;
 use App\Filament\Resources\OrganizationStats\Pages\ListOrganizationStats;
@@ -20,11 +21,11 @@ class OrganizationStatResource extends Resource
 {
     protected static ?string $model = OrganizationStat::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Website\WebsiteCluster::class;
+    protected static ?string $cluster = HomeCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Website';
+    protected static string|\UnitEnum|null $navigationGroup = 'Beranda';
 
     protected static ?int $navigationSort = 20;
 

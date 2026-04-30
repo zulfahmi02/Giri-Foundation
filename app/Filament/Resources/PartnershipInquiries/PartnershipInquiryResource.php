@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PartnershipInquiries;
 
+use App\Filament\Clusters\Contact\ContactCluster;
 use App\Filament\Resources\PartnershipInquiries\Pages\CreatePartnershipInquiry;
 use App\Filament\Resources\PartnershipInquiries\Pages\EditPartnershipInquiry;
 use App\Filament\Resources\PartnershipInquiries\Pages\ListPartnershipInquiries;
@@ -20,11 +21,11 @@ class PartnershipInquiryResource extends Resource
 {
     protected static ?string $model = PartnershipInquiry::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Inbox\InboxCluster::class;
+    protected static ?string $cluster = ContactCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inbox';
+    protected static string|\UnitEnum|null $navigationGroup = 'Kontak';
 
     protected static ?int $navigationSort = 20;
 

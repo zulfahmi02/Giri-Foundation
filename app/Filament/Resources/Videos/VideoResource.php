@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Videos;
 
+use App\Filament\Clusters\Media\MediaCluster;
 use App\Filament\Resources\Videos\Pages\CreateVideo;
 use App\Filament\Resources\Videos\Pages\EditVideo;
 use App\Filament\Resources\Videos\Pages\ListVideos;
@@ -20,7 +21,7 @@ class VideoResource extends Resource
 {
     protected static ?string $model = Video::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Editorial\EditorialCluster::class;
+    protected static ?string $cluster = MediaCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

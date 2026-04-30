@@ -14,7 +14,7 @@ class DonationsCluster extends Cluster
 
     protected static ?string $navigationLabel = 'Donasi';
 
-    protected static ?int $navigationSort = 50;
+    protected static ?int $navigationSort = 70;
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 

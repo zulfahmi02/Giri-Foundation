@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Contents;
 
+use App\Filament\Clusters\Publications\PublicationsCluster;
 use App\Filament\Resources\Contents\Pages\CreateContent;
 use App\Filament\Resources\Contents\Pages\EditContent;
 use App\Filament\Resources\Contents\Pages\ListContents;
@@ -22,15 +23,15 @@ class ContentResource extends Resource
 {
     protected static ?string $model = Content::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Editorial\EditorialCluster::class;
+    protected static ?string $cluster = PublicationsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Cerita';
+    protected static string|\UnitEnum|null $navigationGroup = 'Publikasi';
 
     protected static ?int $navigationSort = 20;
 
-    protected static ?string $navigationLabel = 'Cerita & Artikel';
+    protected static ?string $navigationLabel = 'Artikel & Cerita';
 
     protected static ?string $modelLabel = 'cerita';
 

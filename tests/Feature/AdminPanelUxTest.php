@@ -1,16 +1,22 @@
 <?php
 
+use App\Filament\Clusters\About\AboutCluster;
+use App\Filament\Clusters\Contact\ContactCluster;
 use App\Filament\Clusters\Donations\DonationsCluster;
-use App\Filament\Clusters\Editorial\EditorialCluster;
-use App\Filament\Clusters\Inbox\InboxCluster;
+use App\Filament\Clusters\Home\HomeCluster;
+use App\Filament\Clusters\Media\MediaCluster;
 use App\Filament\Clusters\Programs\ProgramsCluster;
+use App\Filament\Clusters\Publications\PublicationsCluster;
 use App\Filament\Clusters\System\SystemCluster;
-use App\Filament\Clusters\Website\WebsiteCluster;
+use App\Filament\Resources\Activities\ActivityResource;
 use App\Filament\Resources\ContactMessages\ContactMessageResource;
 use App\Filament\Resources\Contents\ContentResource;
 use App\Filament\Resources\DonationCampaigns\DonationCampaignResource;
 use App\Filament\Resources\Donations\DonationResource;
+use App\Filament\Resources\OrganizationProfiles\OrganizationProfileResource;
+use App\Filament\Resources\Pages\PageResource;
 use App\Filament\Resources\Programs\ProgramResource;
+use App\Filament\Resources\Users\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -31,18 +37,29 @@ function createPanelUserForUxTest(string $roleName): User
     return $user;
 }
 
-test('admin panel groups resources into task based clusters', function () {
+test('admin panel groups resources by website navbar clusters', function () {
     $panel = Filament::getPanel('admin');
 
     expect($panel->getClusters())
         ->toEqualCanonicalizing([
-            WebsiteCluster::class,
+            HomeCluster::class,
             ProgramsCluster::class,
-            EditorialCluster::class,
-            InboxCluster::class,
+            MediaCluster::class,
+            PublicationsCluster::class,
+            AboutCluster::class,
+            ContactCluster::class,
             DonationsCluster::class,
             SystemCluster::class,
         ]);
+
+    expect(PageResource::getCluster())->toBe(HomeCluster::class)
+        ->and(ProgramResource::getCluster())->toBe(ProgramsCluster::class)
+        ->and(ActivityResource::getCluster())->toBe(MediaCluster::class)
+        ->and(ContentResource::getCluster())->toBe(PublicationsCluster::class)
+        ->and(OrganizationProfileResource::getCluster())->toBe(AboutCluster::class)
+        ->and(ContactMessageResource::getCluster())->toBe(ContactCluster::class)
+        ->and(DonationCampaignResource::getCluster())->toBe(DonationsCluster::class)
+        ->and(UserResource::getCluster())->toBe(SystemCluster::class);
 });
 
 test('dashboard highlights actionable admin work', function () {

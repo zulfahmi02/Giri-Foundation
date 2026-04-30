@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Documents;
 
+use App\Filament\Clusters\Publications\PublicationsCluster;
 use App\Filament\Resources\Documents\Pages\CreateDocument;
 use App\Filament\Resources\Documents\Pages\EditDocument;
 use App\Filament\Resources\Documents\Pages\ListDocuments;
@@ -20,15 +21,15 @@ class DocumentResource extends Resource
 {
     protected static ?string $model = Document::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Website\WebsiteCluster::class;
+    protected static ?string $cluster = PublicationsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Dokumen';
+    protected static string|\UnitEnum|null $navigationGroup = 'Publikasi';
 
     protected static ?int $navigationSort = 10;
 
-    protected static ?string $navigationLabel = 'Dokumen';
+    protected static ?string $navigationLabel = 'Arsip Dokumen';
 
     protected static ?string $modelLabel = 'dokumen';
 

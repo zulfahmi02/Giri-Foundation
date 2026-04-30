@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Partners;
 
+use App\Filament\Clusters\Programs\ProgramsCluster;
 use App\Filament\Resources\Partners\Pages\CreatePartner;
 use App\Filament\Resources\Partners\Pages\EditPartner;
 use App\Filament\Resources\Partners\Pages\ListPartners;
@@ -20,15 +21,15 @@ class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Programs\ProgramsCluster::class;
+    protected static ?string $cluster = ProgramsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Mitra';
+    protected static string|\UnitEnum|null $navigationGroup = 'Program';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 30;
 
-    protected static ?string $navigationLabel = 'Mitra';
+    protected static ?string $navigationLabel = 'Mitra Program';
 
     protected static ?string $modelLabel = 'mitra';
 

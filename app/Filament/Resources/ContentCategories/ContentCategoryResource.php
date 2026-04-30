@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContentCategories;
 
+use App\Filament\Clusters\Publications\PublicationsCluster;
 use App\Filament\Resources\ContentCategories\Pages\CreateContentCategory;
 use App\Filament\Resources\ContentCategories\Pages\EditContentCategory;
 use App\Filament\Resources\ContentCategories\Pages\ListContentCategories;
@@ -20,15 +21,15 @@ class ContentCategoryResource extends Resource
 {
     protected static ?string $model = ContentCategory::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Editorial\EditorialCluster::class;
+    protected static ?string $cluster = PublicationsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Cerita';
+    protected static string|\UnitEnum|null $navigationGroup = 'Publikasi';
 
     protected static ?int $navigationSort = 10;
 
-    protected static ?string $navigationLabel = 'Kategori Cerita';
+    protected static ?string $navigationLabel = 'Kategori Publikasi';
 
     protected static ?string $modelLabel = 'kategori cerita';
 

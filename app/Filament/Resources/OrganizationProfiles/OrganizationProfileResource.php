@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrganizationProfiles;
 
+use App\Filament\Clusters\About\AboutCluster;
 use App\Filament\Resources\OrganizationProfiles\Pages\CreateOrganizationProfile;
 use App\Filament\Resources\OrganizationProfiles\Pages\EditOrganizationProfile;
 use App\Filament\Resources\OrganizationProfiles\Pages\ListOrganizationProfiles;
@@ -20,15 +21,15 @@ class OrganizationProfileResource extends Resource
 {
     protected static ?string $model = OrganizationProfile::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Website\WebsiteCluster::class;
+    protected static ?string $cluster = AboutCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Website';
+    protected static string|\UnitEnum|null $navigationGroup = 'Tentang';
 
     protected static ?int $navigationSort = 10;
 
-    protected static ?string $navigationLabel = 'Profil Yayasan';
+    protected static ?string $navigationLabel = 'Profil Lembaga';
 
     protected static ?string $modelLabel = 'profil yayasan';
 

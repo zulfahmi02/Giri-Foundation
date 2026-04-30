@@ -13,7 +13,7 @@ class SystemCluster extends Cluster
 
     protected static ?string $navigationLabel = 'Administrasi';
 
-    protected static ?int $navigationSort = 60;
+    protected static ?int $navigationSort = 80;
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 }

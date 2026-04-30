@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Activities;
 
+use App\Filament\Clusters\Media\MediaCluster;
 use App\Filament\Resources\Activities\Pages\CreateActivity;
 use App\Filament\Resources\Activities\Pages\EditActivity;
 use App\Filament\Resources\Activities\Pages\ListActivities;
@@ -20,15 +21,15 @@ class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Programs\ProgramsCluster::class;
+    protected static ?string $cluster = MediaCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Program';
+    protected static string|\UnitEnum|null $navigationGroup = 'Media';
 
     protected static ?int $navigationSort = 30;
 
-    protected static ?string $navigationLabel = 'Aktivitas Program';
+    protected static ?string $navigationLabel = 'Aktivitas';
 
     protected static ?string $modelLabel = 'aktivitas program';
 
