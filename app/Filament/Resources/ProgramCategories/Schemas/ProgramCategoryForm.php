@@ -17,8 +17,7 @@ class ProgramCategoryForm
                     TextInput::make('name')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field('name'),
                 Textarea::make('description')
                     ->columnSpanFull(),
             ]);

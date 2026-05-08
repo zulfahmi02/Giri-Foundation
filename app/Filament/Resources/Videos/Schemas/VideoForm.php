@@ -20,8 +20,7 @@ class VideoForm
                     TextInput::make('title')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field(),
                 Textarea::make('summary')
                     ->rows(3)
                     ->columnSpanFull(),

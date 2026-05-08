@@ -18,8 +18,7 @@ class DivisionForm
                     TextInput::make('name')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field('name'),
                 Textarea::make('description')
                     ->rows(4)
                     ->columnSpanFull(),

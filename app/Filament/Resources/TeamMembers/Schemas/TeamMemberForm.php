@@ -85,9 +85,7 @@ class TeamMemberForm
                     ->description('Bagian ini hanya dipakai jika personil tidak masuk ke struktur organisasi utama.')
                     ->visible(fn (Get $get): bool => ! $get('is_structural'))
                     ->schema([
-                        TextInput::make('slug')
-                            ->label('Slug')
-                            ->required(fn (Get $get): bool => ! $get('is_structural')),
+                        FilamentSlugGenerator::field('name'),
                         TextInput::make('position')
                             ->label('Jabatan')
                             ->required(fn (Get $get): bool => ! $get('is_structural')),

@@ -18,8 +18,7 @@ class ContentCategoryForm
                     TextInput::make('name')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field('name'),
                 Select::make('type')
                     ->required()
                     ->options([

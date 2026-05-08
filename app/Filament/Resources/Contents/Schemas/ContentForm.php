@@ -21,8 +21,7 @@ class ContentForm
                     TextInput::make('title')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field(),
                 Select::make('type')
                     ->required()
                     ->options([

@@ -22,8 +22,7 @@ class DonationCampaignForm
                     TextInput::make('title')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field(),
                 Textarea::make('short_description')
                     ->columnSpanFull(),
                 Textarea::make('description')

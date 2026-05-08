@@ -19,8 +19,7 @@ class PartnerForm
                     TextInput::make('name')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field('name'),
                 FilamentImageUpload::make('logo_url', 'partners', 'Logo partner'),
                 Textarea::make('website_url')
                     ->columnSpanFull(),

@@ -25,8 +25,7 @@ class ProgramForm
                     TextInput::make('title')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field(),
                 Textarea::make('excerpt')
                     ->columnSpanFull(),
                 Textarea::make('description')

@@ -32,4 +32,18 @@ class FilamentSlugGenerator
                 $set($slugField, Str::slug((string) ($state ?? '')));
             });
     }
+
+    public static function field(string $sourceField = 'title'): TextInput
+    {
+        return TextInput::make('slug')
+            ->label('Alamat URL')
+            ->required()
+            ->readOnly()
+            ->helperText('Otomatis dibuat dari judul atau nama. Tidak perlu diisi manual.')
+            ->dehydrateStateUsing(function (Get $get, ?string $state) use ($sourceField): string {
+                $slugSource = filled($state) ? $state : (string) ($get($sourceField) ?? '');
+
+                return Str::slug($slugSource);
+            });
+    }
 }

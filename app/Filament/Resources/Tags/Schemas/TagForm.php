@@ -16,8 +16,7 @@ class TagForm
                     TextInput::make('name')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field('name'),
             ]);
     }
 }

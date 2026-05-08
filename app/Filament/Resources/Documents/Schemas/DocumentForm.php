@@ -21,8 +21,7 @@ class DocumentForm
                     TextInput::make('title')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field(),
                 TextInput::make('category'),
                 Textarea::make('description')
                     ->columnSpanFull(),

@@ -19,8 +19,7 @@ class OrganizationProfileForm
                     TextInput::make('name')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field('name'),
                 Textarea::make('short_description')
                     ->required()
                     ->columnSpanFull(),

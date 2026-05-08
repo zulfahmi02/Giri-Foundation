@@ -26,8 +26,7 @@ class ActivityForm
                     TextInput::make('title')
                         ->required(),
                 ),
-                TextInput::make('slug')
-                    ->required(),
+                FilamentSlugGenerator::field(),
                 Textarea::make('summary')
                     ->columnSpanFull(),
                 Textarea::make('description')
