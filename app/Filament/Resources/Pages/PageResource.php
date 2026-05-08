@@ -20,6 +20,8 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $cluster = HomeCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

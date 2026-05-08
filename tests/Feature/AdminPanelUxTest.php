@@ -123,6 +123,8 @@ test('page management only edits navbar pages and offers frontend previews', fun
         'published_at' => now(),
     ]);
 
+    expect(PageResource::shouldRegisterNavigation())->toBeFalse();
+
     $this->actingAs($user)
         ->get((string) parse_url(PageResource::getUrl(panel: 'admin'), PHP_URL_PATH))
         ->assertSuccessful()
