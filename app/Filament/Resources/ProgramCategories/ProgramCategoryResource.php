@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ProgramCategories;
 
+use App\Filament\Clusters\Programs\ProgramsCluster;
 use App\Filament\Resources\ProgramCategories\Pages\CreateProgramCategory;
 use App\Filament\Resources\ProgramCategories\Pages\EditProgramCategory;
 use App\Filament\Resources\ProgramCategories\Pages\ListProgramCategories;
@@ -20,13 +21,13 @@ class ProgramCategoryResource extends Resource
 {
     protected static ?string $model = ProgramCategory::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Programs\ProgramsCluster::class;
+    protected static ?string $cluster = ProgramsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Program';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 20;
 
     protected static ?string $navigationLabel = 'Kategori Program';
 

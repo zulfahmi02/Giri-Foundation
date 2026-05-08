@@ -9,15 +9,24 @@ use App\Filament\Clusters\Programs\ProgramsCluster;
 use App\Filament\Clusters\Publications\PublicationsCluster;
 use App\Filament\Clusters\System\SystemCluster;
 use App\Filament\Resources\Activities\ActivityResource;
+use App\Filament\Resources\ActivityLogs\ActivityLogResource;
 use App\Filament\Resources\ContactMessages\ContactMessageResource;
+use App\Filament\Resources\ContentCategories\ContentCategoryResource;
 use App\Filament\Resources\Contents\ContentResource;
+use App\Filament\Resources\Documents\DocumentResource;
 use App\Filament\Resources\DonationCampaigns\DonationCampaignResource;
 use App\Filament\Resources\Donations\DonationResource;
 use App\Filament\Resources\MediaLibraries\MediaLibraryResource;
 use App\Filament\Resources\OrganizationProfiles\OrganizationProfileResource;
 use App\Filament\Resources\Pages\PageResource;
+use App\Filament\Resources\Partners\PartnerResource;
+use App\Filament\Resources\ProgramCategories\ProgramCategoryResource;
 use App\Filament\Resources\Programs\ProgramResource;
+use App\Filament\Resources\Roles\RoleResource;
+use App\Filament\Resources\Settings\SettingResource;
+use App\Filament\Resources\Tags\TagResource;
 use App\Filament\Resources\Users\UserResource;
+use App\Filament\Resources\Videos\VideoResource;
 use App\Models\MediaLibrary;
 use App\Models\Page;
 use App\Models\Role;
@@ -64,6 +73,22 @@ test('admin panel groups resources by website navbar clusters', function () {
         ->and(ContactMessageResource::getCluster())->toBe(ContactCluster::class)
         ->and(DonationCampaignResource::getCluster())->toBe(DonationsCluster::class)
         ->and(UserResource::getCluster())->toBe(SystemCluster::class);
+});
+
+test('admin cluster entry points prioritize primary client workflows', function () {
+    expect(ProgramResource::getNavigationSort())->toBe(10)
+        ->and(ProgramCategoryResource::getNavigationSort())->toBe(20)
+        ->and(PartnerResource::getNavigationSort())->toBe(30)
+        ->and(ActivityResource::getNavigationSort())->toBe(10)
+        ->and(VideoResource::getNavigationSort())->toBe(20)
+        ->and(ContentResource::getNavigationSort())->toBe(10)
+        ->and(DocumentResource::getNavigationSort())->toBe(20)
+        ->and(ContentCategoryResource::getNavigationSort())->toBe(30)
+        ->and(TagResource::getNavigationSort())->toBe(40)
+        ->and(UserResource::getNavigationSort())->toBe(10)
+        ->and(RoleResource::getNavigationSort())->toBe(20)
+        ->and(SettingResource::getNavigationSort())->toBe(30)
+        ->and(ActivityLogResource::getNavigationSort())->toBe(40);
 });
 
 test('dashboard highlights actionable admin work', function () {

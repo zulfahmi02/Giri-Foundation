@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Programs;
 
+use App\Filament\Clusters\Programs\ProgramsCluster;
 use App\Filament\Resources\Programs\Pages\CreateProgram;
 use App\Filament\Resources\Programs\Pages\EditProgram;
 use App\Filament\Resources\Programs\Pages\ListPrograms;
@@ -22,13 +23,13 @@ class ProgramResource extends Resource
 {
     protected static ?string $model = Program::class;
 
-    protected static ?string $cluster = \App\Filament\Clusters\Programs\ProgramsCluster::class;
+    protected static ?string $cluster = ProgramsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Program';
 
-    protected static ?int $navigationSort = 20;
+    protected static ?int $navigationSort = 10;
 
     protected static ?string $navigationLabel = 'Program';
 
