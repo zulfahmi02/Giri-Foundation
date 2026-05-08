@@ -1,12 +1,15 @@
 <?php
 
+use App\Filament\Resources\TeamMembers\Pages\CreateTeamMember;
 use App\Filament\Resources\TeamMembers\TeamMemberResource;
 use App\Models\Role;
 use App\Models\TeamMember;
 use App\Models\User;
 use App\Support\TeamMemberStructureSlots;
 use Database\Seeders\GiriFoundationSeeder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
 
 test('structural slot update replaces the existing occupant instead of creating a duplicate record', function () {
     $this->seed(GiriFoundationSeeder::class);
@@ -100,6 +103,50 @@ test('team member exposes a public photo url for uploaded and legacy image paths
 
     expect($uploadedPhotoMember->public_photo_url)->toBe(Storage::disk('public')->url('team-members/anggota-tim.jpg'))
         ->and($legacyPhotoMember->public_photo_url)->toBe('/image/logo.png');
+});
+
+test('admins can upload a team member photo from the create form', function () {
+    Storage::fake('public');
+
+    $adminRole = Role::query()->firstOrCreate(
+        ['name' => 'Admin'],
+        ['description' => 'Mengelola akses panel.'],
+    );
+
+    $user = User::factory()->create([
+        'status' => 'active',
+        'app_authentication_secret' => 'totp-secret',
+    ]);
+
+    $user->roles()->sync([$adminRole->id]);
+
+    $this->actingAs($user);
+
+    $photo = UploadedFile::fake()->image('tim-admin.jpg');
+
+    Livewire::test(CreateTeamMember::class)
+        ->fillForm([
+            'is_structural' => false,
+            'name' => 'Tim Lapangan',
+            'slug' => 'tim-lapangan',
+            'position' => 'Koordinator Lapangan',
+            'sort_order' => 1,
+            'is_active' => true,
+            'photo_url' => $photo,
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors()
+        ->assertNotified()
+        ->assertRedirect();
+
+    $teamMember = TeamMember::query()
+        ->where('slug', 'tim-lapangan')
+        ->firstOrFail();
+
+    expect($teamMember->photo_url)->toStartWith('team-members/')
+        ->and($teamMember->public_photo_url)->toContain('/storage/team-members/');
+
+    Storage::disk('public')->assertExists($teamMember->photo_url);
 });
 
 test('team member structure slots expose distinct admin and public labels for trustees', function () {

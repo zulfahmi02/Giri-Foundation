@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use Database\Factories\DocumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Document extends Model
 {
-    /** @use HasFactory<\Database\Factories\DocumentFactory> */
+    /** @use HasFactory<DocumentFactory> */
     use HasFactory;
 
     /**
@@ -54,5 +57,64 @@ class Document extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function isPublishedPublicly(): bool
+    {
+        return $this->is_public && $this->published_at !== null;
+    }
+
+    public function isExternalFile(): bool
+    {
+        return filter_var($this->file_url, FILTER_VALIDATE_URL) !== false;
+    }
+
+    public function downloadablePath(): ?string
+    {
+        $fileUrl = trim($this->file_url);
+
+        if ($fileUrl === '' || $fileUrl === '#' || $this->isExternalFile()) {
+            return null;
+        }
+
+        $normalizedPath = ltrim($fileUrl, '/');
+
+        if (Storage::disk('public')->exists($fileUrl)) {
+            return Storage::disk('public')->path($fileUrl);
+        }
+
+        if (Storage::disk('public')->exists($normalizedPath)) {
+            return Storage::disk('public')->path($normalizedPath);
+        }
+
+        if (str_starts_with($normalizedPath, 'storage/')) {
+            $publicDiskPath = Str::after($normalizedPath, 'storage/');
+
+            if (Storage::disk('public')->exists($publicDiskPath)) {
+                return Storage::disk('public')->path($publicDiskPath);
+            }
+        }
+
+        $publicPath = public_path($normalizedPath);
+
+        return is_file($publicPath) ? $publicPath : null;
+    }
+
+    public function downloadFilename(): string
+    {
+        $path = parse_url($this->file_url, PHP_URL_PATH) ?: $this->file_url;
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        if ($extension === '' && filled($this->file_type)) {
+            $extension = Str::lower($this->file_type);
+        }
+
+        $filename = Str::slug($this->title);
+
+        if ($filename === '') {
+            $filename = 'document';
+        }
+
+        return $extension === '' ? $filename : "{$filename}.{$extension}";
     }
 }

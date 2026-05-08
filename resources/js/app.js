@@ -51,8 +51,37 @@ const initializeTeamMemberDialogs = () => {
     });
 };
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeTeamMemberDialogs);
-} else {
+const initializeSubmitFeedbackForms = () => {
+    document.querySelectorAll('[data-submit-feedback-form]').forEach((formElement) => {
+        if (formElement.dataset.submitFeedbackInitialized === 'true') {
+            return;
+        }
+
+        formElement.dataset.submitFeedbackInitialized = 'true';
+
+        formElement.addEventListener('submit', () => {
+            const submitButton = formElement.querySelector('[data-submit-feedback-button]');
+
+            if (! submitButton || submitButton.disabled) {
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.setAttribute('aria-busy', 'true');
+
+            submitButton.querySelector('[data-submit-idle]')?.classList.add('hidden');
+            submitButton.querySelector('[data-submit-loading]')?.classList.remove('hidden');
+        });
+    });
+};
+
+const initializeSiteInteractions = () => {
     initializeTeamMemberDialogs();
+    initializeSubmitFeedbackForms();
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSiteInteractions);
+} else {
+    initializeSiteInteractions();
 }

@@ -6,7 +6,10 @@ use App\Models\Document;
 use App\Models\Page;
 use App\Support\FrontendCache;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DocumentController extends Controller
 {
@@ -42,5 +45,22 @@ class DocumentController extends Controller
             'activeCategory' => $category,
             'search' => $search,
         ]);
+    }
+
+    public function download(Document $document): BinaryFileResponse|RedirectResponse
+    {
+        abort_unless($document->isPublishedPublicly(), Response::HTTP_NOT_FOUND);
+
+        $document->increment('download_count');
+
+        if ($document->isExternalFile()) {
+            return redirect()->away($document->file_url);
+        }
+
+        $downloadablePath = $document->downloadablePath();
+
+        abort_unless($downloadablePath !== null, Response::HTTP_NOT_FOUND);
+
+        return response()->download($downloadablePath, $document->downloadFilename());
     }
 }

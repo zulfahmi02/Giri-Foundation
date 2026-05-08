@@ -1,10 +1,12 @@
 <?php
 
 use App\Filament\Resources\Programs\Pages\CreateProgram;
+use App\Models\Partner;
 use App\Models\Program;
 use App\Models\ProgramCategory;
 use App\Models\Role;
 use App\Models\User;
+use Filament\Forms\Components\Select;
 use Livewire\Livewire;
 
 test('published programs created from the admin form receive a publication timestamp automatically', function () {
@@ -54,4 +56,80 @@ test('published programs created from the admin form receive a publication times
     $this->get('/programs')
         ->assertSuccessful()
         ->assertSee('Program Otomatis Terbit');
+});
+
+test('program form only shows active partners and can attach them to a program', function () {
+    $editorRole = Role::query()->firstOrCreate(
+        ['name' => 'Editor'],
+        ['description' => 'Mengelola konten.'],
+    );
+
+    $editor = User::factory()->create([
+        'app_authentication_secret' => 'totp-secret',
+    ]);
+
+    $editor->roles()->sync([$editorRole->id]);
+
+    $category = ProgramCategory::query()->create([
+        'name' => 'Program Kolaborasi',
+        'slug' => 'program-kolaborasi',
+        'description' => 'Kategori uji mitra aktif.',
+    ]);
+
+    $activePartnerA = Partner::query()->create([
+        'name' => 'Komunitas Akar',
+        'slug' => 'komunitas-akar',
+        'type' => 'community',
+        'description' => 'Mitra aktif pertama.',
+        'is_active' => true,
+    ]);
+
+    $activePartnerB = Partner::query()->create([
+        'name' => 'Yayasan Bina Desa',
+        'slug' => 'yayasan-bina-desa',
+        'type' => 'ngo',
+        'description' => 'Mitra aktif kedua.',
+        'is_active' => true,
+    ]);
+
+    $inactivePartner = Partner::query()->create([
+        'name' => 'Mitra Arsip',
+        'slug' => 'mitra-arsip',
+        'type' => 'media',
+        'description' => 'Mitra nonaktif.',
+        'is_active' => false,
+    ]);
+
+    $this->actingAs($editor);
+
+    Livewire::test(CreateProgram::class)
+        ->assertFormFieldExists('partners', function (Select $field) use ($activePartnerA, $activePartnerB, $inactivePartner): bool {
+            $optionLabels = array_values($field->getOptions());
+
+            return in_array($activePartnerA->name, $optionLabels, true)
+                && in_array($activePartnerB->name, $optionLabels, true)
+                && ! in_array($inactivePartner->name, $optionLabels, true);
+        })
+        ->fillForm([
+            'title' => 'Program Dengan Mitra',
+            'slug' => 'program-dengan-mitra',
+            'description' => 'Program ini harus bisa memilih dan menyimpan mitra aktif.',
+            'category_id' => $category->id,
+            'status' => 'draft',
+            'phase' => 'active',
+            'beneficiaries_count' => 50,
+            'created_by' => $editor->id,
+            'partners' => [$activePartnerA->id, $activePartnerB->id],
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors()
+        ->assertNotified()
+        ->assertRedirect();
+
+    $program = Program::query()
+        ->where('slug', 'program-dengan-mitra')
+        ->firstOrFail();
+
+    expect($program->partners()->pluck('partners.id')->all())
+        ->toEqualCanonicalizing([$activePartnerA->id, $activePartnerB->id]);
 });

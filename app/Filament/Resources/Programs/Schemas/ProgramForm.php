@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Programs\Schemas;
 
+use App\Models\Partner;
 use App\Support\AdminStateOptions;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProgramForm
 {
@@ -62,10 +64,22 @@ class ProgramForm
                     ->default(false),
                 DateTimePicker::make('published_at'),
                 Select::make('partners')
-                    ->relationship('partners', 'name')
+                    ->relationship(
+                        name: 'partners',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn (Builder $query): Builder => $query
+                            ->where('is_active', true)
+                            ->orderBy('name'),
+                    )
+                    ->options(fn (): array => Partner::query()
+                        ->where('is_active', true)
+                        ->orderBy('name')
+                        ->pluck('name', 'id')
+                        ->all())
                     ->multiple()
                     ->preload()
                     ->searchable()
+                    ->helperText('Pilih mitra program yang aktif.')
                     ->columnSpanFull(),
                 Select::make('created_by')
                     ->relationship('creator', 'name')

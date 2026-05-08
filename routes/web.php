@@ -7,8 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnerController;
-use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StoryController;
@@ -27,6 +27,7 @@ Route::get('/stories/{content}', [StoryController::class, 'show'])->name('storie
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::get('/donate', [DonationController::class, 'show'])->name('donate.show');
 Route::get('/resources', [DocumentController::class, 'index'])->name('resources.index');
+Route::get('/resources/{document:slug}/download', [DocumentController::class, 'download'])->name('resources.download');
 Route::get('/partners', [PartnerController::class, 'index'])->name('partners.index');
 
 Route::middleware('throttle:public-form-submissions')->group(function (): void {

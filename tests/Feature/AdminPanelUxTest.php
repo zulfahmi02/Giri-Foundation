@@ -17,6 +17,7 @@ use App\Filament\Resources\OrganizationProfiles\OrganizationProfileResource;
 use App\Filament\Resources\Pages\PageResource;
 use App\Filament\Resources\Programs\ProgramResource;
 use App\Filament\Resources\Users\UserResource;
+use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -108,4 +109,29 @@ test('workflow tabs are visible on the main operational resources', function () 
         ->assertSuccessful()
         ->assertSee('Draft')
         ->assertSee('Aktif');
+});
+
+test('page management only edits navbar pages and offers frontend previews', function () {
+    $user = createPanelUserForUxTest('Admin');
+
+    $page = Page::factory()->create([
+        'title' => 'Tentang',
+        'slug' => 'about',
+        'template' => 'about',
+        'status' => 'published',
+        'published_at' => now(),
+    ]);
+
+    $this->actingAs($user)
+        ->get((string) parse_url(PageResource::getUrl(panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertDontSee((string) parse_url('/admin/home/pages/create', PHP_URL_PATH))
+        ->assertSee('Buka Halaman');
+
+    $this->actingAs($user)
+        ->get((string) parse_url(PageResource::getUrl('edit', ['record' => $page], panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertSee('Buka Halaman')
+        ->assertSee('about')
+        ->assertSee('template');
 });

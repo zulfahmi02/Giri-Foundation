@@ -2,10 +2,10 @@
 
 @section('content')
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-12 lg:px-10 lg:pt-10 lg:pb-16">
-        <div class="grid gap-8 lg:grid-cols-12 lg:items-start">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
             <div class="lg:col-span-7">
                 <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Program') }}</p>
-                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight md:text-6xl">
+                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
                     {{ $page->heroValue('title_prefix', 'Mengarsipkan') }}
                     <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'potensi') }}</span>{{ $page->heroValue('title_suffix', '.') }}
                 </h1>
@@ -46,19 +46,19 @@
     @foreach ($sections as $section)
         @if ($section['collection']->count() > 0)
             <section @class([
-                'mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20',
+                'mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-20',
                 'bg-[var(--surface-muted)]' => $loop->even,
             ])>
                 <div class="mb-10">
                     <p class="section-label mb-4">{{ $section['kicker'] }}</p>
-                    <h2 class="font-editorial text-4xl md:text-5xl">{{ $section['title'] }}</h2>
+                    <h2 class="font-editorial text-3xl md:text-5xl">{{ $section['title'] }}</h2>
                 </div>
 
-                <div class="grid gap-8 lg:grid-cols-2">
+                <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                     @foreach ($section['collection'] as $program)
                         <article class="surface-card overflow-hidden rounded-[1.75rem]">
-                            <img src="{{ $program->featured_image_url }}" alt="Dokumentasi program {{ $program->title }}" class="h-64 w-full object-cover" loading="lazy" decoding="async">
-                            <div class="p-8">
+                            <img src="{{ $program->featured_image_url }}" alt="Dokumentasi program {{ $program->title }}" class="h-52 w-full object-cover sm:h-64" loading="lazy" decoding="async">
+                            <div class="p-6 sm:p-8">
                                 <div class="mb-4 flex flex-wrap items-center gap-3">
                                     <span class="rounded-lg bg-[var(--secondary-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--secondary-ink)]">
                                         {{ $program->category?->name ?? 'Program' }}
@@ -68,7 +68,7 @@
                                     </span>
                                 </div>
 
-                                <h3 class="font-editorial text-3xl leading-tight">
+                                <h3 class="font-editorial text-2xl leading-tight sm:text-3xl">
                                     <a href="{{ route('programs.show', $program) }}">{{ $program->title }}</a>
                                 </h3>
                                 <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $program->excerpt }}</p>

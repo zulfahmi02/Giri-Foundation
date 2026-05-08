@@ -133,7 +133,9 @@ test('contact form is rate limited after five submissions per minute', function 
             'phone' => '+62 811 1000 2000',
             'subject' => 'Field visit request over limit',
             'message' => 'We would like to schedule a site visit and learn more about your community programs.',
-        ])->assertTooManyRequests();
+        ])
+        ->assertRedirect(route('contact.show'))
+        ->assertSessionHasErrors(['form']);
 });
 
 test('partnership inquiry form is rate limited after five submissions per minute', function () {
@@ -160,7 +162,9 @@ test('partnership inquiry form is rate limited after five submissions per minute
             'phone' => '+62 811 3333 4444',
             'inquiry_type' => 'Strategic funding',
             'message' => 'We are interested in discussing a three-year funding partnership focused on education programs.',
-        ])->assertTooManyRequests();
+        ])
+        ->assertRedirect(route('partners.index'))
+        ->assertSessionHasErrors(['form']);
 });
 
 test('donation form is rate limited after five submissions per minute', function () {
@@ -191,5 +195,39 @@ test('donation form is rate limited after five submissions per minute', function
             'payment_channel' => 'manual',
             'message' => 'For the school solar campaign.',
             'is_anonymous' => '0',
-        ])->assertTooManyRequests();
+        ])
+        ->assertRedirect(route('donate.show'))
+        ->assertSessionHasErrors(['form']);
+});
+
+test('contact page renders form feedback and centered contact cards', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $this->followingRedirects()
+        ->from(route('contact.show'))
+        ->post(route('contact.store'), [
+            'name' => 'Jane Doe',
+            'email' => 'invalid-email',
+            'phone' => '+62 811 1000 2000',
+            'subject' => 'Short inquiry',
+            'message' => 'Too short',
+        ])
+        ->assertSuccessful()
+        ->assertSee('Mohon periksa kembali form kontak Anda.')
+        ->assertSee('The email field must be a valid email address.')
+        ->assertSee('data-submit-feedback-form', false)
+        ->assertSee('data-submit-feedback-button', false)
+        ->assertSee('Kirim Pesan')
+        ->assertSee('Mengirim...')
+        ->assertSee('animate-spin', false)
+        ->assertSee('justify-items-center gap-8 px-6 md:grid-cols-2 lg:grid-cols-3', false)
+        ->assertSee('flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center', false);
+});
+
+test('contact submit loading state is wired through the public javascript bundle', function () {
+    expect(file_get_contents(resource_path('js/app.js')))
+        ->toContain('initializeSubmitFeedbackForms')
+        ->toContain('[data-submit-feedback-form]')
+        ->toContain('[data-submit-feedback-button]')
+        ->toContain('aria-busy');
 });

@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Pages\Schemas;
 
+use App\Models\Page;
 use App\Support\PageContentDefaults;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -41,12 +42,16 @@ class PageForm
                                             ->options($pageOptions)
                                             ->required()
                                             ->searchable()
-                                            ->preload(),
+                                            ->preload()
+                                            ->disabled()
+                                            ->dehydrated(),
                                         Select::make('template')
                                             ->options($templateOptions)
                                             ->required()
                                             ->searchable()
-                                            ->preload(),
+                                            ->preload()
+                                            ->disabled()
+                                            ->dehydrated(),
                                         Textarea::make('content')
                                             ->label('Konten panjang')
                                             ->rows(6)
@@ -69,7 +74,7 @@ class PageForm
                                             ->relationship('creator', 'name')
                                             ->searchable()
                                             ->preload()
-                                            ->default(fn (): ?int => auth()->id()),
+                                            ->default(fn (?Page $record): ?int => $record?->created_by ?? auth()->id()),
                                         TextInput::make('seo_title')
                                             ->label('Judul SEO')
                                             ->maxLength(255),

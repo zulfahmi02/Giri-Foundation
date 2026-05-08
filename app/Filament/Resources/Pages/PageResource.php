@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Pages;
 
 use App\Filament\Clusters\Home\HomeCluster;
-use App\Filament\Resources\Pages\Pages\CreatePage;
 use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Pages\Pages\ListPages;
 use App\Filament\Resources\Pages\Pages\ViewPage;
@@ -63,7 +62,6 @@ class PageResource extends Resource
     {
         return [
             'index' => ListPages::route('/'),
-            'create' => CreatePage::route('/create'),
             'view' => ViewPage::route('/{record}'),
             'edit' => EditPage::route('/{record}/edit'),
         ];

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Pages\Tables;
 
+use App\Models\Page;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -45,6 +47,10 @@ class PagesTable
                 //
             ])
             ->recordActions([
+                Action::make('preview')
+                    ->label('Buka Halaman')
+                    ->url(fn (Page $record): ?string => $record->frontendUrl(), shouldOpenInNewTab: true)
+                    ->visible(fn (Page $record): bool => filled($record->frontendUrl())),
                 ViewAction::make(),
                 EditAction::make(),
             ])

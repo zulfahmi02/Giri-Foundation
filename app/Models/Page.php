@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Support\PageContentDefaults;
 use App\Support\FrontendCache;
+use App\Support\PageContentDefaults;
+use Database\Factories\PageFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Support\Str;
 
 class Page extends Model
 {
-    /** @use HasFactory<\Database\Factories\PageFactory> */
+    /** @use HasFactory<PageFactory> */
     use HasFactory;
 
     /**
@@ -95,6 +96,23 @@ class Page extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function frontendUrl(): ?string
+    {
+        return match ($this->slug) {
+            'home' => route('home'),
+            'about' => route('about'),
+            'programs' => route('programs.index'),
+            'media' => route('media.index'),
+            'publikasi' => route('publications.index'),
+            'stories' => route('stories.index'),
+            'contact' => route('contact.show'),
+            'donate' => route('donate.show'),
+            'resources' => route('resources.index'),
+            'partners' => route('partners.index'),
+            default => null,
+        };
     }
 
     /**

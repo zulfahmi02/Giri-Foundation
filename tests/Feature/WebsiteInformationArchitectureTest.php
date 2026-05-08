@@ -3,6 +3,7 @@
 use App\Filament\Resources\Divisions\DivisionResource;
 use App\Filament\Resources\Videos\VideoResource;
 use App\Models\Activity;
+use App\Models\Program;
 use App\Models\Role;
 use App\Models\TeamMember;
 use App\Models\User;
@@ -33,6 +34,25 @@ test('program page splits records by phase and partnership data', function () {
             'Program Mendatang',
             'Pelestarian Lingkungan dan Kebudayaan',
         ]);
+});
+
+test('program pages render mobile-oriented layout classes', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $program = Program::query()
+        ->published()
+        ->firstOrFail();
+
+    $this->get('/programs')
+        ->assertSuccessful()
+        ->assertSee('h-52 w-full object-cover sm:h-64', false)
+        ->assertSee('font-editorial text-2xl leading-tight sm:text-3xl', false);
+
+    $this->get(route('programs.show', $program))
+        ->assertSuccessful()
+        ->assertSee('min-h-[24rem]', false)
+        ->assertSee('sm:grid-cols-3', false)
+        ->assertSee('sm:grid-cols-2 md:grid-cols-4', false);
 });
 
 test('media page renders activities before videos and hides empty sections', function () {
