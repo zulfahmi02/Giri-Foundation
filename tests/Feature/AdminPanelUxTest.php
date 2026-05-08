@@ -13,10 +13,12 @@ use App\Filament\Resources\ContactMessages\ContactMessageResource;
 use App\Filament\Resources\Contents\ContentResource;
 use App\Filament\Resources\DonationCampaigns\DonationCampaignResource;
 use App\Filament\Resources\Donations\DonationResource;
+use App\Filament\Resources\MediaLibraries\MediaLibraryResource;
 use App\Filament\Resources\OrganizationProfiles\OrganizationProfileResource;
 use App\Filament\Resources\Pages\PageResource;
 use App\Filament\Resources\Programs\ProgramResource;
 use App\Filament\Resources\Users\UserResource;
+use App\Models\MediaLibrary;
 use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
@@ -165,4 +167,15 @@ test('page detail handles legacy structured content stored as strings', function
         ->assertSuccessful()
         ->assertSee('Legacy hero text')
         ->assertSee('Hubungi Kami');
+});
+
+test('technical media library resource is hidden but remains safe to access directly', function () {
+    $user = createPanelUserForUxTest('Admin');
+
+    expect(MediaLibraryResource::shouldRegisterNavigation())->toBeFalse()
+        ->and((new MediaLibrary)->getTable())->toBe('media_library');
+
+    $this->actingAs($user)
+        ->get((string) parse_url(MediaLibraryResource::getUrl(panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful();
 });

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\MediaLibraryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MediaLibrary extends Model
 {
-    /** @use HasFactory<\Database\Factories\MediaLibraryFactory> */
+    /** @use HasFactory<MediaLibraryFactory> */
     use HasFactory;
+
+    protected $table = 'media_library';
 
     /**
      * @var list<string>

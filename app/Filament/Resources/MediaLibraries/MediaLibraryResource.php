@@ -21,6 +21,8 @@ class MediaLibraryResource extends Resource
 {
     protected static ?string $model = MediaLibrary::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $cluster = HomeCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
