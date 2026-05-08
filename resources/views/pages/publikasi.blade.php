@@ -22,6 +22,12 @@
     @php
         $sections = [
             [
+                'collection' => $stories,
+                'kicker' => $page->sectionValue('stories.kicker', 'Cerita'),
+                'title' => $page->sectionValue('stories.title', 'Cerita dari lapangan dan perjalanan yayasan.'),
+                'kind' => 'story',
+            ],
+            [
                 'collection' => $journals,
                 'kicker' => $page->sectionValue('journals.kicker', 'Jurnal'),
                 'title' => $page->sectionValue('journals.title', 'Kajian dan tulisan mendalam.'),
@@ -71,9 +77,15 @@
                             <p class="section-label mb-3">
                                 {{ $section['kind'] === 'document' ? $item->category : ($item->category?->name ?? strtoupper($item->type)) }}
                             </p>
-                            <h3 class="font-editorial text-3xl leading-tight">{{ $item->title }}</h3>
+                            <h3 class="font-editorial text-3xl leading-tight">
+                                @if ($section['kind'] === 'story')
+                                    <a href="{{ route('stories.show', $item) }}" class="transition hover:text-[var(--primary)]">{{ $item->displayTitle() }}</a>
+                                @else
+                                    {{ $item->title }}
+                                @endif
+                            </h3>
                             <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">
-                                {{ $section['kind'] === 'document' ? $item->description : $item->excerpt }}
+                                {{ $section['kind'] === 'document' ? $item->description : ($section['kind'] === 'story' ? $item->displayExcerpt() : $item->excerpt) }}
                             </p>
                         </article>
                     @endforeach

@@ -106,7 +106,7 @@
                 ['label' => 'Beranda', 'route' => 'home', 'pattern' => 'home'],
                 ['label' => 'Program', 'route' => 'programs.index', 'pattern' => 'programs.*'],
                 ['label' => 'Media', 'route' => 'media.index', 'pattern' => 'media.*'],
-                ['label' => 'Publikasi', 'route' => 'publications.index', 'pattern' => 'publications.*'],
+                ['label' => 'Publikasi', 'route' => 'publications.index', 'pattern' => ['publications.*', 'stories.*']],
                 ['label' => 'Tentang', 'route' => 'about', 'pattern' => 'about'],
                 ['label' => 'Kontak', 'route' => 'contact.show', 'pattern' => 'contact.*'],
             ];

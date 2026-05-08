@@ -60,6 +60,21 @@ class AdminStateOptions
     /**
      * @return array<string, string>
      */
+    public static function contentTypes(): array
+    {
+        return [
+            'story' => 'Cerita',
+            'journal' => 'Jurnal',
+            'news' => 'Berita',
+            'article' => 'Artikel',
+            'opinion' => 'Opini',
+            'report' => 'Laporan',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
     public static function programPhases(): array
     {
         return [

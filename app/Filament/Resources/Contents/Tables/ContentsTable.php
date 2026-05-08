@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Contents\Tables;
 
+use App\Support\AdminStateOptions;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -24,6 +25,7 @@ class ContentsTable
                 TextColumn::make('slug')
                     ->searchable(),
                 TextColumn::make('type')
+                    ->formatStateUsing(fn (?string $state): string => AdminStateOptions::labelFor(AdminStateOptions::contentTypes(), $state))
                     ->searchable(),
                 TextColumn::make('category.name')
                     ->searchable(),

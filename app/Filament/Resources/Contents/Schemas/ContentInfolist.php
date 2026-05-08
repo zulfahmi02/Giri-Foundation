@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Contents\Schemas;
 
 use App\Models\Content;
+use App\Support\AdminStateOptions;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -16,7 +17,8 @@ class ContentInfolist
             ->components([
                 TextEntry::make('title'),
                 TextEntry::make('slug'),
-                TextEntry::make('type'),
+                TextEntry::make('type')
+                    ->formatStateUsing(fn (?string $state): string => AdminStateOptions::labelFor(AdminStateOptions::contentTypes(), $state)),
                 TextEntry::make('category.name')
                     ->label('Category')
                     ->placeholder('-'),

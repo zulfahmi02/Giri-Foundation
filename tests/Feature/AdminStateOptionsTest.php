@@ -46,5 +46,12 @@ test('operational workflow state options stay aligned with admin resources', fun
         'paid' => 'Lunas',
         'failed' => 'Gagal',
         'refunded' => 'Dikembalikan',
+    ])->and(AdminStateOptions::contentTypes())->toBe([
+        'story' => 'Cerita',
+        'journal' => 'Jurnal',
+        'news' => 'Berita',
+        'article' => 'Artikel',
+        'opinion' => 'Opini',
+        'report' => 'Laporan',
     ]);
 });

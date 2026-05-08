@@ -13,6 +13,13 @@ class PublicationController extends Controller
     {
         return view('pages.publikasi', [
             'page' => Page::forFrontend('publikasi'),
+            'stories' => Content::query()
+                ->published()
+                ->stories()
+                ->with('category')
+                ->latest('published_at')
+                ->simplePaginate(6, pageName: 'stories_page')
+                ->withQueryString(),
             'journals' => Content::query()
                 ->published()
                 ->where('type', 'journal')
