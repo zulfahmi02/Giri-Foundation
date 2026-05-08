@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
+use Database\Factories\ContentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Content extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContentFactory> */
+    /** @use HasFactory<ContentFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**
@@ -116,6 +119,11 @@ class Content extends Model
         return $this->translatedStoryValue('seo_description');
     }
 
+    public function resolvedFeaturedImageUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->featured_image_url);
+    }
+
     public function displayAuthorName(): string
     {
         $authorName = $this->author?->name;
@@ -164,8 +172,8 @@ class Content extends Model
                     'indonesian' => 'Praktik menenun kuno di kaki Himalaya sedang membangun masa depan berkelanjutan bagi generasi perajin berikutnya.',
                 ],
                 'body' => [
-                    'english' => 'Ancient weaving in the Himalayan foothills is not a static artifact. It is a living economy, a social architecture, and a language of care.' . "\n\n" . 'This story traces how a younger generation of Giri artisans is rebuilding confidence, market access, and local pride through material knowledge passed down across families.',
-                    'indonesian' => 'Tenun kuno di kaki Himalaya bukanlah artefak yang diam. Ia adalah ekonomi hidup, arsitektur sosial, dan bahasa kepedulian.' . "\n\n" . 'Cerita ini menelusuri bagaimana generasi muda perajin Giri membangun kembali kepercayaan diri, akses pasar, dan kebanggaan lokal melalui pengetahuan material yang diwariskan antarkeluarga.',
+                    'english' => 'Ancient weaving in the Himalayan foothills is not a static artifact. It is a living economy, a social architecture, and a language of care.'."\n\n".'This story traces how a younger generation of Giri artisans is rebuilding confidence, market access, and local pride through material knowledge passed down across families.',
+                    'indonesian' => 'Tenun kuno di kaki Himalaya bukanlah artefak yang diam. Ia adalah ekonomi hidup, arsitektur sosial, dan bahasa kepedulian.'."\n\n".'Cerita ini menelusuri bagaimana generasi muda perajin Giri membangun kembali kepercayaan diri, akses pasar, dan kebanggaan lokal melalui pengetahuan material yang diwariskan antarkeluarga.',
                 ],
                 'seo_title' => [
                     'english' => 'The Silent Resonance of Tradition',
@@ -186,8 +194,8 @@ class Content extends Model
                     'indonesian' => 'Mengapa reforestasi yang mendahulukan biodiversitas lebih efektif daripada monokultur di ekosistem dataran tinggi yang rapuh.',
                 ],
                 'body' => [
-                    'english' => 'Reforestation becomes architecture when it is designed to outlast the people who initiate it. In the high valleys, species diversity and community governance matter more than planting density alone.' . "\n\n" . 'This field report explains why restoring complexity, not just tree count, is central to long-term ecological health.',
-                    'indonesian' => 'Reforestasi menjadi arsitektur ketika dirancang untuk bertahan lebih lama daripada para penggagasnya. Di lembah tinggi, keragaman spesies dan tata kelola komunitas lebih penting daripada sekadar kepadatan tanam.' . "\n\n" . 'Laporan lapangan ini menjelaskan mengapa memulihkan kompleksitas, bukan hanya jumlah pohon, adalah inti dari kesehatan ekologis jangka panjang.',
+                    'english' => 'Reforestation becomes architecture when it is designed to outlast the people who initiate it. In the high valleys, species diversity and community governance matter more than planting density alone.'."\n\n".'This field report explains why restoring complexity, not just tree count, is central to long-term ecological health.',
+                    'indonesian' => 'Reforestasi menjadi arsitektur ketika dirancang untuk bertahan lebih lama daripada para penggagasnya. Di lembah tinggi, keragaman spesies dan tata kelola komunitas lebih penting daripada sekadar kepadatan tanam.'."\n\n".'Laporan lapangan ini menjelaskan mengapa memulihkan kompleksitas, bukan hanya jumlah pohon, adalah inti dari kesehatan ekologis jangka panjang.',
                 ],
                 'seo_title' => [
                     'english' => 'The Silent Architect',
@@ -208,8 +216,8 @@ class Content extends Model
                     'indonesian' => 'Infrastruktur air bersih mengembalikan jam belajar bagi anak perempuan di komunitas pedesaan.',
                 ],
                 'body' => [
-                    'english' => 'When water access improves, classrooms change. Attendance stabilizes, domestic burdens shift, and students return to routines that make aspiration practical.' . "\n\n" . 'This report connects basic infrastructure to long-term educational continuity.',
-                    'indonesian' => 'Ketika akses air membaik, ruang kelas ikut berubah. Kehadiran menjadi lebih stabil, beban domestik berkurang, dan siswa kembali pada rutinitas yang membuat cita-cita terasa nyata.' . "\n\n" . 'Laporan ini menghubungkan infrastruktur dasar dengan kesinambungan pendidikan jangka panjang.',
+                    'english' => 'When water access improves, classrooms change. Attendance stabilizes, domestic burdens shift, and students return to routines that make aspiration practical.'."\n\n".'This report connects basic infrastructure to long-term educational continuity.',
+                    'indonesian' => 'Ketika akses air membaik, ruang kelas ikut berubah. Kehadiran menjadi lebih stabil, beban domestik berkurang, dan siswa kembali pada rutinitas yang membuat cita-cita terasa nyata.'."\n\n".'Laporan ini menghubungkan infrastruktur dasar dengan kesinambungan pendidikan jangka panjang.',
                 ],
                 'seo_title' => [
                     'english' => 'Beyond the Well',

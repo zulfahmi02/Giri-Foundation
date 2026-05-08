@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Documents\Schemas;
 
+use App\Models\Document;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -21,7 +23,8 @@ class DocumentInfolist
                     ->columnSpanFull(),
                 TextEntry::make('file_url')
                     ->columnSpanFull(),
-                TextEntry::make('thumbnail_url')
+                ImageEntry::make('thumbnail_url')
+                    ->getStateUsing(fn (Document $record): ?string => $record->resolvedThumbnailUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('file_type')

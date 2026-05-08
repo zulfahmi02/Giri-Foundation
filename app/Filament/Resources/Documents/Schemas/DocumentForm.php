@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Documents\Schemas;
 
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -29,9 +30,7 @@ class DocumentForm
                     ->required()
                     ->url()
                     ->columnSpanFull(),
-                TextInput::make('thumbnail_url')
-                    ->url()
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('thumbnail_url', 'documents/thumbnails', 'Gambar thumbnail'),
                 TextInput::make('file_type'),
                 TextInput::make('file_size')
                     ->numeric(),

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
+use Database\Factories\ActivityFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Activity extends Model
 {
-    /** @use HasFactory<\Database\Factories\ActivityFactory> */
+    /** @use HasFactory<ActivityFactory> */
     use HasFactory;
 
     /**
@@ -53,5 +55,10 @@ class Activity extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function resolvedFeaturedImageUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->featured_image_url);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
 use Database\Factories\DocumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -116,5 +117,10 @@ class Document extends Model
         }
 
         return $extension === '' ? $filename : "{$filename}.{$extension}";
+    }
+
+    public function resolvedThumbnailUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->thumbnail_url);
     }
 }

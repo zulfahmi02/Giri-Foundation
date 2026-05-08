@@ -2,7 +2,7 @@
 
 @section('content')
     @php
-        $brandLogo = $profile->logo_url ?: asset('image/logo.png');
+        $brandLogo = $profile->resolvedLogoUrl() ?: asset('image/logo.png');
         $brandName = $page->sectionValue('brand.title', $profile->name);
         $brandSubtitle = $page->sectionValue('brand.subtitle', 'Yayasan untuk inisiatif sosial, budaya, dan keberlanjutan komunitas.');
         $brandNote = $page->sectionValue('brand.note', 'Berakar di Bali dan bekerja bersama komunitas lintas wilayah secara jangka panjang.');

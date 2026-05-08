@@ -4,9 +4,9 @@ namespace App\Filament\Resources\TeamMembers\Schemas;
 
 use App\Models\Division;
 use App\Models\TeamMember;
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use App\Support\TeamMemberStructureSlots;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -51,18 +51,7 @@ class TeamMemberForm
                             ->label('Bio singkat')
                             ->rows(4)
                             ->columnSpanFull(),
-                        FileUpload::make('photo_url')
-                            ->label('Foto personil')
-                            ->image()
-                            ->imageEditor()
-                            ->disk('public')
-                            ->directory('team-members')
-                            ->visibility('public')
-                            ->maxSize(2048)
-                            ->helperText('Unggah foto JPG, PNG, atau WebP dari perangkat. Maksimal 2 MB.')
-                            ->openable()
-                            ->downloadable()
-                            ->columnSpanFull(),
+                        FilamentImageUpload::make('photo_url', 'team-members', 'Foto personil', 2048),
                         Textarea::make('linkedin_url')
                             ->label('URL LinkedIn')
                             ->rows(2)

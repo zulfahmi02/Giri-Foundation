@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Activities\Schemas;
 
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -34,9 +35,7 @@ class ActivityForm
                     ->columnSpanFull(),
                 DatePicker::make('activity_date'),
                 TextInput::make('location_name'),
-                TextInput::make('featured_image_url')
-                    ->url()
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('featured_image_url', 'activities', 'Gambar aktivitas'),
                 Select::make('status')
                     ->required()
                     ->options([

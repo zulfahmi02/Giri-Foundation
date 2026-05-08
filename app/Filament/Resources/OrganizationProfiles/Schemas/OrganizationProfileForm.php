@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrganizationProfiles\Schemas;
 
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
@@ -46,10 +47,8 @@ class OrganizationProfileForm
                     ->columnSpanFull(),
                 Textarea::make('google_maps_embed')
                     ->columnSpanFull(),
-                Textarea::make('logo_url')
-                    ->columnSpanFull(),
-                Textarea::make('favicon_url')
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('logo_url', 'organization', 'Logo organisasi'),
+                FilamentImageUpload::make('favicon_url', 'organization', 'Favicon'),
             ]);
     }
 }

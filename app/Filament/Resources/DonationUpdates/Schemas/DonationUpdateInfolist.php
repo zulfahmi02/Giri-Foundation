@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DonationUpdates\Schemas;
 
+use App\Models\DonationUpdate;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
@@ -18,6 +19,7 @@ class DonationUpdateInfolist
                 TextEntry::make('content')
                     ->columnSpanFull(),
                 ImageEntry::make('image_url')
+                    ->getStateUsing(fn (DonationUpdate $record): ?string => $record->resolvedImageUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('published_at')

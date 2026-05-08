@@ -29,7 +29,7 @@
             <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
                 @foreach ($activities as $activity)
                     <article class="surface-card overflow-hidden rounded-[1.75rem]">
-                        <img src="{{ $activity->featured_image_url }}" alt="{{ $activity->title }}" class="h-72 w-full object-cover">
+                        <img src="{{ $activity->resolvedFeaturedImageUrl() }}" alt="{{ $activity->title }}" class="h-72 w-full object-cover">
                         <div class="p-8">
                             <p class="section-label mb-3">{{ optional($activity->activity_date)->translatedFormat('d F Y') }}</p>
                             <h3 class="font-editorial text-3xl">{{ $activity->title }}</h3>

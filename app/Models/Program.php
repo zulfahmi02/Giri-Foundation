@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
 use Database\Factories\ProgramFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -109,5 +110,10 @@ class Program extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function resolvedFeaturedImageUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->featured_image_url);
     }
 }

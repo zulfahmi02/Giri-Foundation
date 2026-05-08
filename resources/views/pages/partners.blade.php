@@ -54,7 +54,7 @@
         <div class="grid gap-8 lg:grid-cols-3">
             @foreach ($partnerPrograms as $program)
                 <article class="overflow-hidden rounded-[1.75rem] bg-white shadow-[0_12px_40px_rgba(15,15,15,0.04)]">
-                    <img src="{{ $program->featured_image_url }}" alt="{{ $program->title }}" class="h-64 w-full object-cover">
+                    <img src="{{ $program->resolvedFeaturedImageUrl() }}" alt="{{ $program->title }}" class="h-64 w-full object-cover">
                     <div class="p-8">
                         <p class="section-label mb-4">{{ $program->category?->name }}</p>
                         <h3 class="font-editorial text-3xl">{{ $program->title }}</h3>

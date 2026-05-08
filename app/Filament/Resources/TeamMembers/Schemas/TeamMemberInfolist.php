@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\TeamMembers\Schemas;
 
+use App\Models\TeamMember;
 use App\Support\TeamMemberStructureSlots;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -28,7 +30,8 @@ class TeamMemberInfolist
                 TextEntry::make('bio')
                     ->placeholder('-')
                     ->columnSpanFull(),
-                TextEntry::make('photo_url')
+                ImageEntry::make('photo_url')
+                    ->getStateUsing(fn (TeamMember $record): ?string => $record->public_photo_url)
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('email')

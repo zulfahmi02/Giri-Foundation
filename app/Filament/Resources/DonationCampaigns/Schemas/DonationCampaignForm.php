@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\DonationCampaigns\Schemas;
 
 use App\Support\AdminStateOptions;
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -38,9 +39,7 @@ class DonationCampaignForm
                     ->default(0),
                 DatePicker::make('start_date'),
                 DatePicker::make('end_date'),
-                TextInput::make('banner_image_url')
-                    ->url()
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('banner_image_url', 'donation-campaigns', 'Gambar banner'),
                 Select::make('status')
                     ->required()
                     ->options(AdminStateOptions::donationCampaignStatuses())

@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
+use Database\Factories\ProgramGalleryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProgramGallery extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProgramGalleryFactory> */
+    /** @use HasFactory<ProgramGalleryFactory> */
     use HasFactory;
 
     public $timestamps = false;
@@ -37,5 +39,10 @@ class ProgramGallery extends Model
     public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
+    }
+
+    public function resolvedFileUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->file_url);
     }
 }

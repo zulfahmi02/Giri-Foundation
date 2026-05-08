@@ -2,7 +2,7 @@
 
 @section('content')
     <header class="relative mb-16 min-h-[24rem] overflow-hidden sm:mb-20 sm:min-h-[30rem] lg:min-h-[34rem]">
-        <img src="{{ $program->featured_image_url }}" alt="Sampul program {{ $program->title }}" class="h-[24rem] w-full object-cover sm:h-[30rem] lg:h-[34rem]" decoding="async" fetchpriority="high">
+        <img src="{{ $program->resolvedFeaturedImageUrl() }}" alt="Sampul program {{ $program->title }}" class="h-[24rem] w-full object-cover sm:h-[30rem] lg:h-[34rem]" decoding="async" fetchpriority="high">
         <div class="absolute inset-0 bg-gradient-to-t from-[color:rgba(252,249,248,0.92)] via-transparent to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-6 pb-8 sm:pb-12 lg:px-10">
             @include('pages.partials.breadcrumbs', [
@@ -85,7 +85,7 @@
             @foreach ($program->galleries as $gallery)
                 <figure class="{{ $loop->first ? 'md:col-span-2 md:row-span-2' : '' }} overflow-hidden rounded-[1.5rem]">
                     <img
-                        src="{{ $gallery->file_url }}"
+                        src="{{ $gallery->resolvedFileUrl() }}"
                         alt="{{ $gallery->caption ?: 'Dokumentasi program ' . $program->title }}"
                         class="h-full w-full object-cover"
                         loading="lazy"

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Activities\Schemas;
 
+use App\Models\Activity;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
@@ -27,6 +28,7 @@ class ActivityInfolist
                 TextEntry::make('location_name')
                     ->placeholder('-'),
                 ImageEntry::make('featured_image_url')
+                    ->getStateUsing(fn (Activity $record): ?string => $record->resolvedFeaturedImageUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('status'),

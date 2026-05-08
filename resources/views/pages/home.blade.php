@@ -28,7 +28,7 @@
         @if ($featuredProgram)
             <div class="lg:col-span-6 xl:col-span-5">
                 <div class="surface-card overflow-hidden rounded-[2rem] border border-[color:rgba(190,201,195,0.2)] bg-[var(--surface-muted)]">
-                    <img src="{{ $featuredProgram->featured_image_url }}" alt="Visual program unggulan {{ $featuredProgram->title }}" class="h-[26rem] w-full object-contain p-8 md:h-[30rem] lg:h-[36rem] xl:p-10" decoding="async" fetchpriority="high">
+                    <img src="{{ $featuredProgram->resolvedFeaturedImageUrl() }}" alt="Visual program unggulan {{ $featuredProgram->title }}" class="h-[26rem] w-full object-contain p-8 md:h-[30rem] lg:h-[36rem] xl:p-10" decoding="async" fetchpriority="high">
                 </div>
             </div>
         @endif
@@ -75,7 +75,7 @@
                             <span class="material-symbols-outlined">north_east</span>
                         </a>
                     </div>
-                    <img src="{{ $featuredProgram->featured_image_url }}" alt="Dokumentasi program {{ $featuredProgram->title }}" class="h-full min-h-72 w-full object-cover" loading="lazy" decoding="async">
+                    <img src="{{ $featuredProgram->resolvedFeaturedImageUrl() }}" alt="Dokumentasi program {{ $featuredProgram->title }}" class="h-full min-h-72 w-full object-cover" loading="lazy" decoding="async">
                 </article>
             </div>
         </section>
@@ -101,7 +101,7 @@
                             @foreach ($latestActivities as $activity)
                                 <article class="surface-card rounded-[1.75rem] p-5">
                                     <div class="flex gap-5">
-                                        <img src="{{ $activity->featured_image_url }}" alt="Dokumentasi aktivitas {{ $activity->title }}" class="h-24 w-24 rounded-2xl object-cover" loading="lazy" decoding="async">
+                                        <img src="{{ $activity->resolvedFeaturedImageUrl() }}" alt="Dokumentasi aktivitas {{ $activity->title }}" class="h-24 w-24 rounded-2xl object-cover" loading="lazy" decoding="async">
                                         <div class="min-w-0 flex-1">
                                             <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--primary)]">
                                                 {{ optional($activity->activity_date)->translatedFormat('d F Y') }}

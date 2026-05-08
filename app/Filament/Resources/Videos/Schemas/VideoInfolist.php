@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Videos\Schemas;
 
+use App\Models\Video;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -22,7 +24,8 @@ class VideoInfolist
                 TextEntry::make('youtube_url')
                     ->label('YouTube URL')
                     ->columnSpanFull(),
-                TextEntry::make('thumbnail_url')
+                ImageEntry::make('thumbnail_url')
+                    ->getStateUsing(fn (Video $record): ?string => $record->resolvedThumbnailUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('status'),

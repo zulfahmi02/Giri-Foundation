@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
+use Database\Factories\DonationCampaignFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DonationCampaign extends Model
 {
-    /** @use HasFactory<\Database\Factories\DonationCampaignFactory> */
+    /** @use HasFactory<DonationCampaignFactory> */
     use HasFactory;
 
     /**
@@ -88,6 +90,11 @@ class DonationCampaign extends Model
     public function displayDescription(): string
     {
         return $this->translatedCampaignValue('description');
+    }
+
+    public function resolvedBannerImageUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->banner_image_url);
     }
 
     private function translatedCampaignValue(string $attribute): string

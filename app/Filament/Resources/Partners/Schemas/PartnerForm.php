@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Partners\Schemas;
 
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -20,8 +21,7 @@ class PartnerForm
                 ),
                 TextInput::make('slug')
                     ->required(),
-                Textarea::make('logo_url')
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('logo_url', 'partners', 'Logo partner'),
                 Textarea::make('website_url')
                     ->columnSpanFull(),
                 TextInput::make('type')

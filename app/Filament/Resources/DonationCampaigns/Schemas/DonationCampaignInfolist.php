@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DonationCampaigns\Schemas;
 
+use App\Models\DonationCampaign;
 use App\Support\AdminStateOptions;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
@@ -32,6 +33,7 @@ class DonationCampaignInfolist
                     ->date()
                     ->placeholder('-'),
                 ImageEntry::make('banner_image_url')
+                    ->getStateUsing(fn (DonationCampaign $record): ?string => $record->resolvedBannerImageUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('status')

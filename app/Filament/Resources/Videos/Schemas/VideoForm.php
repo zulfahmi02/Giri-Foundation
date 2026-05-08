@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Videos\Schemas;
 
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -32,9 +33,7 @@ class VideoForm
                     ->url()
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('thumbnail_url')
-                    ->url()
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('thumbnail_url', 'videos', 'Thumbnail video'),
                 TextInput::make('sort_order')
                     ->required()
                     ->numeric()

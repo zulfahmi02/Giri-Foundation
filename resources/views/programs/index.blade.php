@@ -57,7 +57,7 @@
                 <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                     @foreach ($section['collection'] as $program)
                         <article class="surface-card overflow-hidden rounded-[1.75rem]">
-                            <img src="{{ $program->featured_image_url }}" alt="Dokumentasi program {{ $program->title }}" class="h-52 w-full object-cover sm:h-64" loading="lazy" decoding="async">
+                            <img src="{{ $program->resolvedFeaturedImageUrl() }}" alt="Dokumentasi program {{ $program->title }}" class="h-52 w-full object-cover sm:h-64" loading="lazy" decoding="async">
                             <div class="p-6 sm:p-8">
                                 <div class="mb-4 flex flex-wrap items-center gap-3">
                                     <span class="rounded-lg bg-[var(--secondary-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--secondary-ink)]">

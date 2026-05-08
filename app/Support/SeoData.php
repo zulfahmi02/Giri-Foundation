@@ -27,8 +27,7 @@ class SeoData
         public ?string $siteVerification,
         public array $structuredData,
         public array $breadcrumbs,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<string, mixed>  $viewData
@@ -53,8 +52,8 @@ class SeoData
         $breadcrumbs = static::resolveBreadcrumbs($request, $page, $story, $program);
         $imageUrl = static::resolveImageUrl(
             $story instanceof Content
-                ? $story->featured_image_url
-                : ($program instanceof Program ? $program->featured_image_url : ($siteProfile?->logo_url ?: 'image/logo.png')),
+                ? $story->resolvedFeaturedImageUrl()
+                : ($program instanceof Program ? $program->resolvedFeaturedImageUrl() : ($siteProfile?->resolvedLogoUrl() ?: 'image/logo.png')),
             $request,
         );
         $openGraphType = $story instanceof Content ? 'article' : 'website';
@@ -218,7 +217,7 @@ class SeoData
         array $breadcrumbs,
         Request $request,
     ): array {
-        $logoUrl = static::resolveImageUrl($siteProfile?->logo_url ?: 'image/logo.png', $request);
+        $logoUrl = static::resolveImageUrl($siteProfile?->resolvedLogoUrl() ?: 'image/logo.png', $request);
 
         $schemas = [
             static::filterSchema([

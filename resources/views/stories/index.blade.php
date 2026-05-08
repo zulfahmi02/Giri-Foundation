@@ -5,7 +5,7 @@
         <section class="mx-auto max-w-7xl px-6 pt-10 pb-16 lg:px-10 lg:pt-12 lg:pb-20">
             <div class="grid gap-10 lg:grid-cols-12 lg:items-start">
                 <div class="overflow-hidden rounded-[2rem] lg:col-span-7">
-                    <img src="{{ $featuredStory->featured_image_url }}" alt="Sampul cerita {{ $featuredStory->displayTitle() }}" class="h-[28rem] w-full object-cover md:h-[34rem] lg:h-[36rem] xl:h-[38rem]" decoding="async" fetchpriority="high">
+                    <img src="{{ $featuredStory->resolvedFeaturedImageUrl() }}" alt="Sampul cerita {{ $featuredStory->displayTitle() }}" class="h-[28rem] w-full object-cover md:h-[34rem] lg:h-[36rem] xl:h-[38rem]" decoding="async" fetchpriority="high">
                 </div>
                 <div class="lg:col-span-5 lg:pt-6">
                     <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Cerita Pilihan') }}</p>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="{{ $loop->odd ? 'lg:col-span-7' : 'lg:col-span-5 lg:order-1' }}">
-                    <img src="{{ $story->featured_image_url }}" alt="Sampul cerita {{ $story->displayTitle() }}" class="w-full rounded-[2rem] object-cover {{ $loop->odd ? 'aspect-[16/10]' : 'aspect-[4/5]' }}" loading="lazy" decoding="async">
+                    <img src="{{ $story->resolvedFeaturedImageUrl() }}" alt="Sampul cerita {{ $story->displayTitle() }}" class="w-full rounded-[2rem] object-cover {{ $loop->odd ? 'aspect-[16/10]' : 'aspect-[4/5]' }}" loading="lazy" decoding="async">
                 </div>
             </div>
         @endforeach
@@ -63,7 +63,7 @@
             @foreach ($archiveStories as $story)
                 <article class="group">
                     <div class="mb-6 overflow-hidden rounded-[1.5rem]">
-                        <img src="{{ $story->featured_image_url }}" alt="Sampul cerita {{ $story->displayTitle() }}" class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        <img src="{{ $story->resolvedFeaturedImageUrl() }}" alt="Sampul cerita {{ $story->displayTitle() }}" class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
                     </div>
                     <p class="section-label mb-3">{{ $story->category?->name }}</p>
                     <h3 class="font-editorial text-3xl leading-tight transition group-hover:text-[var(--primary)]">

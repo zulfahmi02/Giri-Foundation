@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
+use Database\Factories\OrganizationProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrganizationProfile extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrganizationProfileFactory> */
+    /** @use HasFactory<OrganizationProfileFactory> */
     use HasFactory;
 
     /**
@@ -44,5 +46,15 @@ class OrganizationProfile extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function resolvedLogoUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->logo_url);
+    }
+
+    public function resolvedFaviconUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->favicon_url);
     }
 }

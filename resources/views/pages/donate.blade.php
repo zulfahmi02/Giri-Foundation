@@ -14,7 +14,7 @@
                     {{ $page->heroValue('body', $campaign->displayShortDescription()) }}
                 </p>
                 <div class="mt-8 overflow-hidden rounded-[2rem]">
-                    <img src="{{ $campaign->banner_image_url }}" alt="{{ $campaign->displayTitle() }}" class="h-[20rem] w-full object-cover md:h-[22rem]">
+                    <img src="{{ $campaign->resolvedBannerImageUrl() }}" alt="{{ $campaign->displayTitle() }}" class="h-[20rem] w-full object-cover md:h-[22rem]">
                 </div>
             </div>
 

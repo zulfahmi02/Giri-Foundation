@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
+use Database\Factories\VideoFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Video extends Model
 {
-    /** @use HasFactory<\Database\Factories\VideoFactory> */
+    /** @use HasFactory<VideoFactory> */
     use HasFactory;
 
     /**
@@ -72,7 +74,7 @@ class Video extends Model
     public function resolvedThumbnailUrl(): ?string
     {
         if (filled($this->thumbnail_url)) {
-            return $this->thumbnail_url;
+            return PublicStorageUrl::resolve($this->thumbnail_url);
         }
 
         $videoId = $this->youtubeVideoId();

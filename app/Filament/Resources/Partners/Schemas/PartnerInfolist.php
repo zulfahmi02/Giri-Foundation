@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Partners\Schemas;
 
+use App\Models\Partner;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -14,7 +16,8 @@ class PartnerInfolist
             ->components([
                 TextEntry::make('name'),
                 TextEntry::make('slug'),
-                TextEntry::make('logo_url')
+                ImageEntry::make('logo_url')
+                    ->getStateUsing(fn (Partner $record): ?string => $record->resolvedLogoUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('website_url')

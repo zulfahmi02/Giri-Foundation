@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\DonationUpdates\Schemas;
 
+use App\Support\FilamentImageUpload;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class DonationUpdateForm
@@ -24,9 +25,7 @@ class DonationUpdateForm
                 Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('image_url')
-                    ->url()
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('image_url', 'donation-updates', 'Gambar update'),
                 DateTimePicker::make('published_at'),
             ]);
     }

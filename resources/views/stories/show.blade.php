@@ -15,7 +15,7 @@
         <p class="mt-8 max-w-3xl text-xl leading-9 text-[var(--ink-muted)]">{{ $story->displayExcerpt() }}</p>
 
         <div class="mt-12 overflow-hidden rounded-[2rem]">
-            <img src="{{ $story->featured_image_url }}" alt="Sampul cerita {{ $story->displayTitle() }}" class="h-[34rem] w-full object-cover" decoding="async" fetchpriority="high">
+            <img src="{{ $story->resolvedFeaturedImageUrl() }}" alt="Sampul cerita {{ $story->displayTitle() }}" class="h-[34rem] w-full object-cover" decoding="async" fetchpriority="high">
         </div>
 
         <div class="mt-12 flex flex-wrap items-center gap-6 text-sm text-[var(--ink-muted)]">

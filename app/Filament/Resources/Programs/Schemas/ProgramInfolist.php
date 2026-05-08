@@ -51,6 +51,7 @@ class ProgramInfolist
                     ->numeric()
                     ->placeholder('-'),
                 ImageEntry::make('featured_image_url')
+                    ->getStateUsing(fn (Program $record): ?string => $record->resolvedFeaturedImageUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 IconEntry::make('is_featured')

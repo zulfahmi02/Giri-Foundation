@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Contents\Schemas;
 
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -42,8 +43,7 @@ class ContentForm
                 Textarea::make('body')
                     ->required()
                     ->columnSpanFull(),
-                Textarea::make('featured_image_url')
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('featured_image_url', 'contents', 'Gambar sampul'),
                 Select::make('author_id')
                     ->relationship('author', 'name'),
                 Select::make('status')

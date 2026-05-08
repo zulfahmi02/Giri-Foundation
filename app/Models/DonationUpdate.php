@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Support\PublicStorageUrl;
+use Database\Factories\DonationUpdateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DonationUpdate extends Model
 {
-    /** @use HasFactory<\Database\Factories\DonationUpdateFactory> */
+    /** @use HasFactory<DonationUpdateFactory> */
     use HasFactory;
 
     /**
@@ -35,5 +37,10 @@ class DonationUpdate extends Model
     public function campaign(): BelongsTo
     {
         return $this->belongsTo(DonationCampaign::class, 'campaign_id');
+    }
+
+    public function resolvedImageUrl(): ?string
+    {
+        return PublicStorageUrl::resolve($this->image_url);
     }
 }

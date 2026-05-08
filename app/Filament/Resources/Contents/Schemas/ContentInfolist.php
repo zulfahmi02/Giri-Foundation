@@ -26,6 +26,7 @@ class ContentInfolist
                 TextEntry::make('body')
                     ->columnSpanFull(),
                 ImageEntry::make('featured_image_url')
+                    ->getStateUsing(fn (Content $record): ?string => $record->resolvedFeaturedImageUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('author.name')

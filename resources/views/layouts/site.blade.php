@@ -3,8 +3,8 @@
     <head>
         @php
             $siteName = $siteProfile?->name ?? 'GIRI FOUNDATION';
-            $logoUrl = $siteProfile?->logo_url ?: asset('image/logo.png');
-            $faviconUrl = $siteProfile?->favicon_url ?: $logoUrl;
+            $logoUrl = $siteProfile?->resolvedLogoUrl() ?: asset('image/logo.png');
+            $faviconUrl = $siteProfile?->resolvedFaviconUrl() ?: $logoUrl;
         @endphp
 
         <meta charset="utf-8">

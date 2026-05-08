@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Programs\Schemas;
 
 use App\Models\Partner;
 use App\Support\AdminStateOptions;
+use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -56,9 +57,7 @@ class ProgramForm
                     ->default(0),
                 TextInput::make('budget_amount')
                     ->numeric(),
-                TextInput::make('featured_image_url')
-                    ->url()
-                    ->columnSpanFull(),
+                FilamentImageUpload::make('featured_image_url', 'programs', 'Gambar program'),
                 Toggle::make('is_featured')
                     ->required()
                     ->default(false),

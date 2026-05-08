@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\OrganizationProfiles\Schemas;
 
+use App\Models\OrganizationProfile;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -39,10 +41,12 @@ class OrganizationProfileInfolist
                 TextEntry::make('google_maps_embed')
                     ->placeholder('-')
                     ->columnSpanFull(),
-                TextEntry::make('logo_url')
+                ImageEntry::make('logo_url')
+                    ->getStateUsing(fn (OrganizationProfile $record): ?string => $record->resolvedLogoUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
-                TextEntry::make('favicon_url')
+                ImageEntry::make('favicon_url')
+                    ->getStateUsing(fn (OrganizationProfile $record): ?string => $record->resolvedFaviconUrl())
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('created_at')
