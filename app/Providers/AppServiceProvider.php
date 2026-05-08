@@ -15,12 +15,13 @@ use App\Models\Program;
 use App\Models\ProgramCategory;
 use App\Models\TeamMember;
 use App\Models\Video;
+use App\Support\FilamentAdminLocalization;
 use App\Support\FrontendCache;
 use App\Support\SeoData;
 use Carbon\Carbon;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
@@ -43,9 +44,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading(! app()->isProduction());
         Carbon::setLocale(config('app.locale'));
+        FilamentAdminLocalization::register();
 
         RateLimiter::for('public-form-submissions', function (Request $request): Limit {
-            return Limit::perMinute(5)->by($request->ip() . '|' . $request->path());
+            return Limit::perMinute(5)->by($request->ip().'|'.$request->path());
         });
 
         $this->registerFrontendCacheInvalidators();

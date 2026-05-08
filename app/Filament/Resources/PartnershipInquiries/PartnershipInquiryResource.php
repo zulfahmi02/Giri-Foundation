@@ -29,11 +29,11 @@ class PartnershipInquiryResource extends Resource
 
     protected static ?int $navigationSort = 20;
 
-    protected static ?string $navigationLabel = 'Inquiry Kemitraan';
+    protected static ?string $navigationLabel = 'Permintaan Kemitraan';
 
-    protected static ?string $modelLabel = 'inquiry kemitraan';
+    protected static ?string $modelLabel = 'permintaan kemitraan';
 
-    protected static ?string $pluralModelLabel = 'Inquiry Kemitraan';
+    protected static ?string $pluralModelLabel = 'Permintaan Kemitraan';
 
     protected static ?string $recordTitleAttribute = 'organization_name';
 

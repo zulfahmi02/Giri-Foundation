@@ -85,9 +85,9 @@ class PageForm
                                     ])
                                     ->columns(2),
                             ]),
-                        Tab::make('Hero')
+                        Tab::make('Pembuka')
                             ->schema([
-                                Section::make('Konten Hero')
+                                Section::make('Konten Pembuka')
                                     ->description('Bidang umum untuk blok pembuka halaman.')
                                     ->schema([
                                         TextInput::make('hero_data.kicker')
