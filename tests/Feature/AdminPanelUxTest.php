@@ -21,6 +21,7 @@ use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Facades\Filament;
+use Illuminate\Support\Facades\DB;
 
 function createPanelUserForUxTest(string $roleName): User
 {
@@ -134,4 +135,32 @@ test('page management only edits navbar pages and offers frontend previews', fun
         ->assertSee('Buka Halaman')
         ->assertSee('about')
         ->assertSee('template');
+});
+
+test('page detail handles legacy structured content stored as strings', function () {
+    $user = createPanelUserForUxTest('Admin');
+
+    DB::table('pages')->insert([
+        'title' => 'Beranda',
+        'slug' => 'home',
+        'content' => null,
+        'hero_data' => json_encode('Legacy hero text'),
+        'section_data' => json_encode(['closing' => ['title' => 'Hubungi Kami']]),
+        'template' => 'home',
+        'status' => 'published',
+        'seo_title' => null,
+        'seo_description' => null,
+        'published_at' => now(),
+        'created_by' => $user->id,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    $page = Page::query()->where('slug', 'home')->firstOrFail();
+
+    $this->actingAs($user)
+        ->get((string) parse_url(PageResource::getUrl('view', ['record' => $page], panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertSee('Legacy hero text')
+        ->assertSee('Hubungi Kami');
 });

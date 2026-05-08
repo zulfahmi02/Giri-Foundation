@@ -18,11 +18,11 @@ class PageInfolist
                     ->columnSpanFull(),
                 TextEntry::make('hero_data')
                     ->label('Hero')
-                    ->formatStateUsing(fn (?array $state): string => filled($state) ? json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '-')
+                    ->formatStateUsing(fn (mixed $state): string => self::formatStructuredState($state))
                     ->columnSpanFull(),
                 TextEntry::make('section_data')
                     ->label('Seksi')
-                    ->formatStateUsing(fn (?array $state): string => filled($state) ? json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '-')
+                    ->formatStateUsing(fn (mixed $state): string => self::formatStructuredState($state))
                     ->columnSpanFull(),
                 TextEntry::make('template')
                     ->placeholder('-'),
@@ -45,5 +45,28 @@ class PageInfolist
                     ->dateTime()
                     ->placeholder('-'),
             ]);
+    }
+
+    private static function formatStructuredState(mixed $state): string
+    {
+        if (blank($state)) {
+            return '-';
+        }
+
+        if (is_array($state)) {
+            return json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) ?: '-';
+        }
+
+        if (is_string($state)) {
+            $decodedState = json_decode($state, true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decodedState)) {
+                return json_encode($decodedState, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) ?: '-';
+            }
+
+            return $state;
+        }
+
+        return (string) $state;
     }
 }
