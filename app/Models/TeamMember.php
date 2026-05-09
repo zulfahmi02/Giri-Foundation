@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Support\PublicStorageUrl;
+use Database\Factories\TeamMemberFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class TeamMember extends Model
 {
-    /** @use HasFactory<\Database\Factories\TeamMemberFactory> */
+    /** @use HasFactory<TeamMemberFactory> */
     use HasFactory;
 
     /**
@@ -75,23 +75,7 @@ class TeamMember extends Model
     protected function publicPhotoUrl(): Attribute
     {
         return Attribute::make(
-            get: function (): ?string {
-                $photoPath = $this->getRawOriginal('photo_url');
-
-                if (blank($photoPath)) {
-                    return null;
-                }
-
-                if (Str::startsWith($photoPath, ['http://', 'https://', '//', '/'])) {
-                    return $photoPath;
-                }
-
-                if (Str::startsWith($photoPath, ['storage/', 'image/'])) {
-                    return '/'.ltrim($photoPath, '/');
-                }
-
-                return Storage::disk('public')->url($photoPath);
-            },
+            get: fn (): ?string => PublicStorageUrl::resolve($this->getRawOriginal('photo_url')),
         );
     }
 

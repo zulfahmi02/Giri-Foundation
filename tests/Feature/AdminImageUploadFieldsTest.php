@@ -80,7 +80,11 @@ it('renders uploaded images as previews in admin detail pages', function (string
 it('resolves uploaded image paths while preserving legacy urls', function (): void {
     expect(PublicStorageUrl::resolve('programs/kegiatan.jpg'))->toBe(Storage::disk('public')->url('programs/kegiatan.jpg'))
         ->and(PublicStorageUrl::resolve('/image/logo.png'))->toBe('/image/logo.png')
+        ->and(PublicStorageUrl::resolve('image/logo.png'))->toBe(asset('image/logo.png'))
         ->and(PublicStorageUrl::resolve('storage/partners/logo.png'))->toBe(asset('storage/partners/logo.png'))
+        ->and(PublicStorageUrl::resolve('/storage/partners/logo.png'))->toBe('/storage/partners/logo.png')
+        ->and(PublicStorageUrl::resolve('public/programs/kegiatan.jpg'))->toBe(Storage::disk('public')->url('programs/kegiatan.jpg'))
+        ->and(PublicStorageUrl::resolve('storage/app/public/programs/kegiatan.jpg'))->toBe(Storage::disk('public')->url('programs/kegiatan.jpg'))
         ->and(PublicStorageUrl::resolve('https://example.com/image.jpg'))->toBe('https://example.com/image.jpg')
         ->and(PublicStorageUrl::resolve('#'))->toBeNull();
 });
