@@ -2,7 +2,6 @@
 
 namespace App\Support;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PublicStorageUrl
@@ -30,10 +29,10 @@ class PublicStorageUrl
         $path = self::normalizeStoragePath($path);
 
         if (Str::startsWith($path, ['storage/', 'image/'])) {
-            return asset($path);
+            return '/'.ltrim($path, '/');
         }
 
-        return Storage::disk('public')->url($path);
+        return '/storage/'.ltrim($path, '/');
     }
 
     private static function normalizeStoragePath(string $path): string

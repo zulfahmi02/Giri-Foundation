@@ -101,8 +101,24 @@ test('team member exposes a public photo url for uploaded and legacy image paths
         'photo_url' => '/image/logo.png',
     ]);
 
-    expect($uploadedPhotoMember->public_photo_url)->toBe(Storage::disk('public')->url('team-members/anggota-tim.jpg'))
+    expect($uploadedPhotoMember->public_photo_url)->toBe('/storage/team-members/anggota-tim.jpg')
         ->and($legacyPhotoMember->public_photo_url)->toBe('/image/logo.png');
+});
+
+test('about page renders uploaded team member photos from public storage', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    TeamMember::query()
+        ->where('structure_slot', TeamMemberStructureSlots::Director)
+        ->firstOrFail()
+        ->update([
+            'photo_url' => 'team-members/direktur.jpg',
+        ]);
+
+    $this->get(route('about'))
+        ->assertSuccessful()
+        ->assertSee('src="/storage/team-members/direktur.jpg"', false)
+        ->assertSee('Profil Personil');
 });
 
 test('admins can upload a team member photo from the create form', function () {
@@ -144,7 +160,7 @@ test('admins can upload a team member photo from the create form', function () {
         ->firstOrFail();
 
     expect($teamMember->photo_url)->toStartWith('team-members/')
-        ->and($teamMember->public_photo_url)->toContain('/storage/team-members/');
+        ->and($teamMember->public_photo_url)->toStartWith('/storage/team-members/');
 
     Storage::disk('public')->assertExists($teamMember->photo_url);
 });

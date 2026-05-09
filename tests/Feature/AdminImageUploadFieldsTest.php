@@ -33,7 +33,6 @@ use App\Support\PublicStorageUrl;
 use Filament\Forms\Components\FileUpload;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Storage;
 
 it('uses device file uploads for admin image fields', function (string $formClass, string $field, string $directory): void {
     $schema = $formClass::configure(Schema::make());
@@ -78,30 +77,30 @@ it('renders uploaded images as previews in admin detail pages', function (string
 ]);
 
 it('resolves uploaded image paths while preserving legacy urls', function (): void {
-    expect(PublicStorageUrl::resolve('programs/kegiatan.jpg'))->toBe(Storage::disk('public')->url('programs/kegiatan.jpg'))
+    expect(PublicStorageUrl::resolve('programs/kegiatan.jpg'))->toBe('/storage/programs/kegiatan.jpg')
         ->and(PublicStorageUrl::resolve('/image/logo.png'))->toBe('/image/logo.png')
-        ->and(PublicStorageUrl::resolve('image/logo.png'))->toBe(asset('image/logo.png'))
-        ->and(PublicStorageUrl::resolve('storage/partners/logo.png'))->toBe(asset('storage/partners/logo.png'))
+        ->and(PublicStorageUrl::resolve('image/logo.png'))->toBe('/image/logo.png')
+        ->and(PublicStorageUrl::resolve('storage/partners/logo.png'))->toBe('/storage/partners/logo.png')
         ->and(PublicStorageUrl::resolve('/storage/partners/logo.png'))->toBe('/storage/partners/logo.png')
-        ->and(PublicStorageUrl::resolve('public/programs/kegiatan.jpg'))->toBe(Storage::disk('public')->url('programs/kegiatan.jpg'))
-        ->and(PublicStorageUrl::resolve('storage/app/public/programs/kegiatan.jpg'))->toBe(Storage::disk('public')->url('programs/kegiatan.jpg'))
+        ->and(PublicStorageUrl::resolve('public/programs/kegiatan.jpg'))->toBe('/storage/programs/kegiatan.jpg')
+        ->and(PublicStorageUrl::resolve('storage/app/public/programs/kegiatan.jpg'))->toBe('/storage/programs/kegiatan.jpg')
         ->and(PublicStorageUrl::resolve('https://example.com/image.jpg'))->toBe('https://example.com/image.jpg')
         ->and(PublicStorageUrl::resolve('#'))->toBeNull();
 });
 
 it('exposes public image urls from content models', function (): void {
-    expect((new Program(['featured_image_url' => 'programs/unggulan.jpg']))->resolvedFeaturedImageUrl())->toBe(Storage::disk('public')->url('programs/unggulan.jpg'))
-        ->and((new Activity(['featured_image_url' => 'activities/foto.jpg']))->resolvedFeaturedImageUrl())->toBe(Storage::disk('public')->url('activities/foto.jpg'))
-        ->and((new Content(['featured_image_url' => 'contents/cerita.jpg']))->resolvedFeaturedImageUrl())->toBe(Storage::disk('public')->url('contents/cerita.jpg'))
-        ->and((new DonationCampaign(['banner_image_url' => 'donation-campaigns/banner.jpg']))->resolvedBannerImageUrl())->toBe(Storage::disk('public')->url('donation-campaigns/banner.jpg'))
-        ->and((new DonationUpdate(['image_url' => 'donation-updates/update.jpg']))->resolvedImageUrl())->toBe(Storage::disk('public')->url('donation-updates/update.jpg'))
-        ->and((new Partner(['logo_url' => 'partners/logo.jpg']))->resolvedLogoUrl())->toBe(Storage::disk('public')->url('partners/logo.jpg'))
-        ->and((new OrganizationProfile(['logo_url' => 'organization/logo.jpg']))->resolvedLogoUrl())->toBe(Storage::disk('public')->url('organization/logo.jpg'))
-        ->and((new OrganizationProfile(['favicon_url' => 'organization/favicon.png']))->resolvedFaviconUrl())->toBe(Storage::disk('public')->url('organization/favicon.png'))
-        ->and((new ProgramGallery(['file_url' => 'programs/gallery.jpg']))->resolvedFileUrl())->toBe(Storage::disk('public')->url('programs/gallery.jpg'))
-        ->and((new Document(['thumbnail_url' => 'documents/thumbnails/cover.jpg']))->resolvedThumbnailUrl())->toBe(Storage::disk('public')->url('documents/thumbnails/cover.jpg'))
+    expect((new Program(['featured_image_url' => 'programs/unggulan.jpg']))->resolvedFeaturedImageUrl())->toBe('/storage/programs/unggulan.jpg')
+        ->and((new Activity(['featured_image_url' => 'activities/foto.jpg']))->resolvedFeaturedImageUrl())->toBe('/storage/activities/foto.jpg')
+        ->and((new Content(['featured_image_url' => 'contents/cerita.jpg']))->resolvedFeaturedImageUrl())->toBe('/storage/contents/cerita.jpg')
+        ->and((new DonationCampaign(['banner_image_url' => 'donation-campaigns/banner.jpg']))->resolvedBannerImageUrl())->toBe('/storage/donation-campaigns/banner.jpg')
+        ->and((new DonationUpdate(['image_url' => 'donation-updates/update.jpg']))->resolvedImageUrl())->toBe('/storage/donation-updates/update.jpg')
+        ->and((new Partner(['logo_url' => 'partners/logo.jpg']))->resolvedLogoUrl())->toBe('/storage/partners/logo.jpg')
+        ->and((new OrganizationProfile(['logo_url' => 'organization/logo.jpg']))->resolvedLogoUrl())->toBe('/storage/organization/logo.jpg')
+        ->and((new OrganizationProfile(['favicon_url' => 'organization/favicon.png']))->resolvedFaviconUrl())->toBe('/storage/organization/favicon.png')
+        ->and((new ProgramGallery(['file_url' => 'programs/gallery.jpg']))->resolvedFileUrl())->toBe('/storage/programs/gallery.jpg')
+        ->and((new Document(['thumbnail_url' => 'documents/thumbnails/cover.jpg']))->resolvedThumbnailUrl())->toBe('/storage/documents/thumbnails/cover.jpg')
         ->and((new Video([
             'youtube_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             'thumbnail_url' => 'videos/thumb.jpg',
-        ]))->resolvedThumbnailUrl())->toBe(Storage::disk('public')->url('videos/thumb.jpg'));
+        ]))->resolvedThumbnailUrl())->toBe('/storage/videos/thumb.jpg');
 });

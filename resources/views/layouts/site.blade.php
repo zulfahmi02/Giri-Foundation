@@ -112,7 +112,7 @@
             ];
         @endphp
         <header class="sticky top-0 z-50 border-b border-[color:rgba(190,201,195,0.25)] bg-[color:rgba(252,249,248,0.84)] backdrop-blur-xl">
-            <nav class="mx-auto grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 sm:w-[88vw] md:grid-cols-[auto_1fr] md:gap-8 lg:gap-10 lg:px-10 xl:px-12">
+            <nav class="mx-auto grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 sm:w-[88vw] md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-8 lg:gap-10 lg:px-10 xl:px-12">
                 <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-4 justify-self-start">
                     <span class="overflow-hidden rounded-xl shadow-sm ring-1 ring-black/5">
                         <img src="{{ $logoUrl }}" alt="{{ $siteName }}" class="h-14 w-14 object-cover sm:h-16 sm:w-16">
@@ -138,6 +138,17 @@
                         @endforeach
                     </div>
                 </div>
+
+                <a
+                    href="{{ route('donate.show') }}"
+                    @class([
+                        'hidden rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] shadow-sm transition md:inline-flex md:items-center md:justify-center',
+                        'bg-[var(--primary)] text-white hover:bg-[var(--primary-soft)]' => ! request()->routeIs('donate.*'),
+                        'bg-[var(--secondary-soft)] text-[var(--primary)] ring-1 ring-[color:rgba(0,96,76,0.18)]' => request()->routeIs('donate.*'),
+                    ])
+                >
+                    Donasi
+                </a>
 
                 <details class="relative justify-self-end md:hidden" data-mobile-nav>
                     <summary class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl border border-[color:rgba(190,201,195,0.4)] bg-white/90 text-[var(--ink)] shadow-sm transition hover:border-[var(--primary)] hover:text-[var(--primary)]">
@@ -165,6 +176,18 @@
                                     <span class="material-symbols-outlined text-xl">north_east</span>
                                 </a>
                             @endforeach
+
+                            <a
+                                href="{{ route('donate.show') }}"
+                                @class([
+                                    'mt-3 flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold uppercase tracking-[0.14em] transition-colors',
+                                    'bg-[var(--primary)] text-white' => ! request()->routeIs('donate.*'),
+                                    'bg-[var(--secondary-soft)] text-[var(--primary)]' => request()->routeIs('donate.*'),
+                                ])
+                            >
+                                <span>Donasi</span>
+                                <span class="material-symbols-outlined text-xl">volunteer_activism</span>
+                            </a>
                         </div>
                     </div>
                 </details>
