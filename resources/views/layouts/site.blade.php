@@ -100,19 +100,19 @@
             }
         </style>
     </head>
-    <body class="bg-[var(--surface)] text-[var(--ink)]">
-        @php
-            $navigationLinks = [
-                ['label' => 'Beranda', 'route' => 'home', 'pattern' => 'home'],
-                ['label' => 'Program', 'route' => 'programs.index', 'pattern' => 'programs.*'],
-                ['label' => 'Media', 'route' => 'media.index', 'pattern' => 'media.*'],
-                ['label' => 'Publikasi', 'route' => 'publications.index', 'pattern' => ['publications.*', 'stories.*']],
-                ['label' => 'Tentang', 'route' => 'about', 'pattern' => 'about'],
-                ['label' => 'Kontak', 'route' => 'contact.show', 'pattern' => 'contact.*'],
-            ];
-        @endphp
-        <header class="sticky top-0 z-50 border-b border-[color:rgba(190,201,195,0.25)] bg-[color:rgba(252,249,248,0.84)] backdrop-blur-xl">
-            <nav class="mx-auto grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 sm:w-[88vw] md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-8 lg:gap-10 lg:px-10 xl:px-12">
+        <body class="bg-[var(--surface)] text-[var(--ink)]">
+            @php
+                $primaryNavigationLinks = [
+                    ['label' => 'Beranda', 'route' => 'home', 'pattern' => 'home'],
+                    ['label' => 'Program', 'route' => 'programs.index', 'pattern' => 'programs.*'],
+                    ['label' => 'Media', 'route' => 'media.index', 'pattern' => 'media.*'],
+                    ['label' => 'Publikasi', 'route' => 'publications.index', 'pattern' => ['publications.*', 'stories.*']],
+                    ['label' => 'Tentang', 'route' => 'about', 'pattern' => 'about'],
+                    ['label' => 'Kontak', 'route' => 'contact.show', 'pattern' => 'contact.*'],
+                ];
+            @endphp
+            <header class="sticky top-0 z-50 border-b border-[color:rgba(190,201,195,0.25)] bg-[color:rgba(252,249,248,0.84)] backdrop-blur-xl">
+                <nav class="mx-auto grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 sm:w-[88vw] md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-8 lg:gap-10 lg:px-10 xl:px-12">
                 <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-4 justify-self-start">
                     <span class="overflow-hidden rounded-xl shadow-sm ring-1 ring-black/5">
                         <img src="{{ $logoUrl }}" alt="{{ $siteName }}" class="h-14 w-14 object-cover sm:h-16 sm:w-16">
@@ -122,9 +122,9 @@
                     </span>
                 </a>
 
-                <div class="hidden min-w-0 md:flex md:justify-center">
+                <div class="hidden min-w-0 md:flex md:justify-center" data-desktop-nav-primary>
                     <div class="flex items-center justify-center gap-8 lg:gap-9 xl:gap-10">
-                        @foreach ($navigationLinks as $navigationLink)
+                        @foreach ($primaryNavigationLinks as $navigationLink)
                             <a
                                 href="{{ route($navigationLink['route']) }}"
                                 @class([
@@ -139,16 +139,20 @@
                     </div>
                 </div>
 
-                <a
-                    href="{{ route('donate.show') }}"
-                    @class([
-                        'hidden rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] shadow-sm transition md:inline-flex md:items-center md:justify-center',
-                        'bg-[var(--primary)] text-white hover:bg-[var(--primary-soft)]' => ! request()->routeIs('donate.*'),
-                        'bg-[var(--secondary-soft)] text-[var(--primary)] ring-1 ring-[color:rgba(0,96,76,0.18)]' => request()->routeIs('donate.*'),
-                    ])
-                >
-                    Donasi
-                </a>
+                <div class="hidden items-center justify-self-end md:flex md:gap-3" data-desktop-nav-secondary>
+                    <a
+                        href="{{ route('donate.show') }}"
+                        data-nav-donate-link
+                        @class([
+                            'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] ring-1 shadow-[0_18px_38px_rgba(0,96,76,0.22)] transition hover:-translate-y-0.5',
+                            'bg-[var(--primary)] text-white ring-[color:rgba(0,96,76,0.12)] hover:bg-[var(--primary-soft)] hover:shadow-[0_22px_44px_rgba(0,96,76,0.26)]' => ! request()->routeIs('donate.*'),
+                            'bg-[var(--secondary-soft)] text-[var(--primary)] ring-[color:rgba(0,96,76,0.18)] hover:bg-[color:rgba(200,234,220,0.9)]' => request()->routeIs('donate.*'),
+                        ])
+                    >
+                        <span>Donasi</span>
+                        <span class="material-symbols-outlined text-lg">volunteer_activism</span>
+                    </a>
+                </div>
 
                 <details class="relative justify-self-end md:hidden" data-mobile-nav>
                     <summary class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl border border-[color:rgba(190,201,195,0.4)] bg-white/90 text-[var(--ink)] shadow-sm transition hover:border-[var(--primary)] hover:text-[var(--primary)]">
@@ -163,7 +167,7 @@
                         </div>
 
                         <div class="px-3 py-3">
-                            @foreach ($navigationLinks as $navigationLink)
+                            @foreach ($primaryNavigationLinks as $navigationLink)
                                 <a
                                     href="{{ route($navigationLink['route']) }}"
                                     @class([

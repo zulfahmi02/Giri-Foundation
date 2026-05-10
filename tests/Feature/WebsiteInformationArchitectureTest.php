@@ -17,6 +17,10 @@ test('home page navigation uses the refreshed information architecture', functio
         ->assertSuccessful()
         ->assertSeeInOrder(['Beranda', 'Program', 'Media', 'Publikasi', 'Tentang', 'Kontak', 'Donasi'])
         ->assertSee(route('donate.show'), false)
+        ->assertSee('data-desktop-nav-primary', false)
+        ->assertSee('data-desktop-nav-secondary', false)
+        ->assertSee('data-nav-donate-link', false)
+        ->assertSee('shadow-[0_18px_38px_rgba(0,96,76,0.22)]', false)
         ->assertSee('Buka menu navigasi')
         ->assertSee('data-mobile-nav', false)
         ->assertDontSee('Cerita');
