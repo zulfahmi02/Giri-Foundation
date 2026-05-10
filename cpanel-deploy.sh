@@ -143,37 +143,16 @@ TXT
 }
 
 sync_public_storage() {
-    log "Linking public storage uploads into $WEB_ROOT/storage"
+    log "Syncing public storage uploads into $WEB_ROOT/storage"
 
-    mkdir -p "$APP_ROOT/storage/app/public" "$WEB_ROOT"
-
-    if [ -e "$WEB_ROOT/storage" ] && [ ! -L "$WEB_ROOT/storage" ]; then
-        log "Migrating existing public storage files into app storage"
-
-        if command -v rsync >/dev/null 2>&1; then
-            rsync -a "$WEB_ROOT/storage/" "$APP_ROOT/storage/app/public/" || true
-        else
-            find "$WEB_ROOT/storage" -mindepth 1 -maxdepth 1 -exec /bin/cp -Rn {} "$APP_ROOT/storage/app/public/" \; || true
-        fi
-
-        rm -rf "$WEB_ROOT/storage"
-    fi
-
-    if ln -sfn "$APP_ROOT/storage/app/public" "$WEB_ROOT/storage" 2>/dev/null; then
-        return
-    fi
-
-    log "Symlink unavailable, syncing public storage uploads into $WEB_ROOT/storage"
-
-    mkdir -p "$WEB_ROOT/storage"
+    mkdir -p "$APP_ROOT/storage/app/public" "$WEB_ROOT/storage"
 
     if command -v rsync >/dev/null 2>&1; then
         run rsync -a --delete "$APP_ROOT/storage/app/public/" "$WEB_ROOT/storage/"
-
         return
     fi
 
-    log "rsync not available, falling back to cp -R for storage uploads"
+    log "rsync not available, falling back to cp -R"
     find "$WEB_ROOT/storage" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
     find "$APP_ROOT/storage/app/public" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$WEB_ROOT/storage/" \;
 }
