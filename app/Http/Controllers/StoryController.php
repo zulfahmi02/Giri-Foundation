@@ -62,7 +62,7 @@ class StoryController extends Controller
     {
         abort_unless($content->type === 'story' && $content->status === 'published', 404);
 
-        $content->load(['category', 'author', 'tags', 'files']);
+        $content->load(['category', 'author', 'files']);
 
         $relatedStories = Content::query()
             ->published()

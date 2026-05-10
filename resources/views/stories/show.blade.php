@@ -20,9 +20,6 @@
 
         <div class="mt-12 flex flex-wrap items-center gap-6 text-sm text-[var(--ink-muted)]">
             <span>Oleh {{ $story->displayAuthorName() }}</span>
-            @foreach ($story->tags as $tag)
-                <span class="rounded-full bg-[var(--secondary-soft)] px-3 py-1 text-[var(--secondary-ink)]">{{ $tag->name }}</span>
-            @endforeach
         </div>
 
         <div class="editorial-prose mt-12 text-lg leading-9 text-[var(--ink)]">

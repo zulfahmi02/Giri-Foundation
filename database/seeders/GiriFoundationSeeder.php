@@ -16,7 +16,6 @@ use App\Models\Partner;
 use App\Models\Program;
 use App\Models\ProgramCategory;
 use App\Models\Role;
-use App\Models\Tag;
 use App\Models\TeamMember;
 use App\Models\User;
 use App\Models\Video;
@@ -563,15 +562,6 @@ class GiriFoundationSeeder extends Seeder
             $category['slug'] => ContentCategory::query()->updateOrCreate(['slug' => $category['slug']], $category),
         ]);
 
-        $tags = collect([
-            ['name' => 'AD/ART', 'slug' => 'adart'],
-            ['name' => 'Pemberdayaan', 'slug' => 'pemberdayaan'],
-            ['name' => 'Tata Kelola', 'slug' => 'tata-kelola'],
-            ['name' => 'Asah Asih Asuh', 'slug' => 'asah-asih-asuh'],
-        ])->mapWithKeys(fn (array $tag) => [
-            $tag['slug'] => Tag::query()->updateOrCreate(['slug' => $tag['slug']], $tag),
-        ]);
-
         foreach ([
             [
                 'slug' => 'yayasan-independen-pemberdayaan-masyarakat',
@@ -619,13 +609,7 @@ class GiriFoundationSeeder extends Seeder
                 'seo_description' => 'Prinsip independensi dan musyawarah mufakat dalam AD/ART GNS.',
             ],
         ] as $story) {
-            $content = Content::query()->updateOrCreate(['slug' => $story['slug']], $story);
-
-            $content->tags()->sync(match ($story['slug']) {
-                'asah-asih-asuh-sebagai-filosofi-gerak' => [$tags['asah-asih-asuh']->id, $tags['tata-kelola']->id],
-                'independensi-dan-musyawarah-mufakat' => [$tags['adart']->id, $tags['tata-kelola']->id],
-                default => [$tags['pemberdayaan']->id],
-            });
+            Content::query()->updateOrCreate(['slug' => $story['slug']], $story);
         }
 
         foreach ([

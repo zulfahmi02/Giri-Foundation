@@ -10,7 +10,6 @@ use App\Filament\Resources\OrganizationProfiles\Schemas\OrganizationProfileForm;
 use App\Filament\Resources\Partners\Schemas\PartnerForm;
 use App\Filament\Resources\ProgramCategories\Schemas\ProgramCategoryForm;
 use App\Filament\Resources\Programs\Schemas\ProgramForm;
-use App\Filament\Resources\Tags\Schemas\TagForm;
 use App\Filament\Resources\Videos\Schemas\VideoForm;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -30,7 +29,6 @@ it('makes admin slug fields automatic and read only', function (string $formClas
     'video' => [VideoForm::class],
     'content' => [ContentForm::class],
     'content category' => [ContentCategoryForm::class],
-    'tag' => [TagForm::class],
     'document' => [DocumentForm::class],
     'partner' => [PartnerForm::class],
     'division' => [DivisionForm::class],

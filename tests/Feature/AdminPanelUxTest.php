@@ -24,7 +24,6 @@ use App\Filament\Resources\ProgramCategories\ProgramCategoryResource;
 use App\Filament\Resources\Programs\ProgramResource;
 use App\Filament\Resources\Roles\RoleResource;
 use App\Filament\Resources\Settings\SettingResource;
-use App\Filament\Resources\Tags\TagResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Filament\Resources\Videos\VideoResource;
 use App\Models\MediaLibrary;
@@ -66,6 +65,9 @@ test('admin panel groups resources by website navbar clusters', function () {
             SystemCluster::class,
         ]);
 
+    expect($panel->getResources())
+        ->not->toContain('App\\Filament\\Resources\\Tags\\TagResource');
+
     expect(PageResource::getCluster())->toBe(HomeCluster::class)
         ->and(ProgramResource::getCluster())->toBe(ProgramsCluster::class)
         ->and(ActivityResource::getCluster())->toBe(MediaCluster::class)
@@ -85,7 +87,6 @@ test('admin cluster entry points prioritize primary client workflows', function 
         ->and(ContentResource::getNavigationSort())->toBe(10)
         ->and(DocumentResource::getNavigationSort())->toBe(20)
         ->and(ContentCategoryResource::getNavigationSort())->toBe(30)
-        ->and(TagResource::getNavigationSort())->toBe(40)
         ->and(UserResource::getNavigationSort())->toBe(10)
         ->and(RoleResource::getNavigationSort())->toBe(20)
         ->and(SettingResource::getNavigationSort())->toBe(30)
