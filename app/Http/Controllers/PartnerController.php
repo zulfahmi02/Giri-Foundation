@@ -20,7 +20,13 @@ class PartnerController extends Controller
             'partners:data',
             fn (): array => [
                 'partners' => Partner::query()->where('is_active', true)->orderBy('name')->get(),
-                'partnerPrograms' => Program::query()->published()->with(['category', 'partners'])->whereHas('partners')->take(3)->get(),
+                'partnerPrograms' => Program::query()
+                    ->published()
+                    ->with(['category', 'partners'])
+                    ->whereHas('partners')
+                    ->latest('published_at')
+                    ->take(3)
+                    ->get(),
             ],
             [FrontendCache::PartnersPage],
         );

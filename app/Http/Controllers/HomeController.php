@@ -20,7 +20,9 @@ class HomeController extends Controller
         $homePageData = FrontendCache::remember(
             'home:data',
             function (): array {
-                $profile = OrganizationProfile::query()->firstOrFail();
+                $profile = OrganizationProfile::query()
+                    ->oldest('id')
+                    ->firstOrFail();
 
                 return [
                     'profile' => $profile,

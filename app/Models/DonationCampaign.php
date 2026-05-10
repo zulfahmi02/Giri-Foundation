@@ -47,14 +47,45 @@ class DonationCampaign extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::saved(function (DonationCampaign $campaign): void {
+            if (! $campaign->is_featured || ! $campaign->isPublishedForFrontend()) {
+                return;
+            }
+
+            static::query()
+                ->whereKeyNot($campaign->id)
+                ->where('is_featured', true)
+                ->whereIn('status', ['active', 'completed'])
+                ->update(['is_featured' => false]);
+        });
+    }
+
     public function scopePublished(Builder $query): void
     {
         $query->whereIn('status', ['active', 'completed']);
     }
 
+    public function scopePreferredForFrontend(Builder $query): void
+    {
+        $query
+            ->published()
+            ->orderByDesc('is_featured')
+            ->orderByRaw("case when status = 'active' then 1 else 0 end desc")
+            ->orderByDesc('end_date')
+            ->orderByDesc('start_date')
+            ->orderByDesc('id');
+    }
+
     public function scopeFeatured(Builder $query): void
     {
         $query->where('is_featured', true);
+    }
+
+    public function isPublishedForFrontend(): bool
+    {
+        return in_array($this->status, ['active', 'completed'], true);
     }
 
     public function publisher(): BelongsTo

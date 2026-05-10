@@ -28,6 +28,7 @@ use App\Filament\Resources\Tags\TagResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Filament\Resources\Videos\VideoResource;
 use App\Models\MediaLibrary;
+use App\Models\OrganizationProfile;
 use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
@@ -203,4 +204,19 @@ test('technical media library resource is hidden but remains safe to access dire
     $this->actingAs($user)
         ->get((string) parse_url(MediaLibraryResource::getUrl(panel: 'admin'), PHP_URL_PATH))
         ->assertSuccessful();
+});
+
+test('organization profile resource keeps one primary record available', function () {
+    expect(OrganizationProfileResource::canCreate())->toBeTrue();
+
+    $primaryProfile = OrganizationProfile::factory()->create();
+
+    expect(OrganizationProfileResource::canCreate())->toBeFalse()
+        ->and(OrganizationProfileResource::canDeleteAny())->toBeFalse()
+        ->and(OrganizationProfileResource::canDelete($primaryProfile))->toBeFalse();
+
+    $secondaryProfile = OrganizationProfile::factory()->create();
+
+    expect(OrganizationProfileResource::canDeleteAny())->toBeTrue()
+        ->and(OrganizationProfileResource::canDelete($secondaryProfile))->toBeTrue();
 });

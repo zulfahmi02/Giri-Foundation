@@ -133,3 +133,41 @@ test('program form only shows active partners and can attach them to a program',
     expect($program->partners()->pluck('partners.id')->all())
         ->toEqualCanonicalizing([$activePartnerA->id, $activePartnerB->id]);
 });
+
+test('program form only offers draft and published status options', function () {
+    $editorRole = Role::query()->firstOrCreate(
+        ['name' => 'Editor'],
+        ['description' => 'Mengelola konten.'],
+    );
+
+    $editor = User::factory()->create([
+        'app_authentication_secret' => 'totp-secret',
+    ]);
+
+    $editor->roles()->sync([$editorRole->id]);
+
+    $this->actingAs($editor);
+
+    Livewire::test(CreateProgram::class)
+        ->assertFormFieldExists('status', function (Select $field): bool {
+            return $field->getOptions() === [
+                'draft' => 'Draft',
+                'published' => 'Terbit',
+            ];
+        });
+});
+
+test('legacy completed programs are normalized into archived public records when saved', function () {
+    $program = Program::query()->create([
+        'title' => 'Program Legacy Selesai',
+        'slug' => 'program-legacy-selesai',
+        'description' => 'Program lama yang masih memakai status selesai.',
+        'status' => 'completed',
+        'phase' => 'active',
+        'beneficiaries_count' => 10,
+    ]);
+
+    expect($program->fresh()->phase)->toBe('archived')
+        ->and($program->fresh()->published_at)->not->toBeNull()
+        ->and($program->fresh()->isVisibleOnFrontend())->toBeTrue();
+});

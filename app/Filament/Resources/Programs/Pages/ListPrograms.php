@@ -34,12 +34,17 @@ class ListPrograms extends ListRecords
             'upcoming' => Tab::make('Mendatang')
                 ->badge(Program::query()->where('status', 'published')->where('phase', 'upcoming')->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'published')->where('phase', 'upcoming')),
-            'completed' => Tab::make('Selesai')
-                ->badge(Program::query()->where('status', 'completed')->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'completed')),
             'archived' => Tab::make('Arsip')
-                ->badge(Program::query()->where('phase', 'archived')->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('phase', 'archived')),
+                ->badge(Program::query()->where(function (Builder $query): void {
+                    $query
+                        ->where('phase', 'archived')
+                        ->orWhereIn('status', ['completed', 'archived']);
+                })->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where(function (Builder $archivedQuery): void {
+                    $archivedQuery
+                        ->where('phase', 'archived')
+                        ->orWhereIn('status', ['completed', 'archived']);
+                })),
         ];
     }
 }

@@ -38,8 +38,12 @@ class ProgramForm
                     ->preload(),
                 Select::make('status')
                     ->required()
-                    ->options(AdminStateOptions::programStatuses())
-                    ->default('draft'),
+                    ->options([
+                        'draft' => AdminStateOptions::programStatuses()['draft'],
+                        'published' => AdminStateOptions::programStatuses()['published'],
+                    ])
+                    ->default('draft')
+                    ->helperText('Gunakan fase untuk menandai program aktif, mendatang, atau arsip publik.'),
                 Select::make('phase')
                     ->required()
                     ->options(AdminStateOptions::programPhases())

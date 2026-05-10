@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Documents\Schemas;
 
 use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
+use Closure;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -27,7 +28,28 @@ class DocumentForm
                     ->columnSpanFull(),
                 TextInput::make('file_url')
                     ->required()
-                    ->url()
+                    ->helperText('Gunakan URL lengkap atau path file publik seperti documents/arsip-dokumen.pdf.')
+                    ->rules([
+                        static function (string $attribute, mixed $value, Closure $fail): void {
+                            $fileReference = trim((string) $value);
+
+                            if ($fileReference === '' || $fileReference === '#') {
+                                $fail('Masukkan URL lengkap atau path file publik yang valid.');
+
+                                return;
+                            }
+
+                            if (filter_var($fileReference, FILTER_VALIDATE_URL) !== false) {
+                                return;
+                            }
+
+                            if (preg_match('/^\/?(?:storage\/)?[A-Za-z0-9][A-Za-z0-9_\/.\-]*$/', $fileReference) === 1) {
+                                return;
+                            }
+
+                            $fail('Gunakan URL lengkap atau path file publik seperti documents/arsip-dokumen.pdf.');
+                        },
+                    ])
                     ->columnSpanFull(),
                 FilamentImageUpload::make('thumbnail_url', 'documents/thumbnails', 'Gambar thumbnail'),
                 TextInput::make('file_type'),

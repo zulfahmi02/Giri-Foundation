@@ -62,12 +62,16 @@ class AppServiceProvider extends ServiceProvider
                 'site-shell:data',
                 fn (): array => rescue(
                     function (): array {
-                        $siteProfile = OrganizationProfile::query()->first();
+                        $siteProfile = OrganizationProfile::query()
+                            ->oldest('id')
+                            ->first();
 
                         return [
                             'siteProfile' => $siteProfile,
                             'siteSummary' => $siteProfile?->short_description ?? 'Lembaga independen yang fokus pada pemberdayaan masyarakat.',
-                            'donateCtaCampaign' => DonationCampaign::query()->published()->featured()->first(),
+                            'donateCtaCampaign' => DonationCampaign::query()
+                                ->preferredForFrontend()
+                                ->first(),
                             'footerPages' => Page::query()
                                 ->published()
                                 ->whereIn('slug', ['about', 'contact', 'media', 'publikasi'])

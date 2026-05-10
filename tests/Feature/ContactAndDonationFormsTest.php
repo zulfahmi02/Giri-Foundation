@@ -1,11 +1,30 @@
 <?php
 
+use App\Models\DonationCampaign;
 use App\Models\Role;
 use App\Models\User;
 use App\Support\Notifications\PublicSubmissionReceivedNotification;
 use Database\Seeders\GiriFoundationSeeder;
 use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\Queue;
+
+function createDonationCampaignForFormTest(array $overrides = []): DonationCampaign
+{
+    return DonationCampaign::query()->create([
+        'title' => $overrides['title'] ?? 'Kampanye Donasi '.fake()->unique()->numerify('###'),
+        'slug' => $overrides['slug'] ?? fake()->unique()->slug(),
+        'short_description' => $overrides['short_description'] ?? 'Ringkasan kampanye donasi untuk pengujian.',
+        'description' => $overrides['description'] ?? 'Deskripsi kampanye donasi untuk pengujian fallback dan unggulan.',
+        'target_amount' => $overrides['target_amount'] ?? 1000000,
+        'collected_amount' => $overrides['collected_amount'] ?? 250000,
+        'start_date' => $overrides['start_date'] ?? now()->subDay(),
+        'end_date' => $overrides['end_date'] ?? now()->addDays(30),
+        'banner_image_url' => $overrides['banner_image_url'] ?? '/image/logo.png',
+        'status' => $overrides['status'] ?? 'active',
+        'is_featured' => $overrides['is_featured'] ?? false,
+        'published_by' => $overrides['published_by'] ?? null,
+    ]);
+}
 
 test('contact form stores a message', function () {
     $this->seed(GiriFoundationSeeder::class);
@@ -37,6 +56,60 @@ test('contact form stores a message', function () {
             && $job->notification instanceof PublicSubmissionReceivedNotification
             && $job->notifiables->contains(fn ($notifiable): bool => $notifiable instanceof User && $notifiable->is($admin));
     });
+});
+
+test('donate page falls back to the newest active campaign when no featured campaign exists', function () {
+    createDonationCampaignForFormTest([
+        'title' => 'Kampanye Aktif Lama',
+        'slug' => 'kampanye-aktif-lama',
+        'start_date' => now()->subDays(14),
+        'end_date' => now()->addDays(14),
+        'status' => 'active',
+        'is_featured' => false,
+    ]);
+
+    $newestActiveCampaign = createDonationCampaignForFormTest([
+        'title' => 'Kampanye Aktif Terbaru',
+        'slug' => 'kampanye-aktif-terbaru',
+        'start_date' => now()->subDays(2),
+        'end_date' => now()->addDays(21),
+        'status' => 'active',
+        'is_featured' => false,
+    ]);
+
+    createDonationCampaignForFormTest([
+        'title' => 'Kampanye Selesai Terbaru',
+        'slug' => 'kampanye-selesai-terbaru',
+        'start_date' => now()->subDay(),
+        'end_date' => now()->addDay(),
+        'status' => 'completed',
+        'is_featured' => false,
+    ]);
+
+    $this->get(route('donate.show'))
+        ->assertSuccessful()
+        ->assertSee($newestActiveCampaign->title);
+});
+
+test('marking a published campaign as featured demotes the previous featured campaign', function () {
+    $previousFeaturedCampaign = createDonationCampaignForFormTest([
+        'title' => 'Kampanye Unggulan Lama',
+        'slug' => 'kampanye-unggulan-lama',
+        'is_featured' => true,
+    ]);
+
+    $replacementCampaign = createDonationCampaignForFormTest([
+        'title' => 'Kampanye Unggulan Baru',
+        'slug' => 'kampanye-unggulan-baru',
+        'is_featured' => false,
+    ]);
+
+    $replacementCampaign->update([
+        'is_featured' => true,
+    ]);
+
+    expect($previousFeaturedCampaign->fresh()->is_featured)->toBeFalse()
+        ->and($replacementCampaign->fresh()->is_featured)->toBeTrue();
 });
 
 test('partnership inquiry stores a record', function () {
@@ -214,7 +287,7 @@ test('contact page renders form feedback and centered contact cards', function (
         ])
         ->assertSuccessful()
         ->assertSee('Mohon periksa kembali form kontak Anda.')
-        ->assertSee('The email field must be a valid email address.')
+        ->assertSee('Kolom email harus berupa alamat email yang valid.')
         ->assertSee('data-submit-feedback-form', false)
         ->assertSee('data-submit-feedback-button', false)
         ->assertSee('Kirim Pesan')

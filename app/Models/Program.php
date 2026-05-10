@@ -61,15 +61,23 @@ class Program extends Model
     protected static function booted(): void
     {
         static::saving(function (Program $program): void {
-            if ($program->status === 'published' && blank($program->published_at)) {
+            if (in_array($program->status, ['completed', 'archived'], true)) {
+                $program->phase = 'archived';
+            }
+
+            if (in_array($program->status, ['published', 'completed', 'archived'], true) && blank($program->published_at)) {
                 $program->published_at = now();
+            }
+
+            if ($program->status === 'draft') {
+                $program->published_at = null;
             }
         });
     }
 
     public function scopePublished(Builder $query): void
     {
-        $query->where('status', 'published')->whereNotNull('published_at');
+        $query->whereIn('status', ['published', 'completed', 'archived'])->whereNotNull('published_at');
     }
 
     public function scopeFeatured(Builder $query): void
@@ -110,6 +118,12 @@ class Program extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function isVisibleOnFrontend(): bool
+    {
+        return in_array($this->status, ['published', 'completed', 'archived'], true)
+            && $this->published_at !== null;
     }
 
     public function resolvedFeaturedImageUrl(): ?string

@@ -20,7 +20,13 @@ class DocumentController extends Controller
 
         $categories = FrontendCache::remember(
             'resources:categories',
-            fn () => Document::query()->select('category')->distinct()->whereNotNull('category')->pluck('category'),
+            fn () => Document::query()
+                ->publiclyAvailable()
+                ->select('category')
+                ->whereNotNull('category')
+                ->orderBy('category')
+                ->distinct()
+                ->pluck('category'),
             [FrontendCache::ResourcesPage],
         );
 
@@ -51,15 +57,17 @@ class DocumentController extends Controller
     {
         abort_unless($document->isPublishedPublicly(), Response::HTTP_NOT_FOUND);
 
-        $document->increment('download_count');
-
         if ($document->isExternalFile()) {
+            $document->increment('download_count');
+
             return redirect()->away($document->file_url);
         }
 
         $downloadablePath = $document->downloadablePath();
 
         abort_unless($downloadablePath !== null, Response::HTTP_NOT_FOUND);
+
+        $document->increment('download_count');
 
         return response()->download($downloadablePath, $document->downloadFilename());
     }

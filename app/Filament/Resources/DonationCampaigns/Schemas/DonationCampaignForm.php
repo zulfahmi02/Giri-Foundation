@@ -45,7 +45,8 @@ class DonationCampaignForm
                     ->default('draft'),
                 Toggle::make('is_featured')
                     ->required()
-                    ->default(false),
+                    ->default(false)
+                    ->helperText('Kampanye publik yang ditandai unggulan akan menggantikan unggulan sebelumnya secara otomatis.'),
                 Select::make('published_by')
                     ->relationship('publisher', 'name')
                     ->searchable()

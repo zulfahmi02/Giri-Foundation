@@ -17,8 +17,16 @@ class OrganizationProfileFactory extends Factory
      */
     public function definition(): array
     {
+        $foundationName = 'GIRI Foundation '.fake()->unique()->word();
+
         return [
-            //
+            'name' => $foundationName,
+            'slug' => fake()->unique()->slug(),
+            'short_description' => 'Yayasan independen yang fokus pada pemberdayaan masyarakat.',
+            'full_description' => 'Profil organisasi untuk kebutuhan pengujian resource admin dan konsistensi frontend.',
+            'vision' => 'Mewujudkan lembaga yang tangguh dan bermanfaat bagi masyarakat.',
+            'mission' => 'Mendukung kolaborasi, riset, dan program pemberdayaan yang terukur.',
+            'values' => 'Integritas, kolaborasi, keberlanjutan.',
         ];
     }
 }

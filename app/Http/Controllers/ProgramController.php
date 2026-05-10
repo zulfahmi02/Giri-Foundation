@@ -16,7 +16,7 @@ class ProgramController extends Controller
             'activePrograms' => Program::query()
                 ->published()
                 ->inPhase('active')
-                ->with(['category', 'partners'])
+                ->with('category')
                 ->doesntHave('partners')
                 ->latest('published_at')
                 ->simplePaginate(6, pageName: 'active_page')
@@ -49,7 +49,7 @@ class ProgramController extends Controller
 
     public function show(Program $program): View
     {
-        abort_unless($program->status === 'published', 404);
+        abort_unless($program->isVisibleOnFrontend(), 404);
 
         $program->load([
             'category',
@@ -64,6 +64,7 @@ class ProgramController extends Controller
             ->with('category')
             ->whereKeyNot($program->id)
             ->when($program->category, fn ($query) => $query->where('category_id', $program->category_id))
+            ->latest('published_at')
             ->take(3)
             ->get();
 

@@ -70,6 +70,11 @@ class Document extends Model
         return filter_var($this->file_url, FILTER_VALIDATE_URL) !== false;
     }
 
+    public function hasDownloadableFile(): bool
+    {
+        return $this->isExternalFile() || $this->downloadablePath() !== null;
+    }
+
     public function downloadablePath(): ?string
     {
         $fileUrl = trim($this->file_url);

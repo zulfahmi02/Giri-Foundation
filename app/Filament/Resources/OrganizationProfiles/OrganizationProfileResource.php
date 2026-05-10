@@ -59,6 +59,21 @@ class OrganizationProfileResource extends Resource
         ];
     }
 
+    public static function canCreate(): bool
+    {
+        return OrganizationProfile::query()->count() === 0;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return OrganizationProfile::query()->count() > 1;
+    }
+
+    public static function canDelete($record): bool
+    {
+        return OrganizationProfile::query()->count() > 1;
+    }
+
     public static function getPages(): array
     {
         return [

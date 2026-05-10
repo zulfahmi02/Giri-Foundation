@@ -22,7 +22,7 @@ class DonationController extends Controller
         $donatePageData = FrontendCache::remember(
             'donate:data',
             fn (): array => [
-                'campaign' => DonationCampaign::query()->published()->featured()->with('updates')->firstOrFail(),
+                'campaign' => DonationCampaign::query()->with('updates')->preferredForFrontend()->firstOrFail(),
                 'documents' => Document::query()->publiclyAvailable()->latest('published_at')->take(3)->get(),
             ],
             [FrontendCache::DonatePage],
@@ -36,7 +36,7 @@ class DonationController extends Controller
 
     public function store(StoreDonationRequest $request, PublicSubmissionNotifier $notifier): RedirectResponse
     {
-        $campaign = DonationCampaign::query()->published()->featured()->firstOrFail();
+        $campaign = DonationCampaign::query()->preferredForFrontend()->firstOrFail();
         $validated = $request->validated();
 
         $donation = DB::transaction(function () use ($campaign, $validated): Donation {
@@ -52,7 +52,7 @@ class DonationController extends Controller
             return Donation::query()->create([
                 'campaign_id' => $campaign->id,
                 'donor_id' => $donor->id,
-                'invoice_number' => 'DON-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4)),
+                'invoice_number' => 'DON-'.now()->format('YmdHis').'-'.Str::upper(Str::random(4)),
                 'amount' => $validated['amount'],
                 'payment_method' => $validated['payment_method'],
                 'payment_channel' => $validated['payment_channel'] ?? null,

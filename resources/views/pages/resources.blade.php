@@ -53,13 +53,19 @@
                             <p class="font-semibold text-[var(--primary)]">{{ $document->file_type }}</p>
                             <p class="mt-1">{{ number_format((int) $document->download_count, 0, ',', '.') }} unduhan</p>
                             <p class="mt-1">{{ optional($document->published_at)->translatedFormat('d F Y') }}</p>
-                            <a
-                                href="{{ route('resources.download', $document) }}"
-                                class="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
-                            >
-                                Unduh Dokumen
-                                <span class="material-symbols-outlined text-base">download</span>
-                            </a>
+                            @if ($document->hasDownloadableFile())
+                                <a
+                                    href="{{ route('resources.download', $document) }}"
+                                    class="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
+                                >
+                                    Unduh Dokumen
+                                    <span class="material-symbols-outlined text-base">download</span>
+                                </a>
+                            @else
+                                <p class="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+                                    Berkas segera tersedia
+                                </p>
+                            @endif
                         </div>
                     </div>
                 </article>
