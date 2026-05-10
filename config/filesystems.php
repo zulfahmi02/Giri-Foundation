@@ -39,12 +39,12 @@ return [
         ],
 
         'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
+        'driver' => 'local',
+        'root' => '/home/girh8416/public_html/storage',
+        'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+        'visibility' => 'public',
+        'throw' => false,
+        'report' => false,
         ],
 
         's3' => [
