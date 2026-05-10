@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DonationController;
@@ -25,6 +26,7 @@ Route::get('/publikasi', [PublicationController::class, 'index'])->name('publica
 Route::get('/stories', [StoryController::class, 'index'])->name('stories.index');
 Route::get('/stories/{content}', [StoryController::class, 'show'])->name('stories.show');
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
+Route::get('/consultation', [ConsultationController::class, 'show'])->name('consultation.show');
 Route::get('/donate', [DonationController::class, 'show'])->name('donate.show');
 Route::get('/resources', [DocumentController::class, 'index'])->name('resources.index');
 Route::get('/resources/{document:slug}/download', [DocumentController::class, 'download'])->name('resources.download');
@@ -32,6 +34,7 @@ Route::get('/partners', [PartnerController::class, 'index'])->name('partners.ind
 
 Route::middleware('throttle:public-form-submissions')->group(function (): void {
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+    Route::post('/consultation', [ConsultationController::class, 'store'])->name('consultation.store');
     Route::post('/donate', [DonationController::class, 'store'])->name('donate.store');
     Route::post('/partners/inquiries', [PartnerController::class, 'store'])->name('partners.store');
 });

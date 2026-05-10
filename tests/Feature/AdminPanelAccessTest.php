@@ -1,13 +1,28 @@
 <?php
 
+use App\Filament\Resources\Activities\ActivityResource;
 use App\Filament\Resources\ActivityLogs\ActivityLogResource;
+use App\Filament\Resources\Consultations\ConsultationResource;
+use App\Filament\Resources\ContactMessages\ContactMessageResource;
+use App\Filament\Resources\ContentCategories\ContentCategoryResource;
+use App\Filament\Resources\Contents\ContentResource;
 use App\Filament\Resources\Divisions\DivisionResource;
+use App\Filament\Resources\Documents\DocumentResource;
 use App\Filament\Resources\DonationCampaigns\DonationCampaignResource;
 use App\Filament\Resources\Donations\DonationResource;
 use App\Filament\Resources\DonationUpdates\DonationUpdateResource;
 use App\Filament\Resources\Donors\DonorResource;
+use App\Filament\Resources\MediaLibraries\MediaLibraryResource;
+use App\Filament\Resources\OrganizationProfiles\OrganizationProfileResource;
+use App\Filament\Resources\OrganizationStats\OrganizationStatResource;
+use App\Filament\Resources\Pages\PageResource;
+use App\Filament\Resources\Partners\PartnerResource;
+use App\Filament\Resources\PartnershipInquiries\PartnershipInquiryResource;
+use App\Filament\Resources\ProgramCategories\ProgramCategoryResource;
+use App\Filament\Resources\Programs\ProgramResource;
 use App\Filament\Resources\Roles\RoleResource;
 use App\Filament\Resources\Settings\SettingResource;
+use App\Filament\Resources\TeamMembers\TeamMemberResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Filament\Resources\Videos\VideoResource;
 use App\Models\Role;
@@ -100,15 +115,27 @@ test('configured bootstrap admin is required to set up multi factor authenticati
         ->assertRedirect(Filament::getPanel('admin')->getSetUpRequiredMultiFactorAuthenticationUrl());
 });
 
-test('editor can access content resources in the admin panel', function (string $resourceClass) {
+test('editor can access editorial and operational resources in the admin panel', function (string $resourceClass) {
     $user = createPanelUserWithRole('Editor');
 
     $this->actingAs($user)
         ->get(adminPanelPathForResource($resourceClass))
         ->assertSuccessful();
 })->with([
+    [ActivityResource::class],
+    [ContactMessageResource::class],
+    [ConsultationResource::class],
+    [ContentCategoryResource::class],
+    [ContentResource::class],
     [VideoResource::class],
     [DivisionResource::class],
+    [DocumentResource::class],
+    [OrganizationProfileResource::class],
+    [PartnerResource::class],
+    [PartnershipInquiryResource::class],
+    [ProgramCategoryResource::class],
+    [ProgramResource::class],
+    [TeamMemberResource::class],
 ]);
 
 test('inactive users are forbidden from the admin panel', function () {
@@ -132,6 +159,9 @@ test('editors are forbidden from admin only resources', function (string $resour
     [RoleResource::class],
     [SettingResource::class],
     [ActivityLogResource::class],
+    [PageResource::class],
+    [MediaLibraryResource::class],
+    [OrganizationStatResource::class],
     [DonationResource::class],
     [DonorResource::class],
     [DonationCampaignResource::class],
@@ -149,6 +179,9 @@ test('admins can access restricted admin resources', function (string $resourceC
     [RoleResource::class],
     [SettingResource::class],
     [ActivityLogResource::class],
+    [PageResource::class],
+    [MediaLibraryResource::class],
+    [OrganizationStatResource::class],
     [DonationResource::class],
     [DonorResource::class],
     [DonationCampaignResource::class],

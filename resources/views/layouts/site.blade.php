@@ -108,7 +108,7 @@
                     ['label' => 'Media', 'route' => 'media.index', 'pattern' => 'media.*'],
                     ['label' => 'Publikasi', 'route' => 'publications.index', 'pattern' => ['publications.*', 'stories.*']],
                     ['label' => 'Tentang', 'route' => 'about', 'pattern' => 'about'],
-                    ['label' => 'Kontak', 'route' => 'contact.show', 'pattern' => 'contact.*'],
+                    ['label' => 'Kontak', 'route' => 'contact.show', 'pattern' => ['contact.*', 'consultation.*', 'partners.*']],
                 ];
             @endphp
             <header class="sticky top-0 z-50 border-b border-[color:rgba(190,201,195,0.25)] bg-[color:rgba(252,249,248,0.84)] backdrop-blur-xl">
@@ -238,6 +238,8 @@
                     <div class="space-y-4 text-sm text-[var(--ink-muted)]">
                         <a href="{{ route('about') }}" class="block transition hover:text-[var(--primary)]">Tentang</a>
                         <a href="{{ route('contact.show') }}" class="block transition hover:text-[var(--primary)]">Kontak</a>
+                        <a href="{{ route('consultation.show') }}" class="block transition hover:text-[var(--primary)]">Konsultasi</a>
+                        <a href="{{ route('partners.index') }}" class="block transition hover:text-[var(--primary)]">Kemitraan</a>
                         <a href="{{ route('donate.show') }}" class="block transition hover:text-[var(--primary)]">Donasi</a>
                     </div>
                 </div>

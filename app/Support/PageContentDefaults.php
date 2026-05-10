@@ -225,6 +225,32 @@ class PageContentDefaults
                     ],
                 ],
             ],
+            'consultation' => [
+                'title' => 'Konsultasi',
+                'template' => 'consultation',
+                'seo_title' => 'Konsultasi Yayasan Giri Nusantara Sejahtera',
+                'seo_description' => 'Ajukan konsultasi kepada GNS untuk pendampingan, penajaman gagasan, atau percakapan awal program.',
+                'hero_data' => [
+                    'kicker' => 'Konsultasi',
+                    'title_prefix' => 'Ajukan',
+                    'highlight' => 'konsultasi',
+                    'title_suffix' => 'yang lebih terarah.',
+                    'body' => 'Gunakan jalur ini untuk konsultasi program, pendampingan, diskusi awal, atau kebutuhan yang memerlukan percakapan lebih mendalam dengan tim yayasan.',
+                ],
+                'section_data' => [
+                    'details' => [
+                        'kicker' => 'Kapan Menggunakan Jalur Ini',
+                        'title' => 'Konsultasi cocok untuk percakapan yang butuh konteks dan tindak lanjut.',
+                    ],
+                    'form' => [
+                        'title' => 'Ajukan konsultasi kepada tim kami.',
+                    ],
+                    'channels' => [
+                        'kicker' => 'Kanal Respons',
+                        'title' => 'Pilih cara kami menghubungi Anda kembali.',
+                    ],
+                ],
+            ],
             'donate' => [
                 'title' => 'Donasi',
                 'template' => 'donate',

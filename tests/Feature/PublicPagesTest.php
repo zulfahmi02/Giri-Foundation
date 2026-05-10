@@ -16,6 +16,7 @@ test('public pages render successfully', function (string $uri, string $visibleT
     ['/publikasi', 'Naskah dan ringkasan kelembagaan.'],
     ['/stories', 'Lebih Banyak Dari Arsip'],
     ['/contact', 'Kirim Pesan'],
+    ['/consultation', 'Preferensi Kontak'],
     ['/donate', 'Catat Niat Donasi'],
     ['/resources', 'Saring Dokumen'],
     ['/partners', 'Mulai percakapan kemitraan.'],

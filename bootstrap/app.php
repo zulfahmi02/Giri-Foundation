@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (ThrottleRequestsException $exception, Request $request) {
             $redirectRoute = match ($request->route()?->getName()) {
                 'contact.store' => 'contact.show',
+                'consultation.store' => 'consultation.show',
                 'donate.store' => 'donate.show',
                 'partners.store' => 'partners.index',
                 default => null,

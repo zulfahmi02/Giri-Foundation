@@ -108,6 +108,7 @@ class Page extends Model
             'publikasi' => route('publications.index'),
             'stories' => route('stories.index'),
             'contact' => route('contact.show'),
+            'consultation' => route('consultation.show'),
             'donate' => route('donate.show'),
             'resources' => route('resources.index'),
             'partners' => route('partners.index'),

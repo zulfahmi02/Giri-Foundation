@@ -2,9 +2,11 @@
 
 namespace App\Support;
 
+use App\Filament\Resources\Consultations\ConsultationResource;
 use App\Filament\Resources\ContactMessages\ContactMessageResource;
 use App\Filament\Resources\Donations\DonationResource;
 use App\Filament\Resources\PartnershipInquiries\PartnershipInquiryResource;
+use App\Models\Consultation;
 use App\Models\ContactMessage;
 use App\Models\Donation;
 use App\Models\PartnershipInquiry;
@@ -41,6 +43,19 @@ class PublicSubmissionNotifier
         ));
     }
 
+    public function sendConsultation(Consultation $consultation): void
+    {
+        $this->send(new PublicSubmissionReceivedNotification(
+            subjectLine: 'Permintaan konsultasi baru diterima',
+            headline: "Permintaan konsultasi baru dari {$consultation->name}.",
+            details: [
+                "Subjek: {$consultation->subject}",
+                "Kanal pilihan: {$consultation->preferred_contact_channel}",
+            ],
+            reviewUrl: ConsultationResource::getUrl('view', ['record' => $consultation]),
+        ));
+    }
+
     public function sendDonationIntent(Donation $donation): void
     {
         $donation->loadMissing(['campaign', 'donor']);
@@ -60,8 +75,8 @@ class PublicSubmissionNotifier
             headline: "Minat donasi baru dari {$donorName}.",
             details: [
                 "Nominal: {$formattedAmount}",
-                'Metode pembayaran: ' . Str::headline($donation->payment_method),
-                'Kampanye: ' . ($donation->campaign?->title ?? 'Tanpa kampanye'),
+                'Metode pembayaran: '.Str::headline($donation->payment_method),
+                'Kampanye: '.($donation->campaign?->title ?? 'Tanpa kampanye'),
             ],
             reviewUrl: DonationResource::getUrl('view', ['record' => $donation]),
         ));

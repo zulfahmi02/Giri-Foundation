@@ -12,7 +12,7 @@ test('home page exposes verification, canonical, and structured data metadata', 
     $this->get('/')
         ->assertSuccessful()
         ->assertSee('name="google-site-verification" content="gsc-verification-token"', false)
-        ->assertSee('<link rel="canonical" href="' . route('home') . '">', false)
+        ->assertSee('<link rel="canonical" href="'.route('home').'">', false)
         ->assertSee('property="og:type" content="website"', false)
         ->assertSee('"@type":"Organization"', false)
         ->assertSee('"@type":"WebSite"', false);
@@ -24,7 +24,7 @@ test('resource search pages are marked as noindex', function () {
     $this->get('/resources?search=etik')
         ->assertSuccessful()
         ->assertSee('name="robots" content="noindex,follow"', false)
-        ->assertSee('<link rel="canonical" href="' . route('resources.index') . '">', false);
+        ->assertSee('<link rel="canonical" href="'.route('resources.index').'">', false);
 });
 
 test('story detail pages expose article metadata', function () {
@@ -77,6 +77,7 @@ test('sitemap xml includes canonical public URLs', function () {
         ->assertSee('<?xml version="1.0" encoding="UTF-8"?>', false)
         ->assertSee(route('home'), false)
         ->assertSee(route('about'), false)
+        ->assertSee(route('consultation.show'), false)
         ->assertSee(route('programs.show', $program), false)
         ->assertSee(route('stories.show', $story), false)
         ->assertDontSee('/admin', false);
@@ -88,5 +89,5 @@ test('robots txt blocks the admin panel and references the sitemap', function ()
         ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
         ->assertSee('User-agent: *')
         ->assertSee('Disallow: /admin')
-        ->assertSee('Sitemap: ' . route('sitemap'));
+        ->assertSee('Sitemap: '.route('sitemap'));
 });

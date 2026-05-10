@@ -185,6 +185,8 @@ class SeoData
             $breadcrumbs[] = ['label' => $story->displayTitle(), 'url' => route('stories.show', $story)];
         } elseif ($request->routeIs('contact.show')) {
             $breadcrumbs[] = ['label' => 'Kontak', 'url' => route('contact.show')];
+        } elseif ($request->routeIs('consultation.show')) {
+            $breadcrumbs[] = ['label' => 'Konsultasi', 'url' => route('consultation.show')];
         } elseif ($request->routeIs('donate.show')) {
             $breadcrumbs[] = ['label' => 'Donasi', 'url' => route('donate.show')];
         } elseif ($request->routeIs('resources.index')) {

@@ -144,6 +144,39 @@ test('partnership inquiry stores a record', function () {
     });
 });
 
+test('consultation form stores a record', function () {
+    $this->seed(GiriFoundationSeeder::class);
+    Queue::fake();
+
+    $admin = User::factory()->create([
+        'email' => 'admin-consultation@example.com',
+        'status' => 'active',
+    ]);
+    $admin->roles()->sync([Role::query()->where('name', 'Admin')->value('id')]);
+
+    $this->post(route('consultation.store'), [
+        'name' => 'Nadira Putri',
+        'email' => 'nadira@example.com',
+        'phone' => '+62 812 4000 5000',
+        'subject' => 'Need mentoring for a village literacy program',
+        'preferred_contact_channel' => 'whatsapp',
+        'message' => 'Kami ingin mendiskusikan pendampingan awal untuk merancang program literasi desa yang realistis dan sesuai kapasitas tim lokal.',
+    ])->assertRedirect(route('consultation.show'));
+
+    $this->assertDatabaseHas('consultations', [
+        'email' => 'nadira@example.com',
+        'preferred_contact_channel' => 'whatsapp',
+        'status' => 'new',
+    ]);
+
+    Queue::assertPushed(SendQueuedNotifications::class, function (SendQueuedNotifications $job) use ($admin): bool {
+        return $job->connection === 'background'
+            && $job->afterCommit === true
+            && $job->notification instanceof PublicSubmissionReceivedNotification
+            && $job->notifiables->contains(fn ($notifiable): bool => $notifiable instanceof User && $notifiable->is($admin));
+    });
+});
+
 test('donation form stores donor and donation intent', function () {
     $this->seed(GiriFoundationSeeder::class);
     Queue::fake();
@@ -240,6 +273,35 @@ test('partnership inquiry form is rate limited after five submissions per minute
         ->assertSessionHasErrors(['form']);
 });
 
+test('consultation form is rate limited after five submissions per minute', function () {
+    $this->seed(GiriFoundationSeeder::class);
+    Queue::fake();
+
+    for ($attempt = 1; $attempt <= 5; $attempt++) {
+        $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.14'])
+            ->post(route('consultation.store'), [
+                'name' => 'Nadira Putri',
+                'email' => "nadira{$attempt}@example.com",
+                'phone' => '+62 812 4000 5000',
+                'subject' => "Konsultasi program {$attempt}",
+                'preferred_contact_channel' => 'email',
+                'message' => 'Kami ingin mendiskusikan pendampingan awal untuk merancang program literasi desa yang realistis dan sesuai kapasitas tim lokal.',
+            ])->assertRedirect(route('consultation.show'));
+    }
+
+    $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.14'])
+        ->post(route('consultation.store'), [
+            'name' => 'Nadira Putri',
+            'email' => 'nadira-over-limit@example.com',
+            'phone' => '+62 812 4000 5000',
+            'subject' => 'Konsultasi program over limit',
+            'preferred_contact_channel' => 'email',
+            'message' => 'Kami ingin mendiskusikan pendampingan awal untuk merancang program literasi desa yang realistis dan sesuai kapasitas tim lokal.',
+        ])
+        ->assertRedirect(route('consultation.show'))
+        ->assertSessionHasErrors(['form']);
+});
+
 test('donation form is rate limited after five submissions per minute', function () {
     $this->seed(GiriFoundationSeeder::class);
     Queue::fake();
@@ -291,6 +353,11 @@ test('contact page renders form feedback and centered contact cards', function (
         ->assertSee('data-submit-feedback-form', false)
         ->assertSee('data-submit-feedback-button', false)
         ->assertSee('Kirim Pesan')
+        ->assertSee('Kontak Umum')
+        ->assertSee('Konsultasi')
+        ->assertSee('Kemitraan')
+        ->assertSee(route('consultation.show'), false)
+        ->assertSee(route('partners.index'), false)
         ->assertSee('Mengirim...')
         ->assertSee('animate-spin', false)
         ->assertSee('justify-items-center gap-8 px-6 md:grid-cols-2 lg:grid-cols-3', false)

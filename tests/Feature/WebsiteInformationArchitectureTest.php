@@ -169,6 +169,7 @@ test('legacy public routes remain reachable', function (string $uri) {
     '/stories',
     '/resources',
     '/partners',
+    '/consultation',
     '/donate',
 ]);
 

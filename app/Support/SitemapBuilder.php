@@ -61,6 +61,7 @@ class SitemapBuilder
             ['route' => 'publications.index', 'slug' => 'publikasi'],
             ['route' => 'stories.index', 'slug' => 'stories'],
             ['route' => 'contact.show', 'slug' => 'contact'],
+            ['route' => 'consultation.show', 'slug' => 'consultation'],
             ['route' => 'donate.show', 'slug' => 'donate'],
             ['route' => 'resources.index', 'slug' => 'resources'],
             ['route' => 'partners.index', 'slug' => 'partners'],
