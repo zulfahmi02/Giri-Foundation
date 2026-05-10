@@ -16,7 +16,7 @@ class ProgramController extends Controller
             'activePrograms' => Program::query()
                 ->published()
                 ->inPhase('active')
-                ->with('category')
+                ->with(['category', 'partners'])
                 ->doesntHave('partners')
                 ->latest('published_at')
                 ->simplePaginate(6, pageName: 'active_page')

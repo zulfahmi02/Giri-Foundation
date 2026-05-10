@@ -220,3 +220,18 @@ test('organization profile resource keeps one primary record available', functio
     expect(OrganizationProfileResource::canDeleteAny())->toBeTrue()
         ->and(OrganizationProfileResource::canDelete($secondaryProfile))->toBeTrue();
 });
+
+test('organization profile create route redirects to the primary record when it already exists', function () {
+    $user = createPanelUserForUxTest('Admin');
+    $primaryProfile = OrganizationProfile::factory()->create();
+
+    $this->actingAs($user)
+        ->get((string) parse_url(OrganizationProfileResource::getUrl('create', panel: 'admin'), PHP_URL_PATH))
+        ->assertRedirect((string) parse_url(OrganizationProfileResource::getUrl('edit', ['record' => $primaryProfile], panel: 'admin'), PHP_URL_PATH));
+
+    $this->actingAs($user)
+        ->get((string) parse_url(OrganizationProfileResource::getUrl(panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertSee('Edit Profil Yayasan')
+        ->assertDontSee((string) parse_url(OrganizationProfileResource::getUrl('create', panel: 'admin'), PHP_URL_PATH));
+});

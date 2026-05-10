@@ -52,11 +52,16 @@ it('uses device file uploads for admin image fields', function (string $formClas
     'donation campaign banner' => [DonationCampaignForm::class, 'banner_image_url', 'donation-campaigns'],
     'donation update image' => [DonationUpdateForm::class, 'image_url', 'donation-updates'],
     'partner logo' => [PartnerForm::class, 'logo_url', 'partners'],
-    'video thumbnail' => [VideoForm::class, 'thumbnail_url', 'videos'],
     'organization logo' => [OrganizationProfileForm::class, 'logo_url', 'organization'],
     'organization favicon' => [OrganizationProfileForm::class, 'favicon_url', 'organization'],
     'document thumbnail' => [DocumentForm::class, 'thumbnail_url', 'documents/thumbnails'],
 ]);
+
+it('derives video thumbnails from youtube urls instead of requiring manual uploads', function (): void {
+    $schema = VideoForm::configure(Schema::make());
+
+    expect($schema->getComponentByStatePath('thumbnail_url', withHidden: true))->toBeNull();
+});
 
 it('renders uploaded images as previews in admin detail pages', function (string $infolistClass, string $field): void {
     $schema = $infolistClass::configure(Schema::make());
@@ -103,4 +108,19 @@ it('exposes public image urls from content models', function (): void {
             'youtube_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             'thumbnail_url' => 'videos/thumb.jpg',
         ]))->resolvedThumbnailUrl())->toBe('/storage/videos/thumb.jpg');
+});
+
+it('falls back to youtube thumbnails for empty or legacy placeholder values', function (): void {
+    expect((new Video([
+        'youtube_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        'thumbnail_url' => null,
+    ]))->resolvedThumbnailUrl())->toBe('https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg')
+        ->and((new Video([
+            'youtube_url' => 'https://www.youtube.com/shorts/dQw4w9WgXcQ',
+            'thumbnail_url' => '/image/logo.png',
+        ]))->resolvedThumbnailUrl())->toBe('https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg')
+        ->and((new Video([
+            'youtube_url' => 'https://www.youtube.com/live/dQw4w9WgXcQ?feature=share',
+            'thumbnail_url' => 'image/logo.png',
+        ]))->embedUrl())->toBe('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ');
 });

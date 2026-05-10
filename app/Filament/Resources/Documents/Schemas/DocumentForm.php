@@ -4,8 +4,8 @@ namespace App\Filament\Resources\Documents\Schemas;
 
 use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
-use Closure;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -26,30 +26,31 @@ class DocumentForm
                 TextInput::make('category'),
                 Textarea::make('description')
                     ->columnSpanFull(),
-                TextInput::make('file_url')
-                    ->required()
-                    ->helperText('Gunakan URL lengkap atau path file publik seperti documents/arsip-dokumen.pdf.')
-                    ->rules([
-                        static function (string $attribute, mixed $value, Closure $fail): void {
-                            $fileReference = trim((string) $value);
-
-                            if ($fileReference === '' || $fileReference === '#') {
-                                $fail('Masukkan URL lengkap atau path file publik yang valid.');
-
-                                return;
-                            }
-
-                            if (filter_var($fileReference, FILTER_VALIDATE_URL) !== false) {
-                                return;
-                            }
-
-                            if (preg_match('/^\/?(?:storage\/)?[A-Za-z0-9][A-Za-z0-9_\/.\-]*$/', $fileReference) === 1) {
-                                return;
-                            }
-
-                            $fail('Gunakan URL lengkap atau path file publik seperti documents/arsip-dokumen.pdf.');
-                        },
+                FileUpload::make('file_url')
+                    ->label('Berkas dokumen')
+                    ->acceptedFileTypes([
+                        'application/pdf',
+                        'application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'application/vnd.ms-excel',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        'application/vnd.ms-powerpoint',
+                        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                        'text/csv',
                     ])
+                    ->disk('public')
+                    ->directory('documents')
+                    ->visibility('public')
+                    ->openable()
+                    ->downloadable()
+                    ->requiredWithout('external_file_url')
+                    ->helperText('Unggah dokumen dari perangkat bila berkas disimpan di server ini.')
+                    ->columnSpanFull(),
+                TextInput::make('external_file_url')
+                    ->label('URL eksternal dokumen')
+                    ->url()
+                    ->requiredWithout('file_url')
+                    ->helperText('Opsional. Isi jika dokumen berada di luar server ini.')
                     ->columnSpanFull(),
                 FilamentImageUpload::make('thumbnail_url', 'documents/thumbnails', 'Gambar thumbnail'),
                 TextInput::make('file_type'),

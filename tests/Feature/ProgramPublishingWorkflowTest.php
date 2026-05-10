@@ -171,3 +171,26 @@ test('legacy completed programs are normalized into archived public records when
         ->and($program->fresh()->published_at)->not->toBeNull()
         ->and($program->fresh()->isVisibleOnFrontend())->toBeTrue();
 });
+
+test('program listing stays stable for published programs without partners', function () {
+    $category = ProgramCategory::query()->create([
+        'name' => 'Program Mandiri',
+        'slug' => 'program-mandiri',
+        'description' => 'Kategori untuk program tanpa mitra.',
+    ]);
+
+    Program::query()->create([
+        'title' => 'Program Tanpa Mitra',
+        'slug' => 'program-tanpa-mitra',
+        'description' => 'Program ini diterbitkan tanpa mitra dan tidak boleh memicu lazy loading error.',
+        'category_id' => $category->id,
+        'status' => 'published',
+        'phase' => 'active',
+        'beneficiaries_count' => 40,
+        'published_at' => now(),
+    ]);
+
+    $this->get('/programs')
+        ->assertSuccessful()
+        ->assertSee('Program Tanpa Mitra');
+});

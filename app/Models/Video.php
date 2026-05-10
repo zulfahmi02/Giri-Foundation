@@ -57,7 +57,13 @@ class Video extends Model
 
     public function youtubeVideoId(): ?string
     {
-        if (preg_match('~(?:v=|youtu\.be/|embed/)([\w-]{11})~', $this->youtube_url, $matches) === 1) {
+        $youtubeReference = trim((string) $this->youtube_url);
+
+        if (preg_match('~^[\w-]{11}$~', $youtubeReference) === 1) {
+            return $youtubeReference;
+        }
+
+        if (preg_match('~(?:v=|youtu\.be/|embed/|shorts/|live/)([\w-]{11})~', $youtubeReference, $matches) === 1) {
             return $matches[1];
         }
 
@@ -73,12 +79,20 @@ class Video extends Model
 
     public function resolvedThumbnailUrl(): ?string
     {
-        if (filled($this->thumbnail_url)) {
+        if (! $this->shouldUseYoutubeThumbnail()) {
             return PublicStorageUrl::resolve($this->thumbnail_url);
         }
 
         $videoId = $this->youtubeVideoId();
 
-        return $videoId ? "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg" : null;
+        return $videoId ? "https://i.ytimg.com/vi/{$videoId}/hqdefault.jpg" : null;
+    }
+
+    private function shouldUseYoutubeThumbnail(): bool
+    {
+        $thumbnailReference = trim((string) $this->thumbnail_url);
+
+        return $thumbnailReference === ''
+            || in_array($thumbnailReference, ['#', 'image/logo.png', '/image/logo.png'], true);
     }
 }

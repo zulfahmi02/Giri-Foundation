@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Videos\Schemas;
 
-use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -31,8 +30,8 @@ class VideoForm
                     ->label('YouTube URL')
                     ->url()
                     ->required()
+                    ->helperText('Thumbnail diambil otomatis dari YouTube. Cukup masukkan URL video.')
                     ->columnSpanFull(),
-                FilamentImageUpload::make('thumbnail_url', 'videos', 'Thumbnail video'),
                 TextInput::make('sort_order')
                     ->required()
                     ->numeric()
