@@ -247,9 +247,9 @@
                 <div>
                     <p class="section-label mb-6">Hubungi Kami</p>
                     <div class="space-y-4 text-sm text-[var(--ink-muted)]">
-                        <p>{{ $siteProfile->email ?? 'hello@giri.foundation' }}</p>
-                        <p>{{ $siteProfile->phone ?? '+62 000 0000 000' }}</p>
-                        <p>{{ $siteProfile->address ?? 'Bali, Indonesia' }}</p>
+                        <p>{{ $organizationContact['email'] ?? 'Belum diatur' }}</p>
+                        <p>{{ $organizationContact['phone'] ?? 'Belum diatur' }}</p>
+                        <p>{{ $organizationContact['address'] ?? 'Belum diatur' }}</p>
                     </div>
                 </div>
             </div>

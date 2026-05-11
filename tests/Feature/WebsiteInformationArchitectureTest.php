@@ -3,11 +3,13 @@
 use App\Filament\Resources\Divisions\DivisionResource;
 use App\Filament\Resources\Videos\VideoResource;
 use App\Models\Activity;
+use App\Models\OrganizationProfile;
 use App\Models\Program;
 use App\Models\Role;
 use App\Models\TeamMember;
 use App\Models\User;
 use App\Models\Video;
+use App\Support\FrontendCache;
 use Database\Seeders\GiriFoundationSeeder;
 
 test('home page navigation uses the refreshed information architecture', function () {
@@ -176,10 +178,48 @@ test('legacy public routes remain reachable', function (string $uri) {
 test('contact page shows the configured organization contact information', function () {
     $this->seed(GiriFoundationSeeder::class);
 
+    $organizationProfile = OrganizationProfile::query()->firstOrFail();
+
+    $organizationProfile->update([
+        'email' => 'kontak@giri.foundation',
+        'phone' => '+62 851 7777 8888',
+        'whatsapp_number' => '+62 811 2222 3333',
+        'address' => 'Jl. Test Integrasi No. 5, Bojonegoro',
+    ]);
+    FrontendCache::bump(FrontendCache::SiteShell);
+
     $this->get('/contact')
         ->assertSuccessful()
-        ->assertSee('girinusantarasejahtera@gmail.com')
-        ->assertSee('+62 856-0772-7415');
+        ->assertSee('kontak@giri.foundation')
+        ->assertSee('+62 851 7777 8888')
+        ->assertSee('+62 811 2222 3333')
+        ->assertSee('Jl. Test Integrasi No. 5, Bojonegoro')
+        ->assertDontSee('hello@giri.foundation')
+        ->assertDontSee('+62 812 0000 0000')
+        ->assertDontSee('+62 000 0000 000')
+        ->assertDontSee('Bali, Indonesia');
+});
+
+test('consultation page reuses the configured organization contact information', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $organizationProfile = OrganizationProfile::query()->firstOrFail();
+
+    $organizationProfile->update([
+        'email' => 'konsultasi@giri.foundation',
+        'phone' => '+62 852 1111 4444',
+        'whatsapp_number' => '+62 813 9999 0000',
+    ]);
+    FrontendCache::bump(FrontendCache::SiteShell);
+
+    $this->get('/consultation')
+        ->assertSuccessful()
+        ->assertSee('konsultasi@giri.foundation')
+        ->assertSee('+62 852 1111 4444')
+        ->assertSee('+62 813 9999 0000')
+        ->assertDontSee('hello@giri.foundation')
+        ->assertDontSee('+62 812 0000 0000')
+        ->assertDontSee('+62 000 0000 000');
 });
 
 test('editor can access the new video and division resources', function () {

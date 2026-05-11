@@ -23,6 +23,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -52,44 +53,21 @@ class AppServiceProvider extends ServiceProvider
 
         $this->registerFrontendCacheInvalidators();
 
-        View::composer('layouts.site', function ($view): void {
+        View::composer(['layouts.site', 'pages.*', 'programs.*', 'stories.*'], function ($view): void {
             $view->with('siteProfile', null);
             $view->with('siteSummary', 'Lembaga independen yang fokus pada pemberdayaan masyarakat.');
             $view->with('donateCtaCampaign', null);
             $view->with('footerPages', collect());
+            $view->with('organizationContact', $this->defaultOrganizationContact());
 
             $view->with(FrontendCache::remember(
                 'site-shell:data',
-                fn (): array => rescue(
-                    function (): array {
-                        $siteProfile = OrganizationProfile::query()
-                            ->oldest('id')
-                            ->first();
-
-                        return [
-                            'siteProfile' => $siteProfile,
-                            'siteSummary' => $siteProfile?->short_description ?? 'Lembaga independen yang fokus pada pemberdayaan masyarakat.',
-                            'donateCtaCampaign' => DonationCampaign::query()
-                                ->preferredForFrontend()
-                                ->first(),
-                            'footerPages' => Page::query()
-                                ->published()
-                                ->whereIn('slug', ['about', 'contact', 'media', 'publikasi'])
-                                ->get()
-                                ->keyBy('slug'),
-                        ];
-                    },
-                    [
-                        'siteProfile' => null,
-                        'siteSummary' => 'Lembaga independen yang fokus pada pemberdayaan masyarakat.',
-                        'donateCtaCampaign' => null,
-                        'footerPages' => collect(),
-                    ],
-                    report: false,
-                ),
+                fn (): array => $this->resolveSiteShellData(),
                 [FrontendCache::SiteShell],
             ));
+        });
 
+        View::composer('layouts.site', function ($view): void {
             $view->with('seo', SeoData::fromViewData($view->getData(), request()));
         });
     }
@@ -186,5 +164,70 @@ class AppServiceProvider extends ServiceProvider
             $modelClass::restored($invalidate);
             $modelClass::forceDeleted($invalidate);
         }
+    }
+
+    /**
+     * @return array{
+     *     siteProfile: ?OrganizationProfile,
+     *     organizationContact: array{email: string, phone: string, whatsapp: string, address: string},
+     *     siteSummary: string,
+     *     donateCtaCampaign: ?DonationCampaign,
+     *     footerPages: Collection<int|string, Page>
+     * }
+     */
+    private function resolveSiteShellData(): array
+    {
+        $siteProfile = rescue(
+            fn (): ?OrganizationProfile => OrganizationProfile::query()
+                ->oldest('id')
+                ->first(),
+            null,
+            report: false,
+        );
+
+        $footerPages = rescue(
+            fn () => Page::query()
+                ->published()
+                ->whereIn('slug', ['about', 'contact', 'media', 'publikasi'])
+                ->get()
+                ->keyBy('slug'),
+            collect(),
+            report: false,
+        );
+
+        return [
+            'siteProfile' => $siteProfile,
+            'organizationContact' => $this->organizationContact($siteProfile),
+            'siteSummary' => $siteProfile?->short_description ?? 'Lembaga independen yang fokus pada pemberdayaan masyarakat.',
+            'donateCtaCampaign' => rescue(
+                fn (): ?DonationCampaign => DonationCampaign::query()
+                    ->preferredForFrontend()
+                    ->first(),
+                null,
+                report: false,
+            ),
+            'footerPages' => $footerPages,
+        ];
+    }
+
+    /**
+     * @return array{email: string, phone: string, whatsapp: string, address: string}
+     */
+    private function organizationContact(?OrganizationProfile $siteProfile): array
+    {
+        return [
+            'email' => filled($siteProfile?->email) ? $siteProfile->email : 'Belum diatur',
+            'phone' => filled($siteProfile?->phone) ? $siteProfile->phone : 'Belum diatur',
+            'whatsapp' => filled($siteProfile?->whatsapp_number) ? $siteProfile->whatsapp_number : 'Belum diatur',
+            'address' => filled($siteProfile?->address) ? $siteProfile->address : 'Belum diatur',
+        ];
+    }
+
+    /**
+     * @return array{email: string, phone: string, whatsapp: string, address: string}
+     */
+    private function defaultOrganizationContact(): array
+    {
+        return $this->organizationContact(null);
     }
 }

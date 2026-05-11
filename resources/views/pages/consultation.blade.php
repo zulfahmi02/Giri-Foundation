@@ -2,6 +2,7 @@
 
 @section('content')
     @php($organizationProfile = $siteProfile ?? null)
+    @php($contactDetails = $organizationContact ?? ['whatsapp' => 'Belum diatur', 'email' => 'Belum diatur', 'phone' => 'Belum diatur', 'address' => 'Belum diatur'])
 
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-16 lg:px-10 lg:pt-10 lg:pb-20">
         <div class="max-w-3xl">
@@ -156,15 +157,15 @@
             <div class="grid gap-8 md:grid-cols-3">
                 <article class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-4">Email</p>
-                    <p class="font-editorial text-3xl">{{ $organizationProfile?->email ?? 'hello@giri.foundation' }}</p>
+                    <p class="font-editorial text-3xl">{{ $contactDetails['email'] }}</p>
                 </article>
                 <article class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-4">WhatsApp</p>
-                    <p class="font-editorial text-3xl">{{ $organizationProfile?->whatsapp_number ?? '+62 812 0000 0000' }}</p>
+                    <p class="font-editorial text-3xl">{{ $contactDetails['whatsapp'] }}</p>
                 </article>
                 <article class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-4">Telepon</p>
-                    <p class="font-editorial text-3xl">{{ $organizationProfile?->phone ?? '+62 000 0000 000' }}</p>
+                    <p class="font-editorial text-3xl">{{ $contactDetails['phone'] }}</p>
                 </article>
             </div>
         </div>
