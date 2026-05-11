@@ -6,6 +6,7 @@ use App\Support\PublicStorageUrl;
 use Database\Factories\OrganizationProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class OrganizationProfile extends Model
 {
@@ -56,5 +57,24 @@ class OrganizationProfile extends Model
     public function resolvedFaviconUrl(): ?string
     {
         return PublicStorageUrl::resolve($this->favicon_url);
+    }
+
+    public function resolvedGoogleMapsEmbedUrl(): ?string
+    {
+        $locationSource = trim((string) ($this->google_maps_embed ?: $this->address));
+
+        if ($locationSource === '') {
+            return null;
+        }
+
+        if (preg_match('/<iframe[^>]+src=["\']([^"\']+)["\']/i', $locationSource, $matches) === 1) {
+            return $matches[1];
+        }
+
+        if (filter_var($locationSource, FILTER_VALIDATE_URL) !== false) {
+            return $locationSource;
+        }
+
+        return 'https://www.google.com/maps?q='.rawurlencode(Str::squish($locationSource)).'&output=embed';
     }
 }

@@ -3,6 +3,7 @@
 @section('content')
     @php($organizationProfile = $siteProfile ?? null)
     @php($contactDetails = $organizationContact ?? ['whatsapp' => 'Belum diatur', 'email' => 'Belum diatur', 'phone' => 'Belum diatur', 'address' => 'Belum diatur'])
+    @php($mapsEmbedUrl = $organizationProfile?->resolvedGoogleMapsEmbedUrl())
 
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-16 lg:px-10 lg:pt-10 lg:pb-20">
         <div class="max-w-3xl">
@@ -128,15 +129,15 @@
         <div class="mx-auto grid max-w-7xl justify-items-center gap-8 px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-10">
             <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center">
                 <p class="section-label mb-4">WhatsApp</p>
-                <p class="font-editorial text-3xl">{{ $contactDetails['whatsapp'] }}</p>
+                <p class="max-w-full break-words text-center font-editorial text-[clamp(2rem,4vw,3rem)] leading-tight">{{ $contactDetails['whatsapp'] }}</p>
             </article>
             <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center">
                 <p class="section-label mb-4">Email</p>
-                <p class="font-editorial text-3xl">{{ $contactDetails['email'] }}</p>
+                <p class="max-w-full break-all text-center font-editorial text-[clamp(1.8rem,3.6vw,3rem)] leading-tight">{{ $contactDetails['email'] }}</p>
             </article>
             <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center md:col-span-2 lg:col-span-1">
                 <p class="section-label mb-4">Telepon</p>
-                <p class="font-editorial text-3xl">{{ $contactDetails['phone'] }}</p>
+                <p class="max-w-full break-words text-center font-editorial text-[clamp(2rem,4vw,3rem)] leading-tight">{{ $contactDetails['phone'] }}</p>
             </article>
         </div>
     </section>
@@ -152,9 +153,9 @@
                 <p class="text-sm leading-8 text-[var(--ink-muted)]">{{ $contactDetails['address'] }}</p>
             </article>
 
-            @if (filled($organizationProfile?->google_maps_embed))
+            @if (filled($mapsEmbedUrl))
                 <div class="overflow-hidden rounded-[1.75rem] border border-[color:rgba(190,201,195,0.28)]">
-                    <iframe src="{{ $organizationProfile?->google_maps_embed }}" class="h-80 w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="{{ $mapsEmbedUrl }}" class="h-80 w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             @endif
         </div>

@@ -222,6 +222,27 @@ test('consultation page reuses the configured organization contact information',
         ->assertDontSee('+62 000 0000 000');
 });
 
+test('contact page converts plain location text into a valid google maps embed url', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $organizationProfile = OrganizationProfile::query()->firstOrFail();
+
+    $organizationProfile->update([
+        'address' => 'Bojonegoro, Provinsi Jawa Timur, Indonesia',
+        'google_maps_embed' => 'Bojonegoro, Provinsi Jawa Timur, Indonesia',
+    ]);
+    FrontendCache::bump(FrontendCache::SiteShell);
+
+    $this->get('/contact')
+        ->assertSuccessful()
+        ->assertSee(
+            'https://www.google.com/maps?q=Bojonegoro%2C%20Provinsi%20Jawa%20Timur%2C%20Indonesia&amp;output=embed',
+            false,
+        )
+        ->assertDontSee('src="Bojonegoro, Provinsi Jawa Timur, Indonesia"', false)
+        ->assertSee('break-all', false);
+});
+
 test('editor can access the new video and division resources', function () {
     $this->seed(GiriFoundationSeeder::class);
 

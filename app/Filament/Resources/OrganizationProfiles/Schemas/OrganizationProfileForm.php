@@ -40,11 +40,17 @@ class OrganizationProfileForm
                     ->label('Email address')
                     ->email(),
                 TextInput::make('phone')
+                    ->label('Telepon')
                     ->tel(),
-                TextInput::make('whatsapp_number'),
+                TextInput::make('whatsapp_number')
+                    ->label('WhatsApp')
+                    ->tel(),
                 Textarea::make('address')
+                    ->label('Alamat')
                     ->columnSpanFull(),
                 Textarea::make('google_maps_embed')
+                    ->label('Google Maps / Lokasi')
+                    ->helperText('Bisa isi alamat, URL Google Maps, atau kode iframe embed.')
                     ->columnSpanFull(),
                 FilamentImageUpload::make('logo_url', 'organization', 'Logo organisasi'),
                 FilamentImageUpload::make('favicon_url', 'organization', 'Favicon'),
