@@ -157,15 +157,15 @@
             <div class="grid gap-8 md:grid-cols-3">
                 <article class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-4">Email</p>
-                    <p class="max-w-full break-all text-center font-editorial text-[clamp(1.8rem,3.6vw,3rem)] leading-tight">{{ $contactDetails['email'] }}</p>
+                    <p class="max-w-full break-all text-center font-editorial text-[clamp(1.15rem,1.65vw,1.8rem)] leading-[1.15]">{{ $contactDetails['email'] }}</p>
                 </article>
                 <article class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-4">WhatsApp</p>
-                    <p class="max-w-full break-words text-center font-editorial text-[clamp(2rem,4vw,3rem)] leading-tight">{{ $contactDetails['whatsapp'] }}</p>
+                    <p class="max-w-full break-words text-center font-editorial text-[clamp(1.45rem,2.2vw,2.15rem)] leading-[1.15]">{{ $contactDetails['whatsapp'] }}</p>
                 </article>
                 <article class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-4">Telepon</p>
-                    <p class="max-w-full break-words text-center font-editorial text-[clamp(2rem,4vw,3rem)] leading-tight">{{ $contactDetails['phone'] }}</p>
+                    <p class="max-w-full break-words text-center font-editorial text-[clamp(1.45rem,2.2vw,2.15rem)] leading-[1.15]">{{ $contactDetails['phone'] }}</p>
                 </article>
             </div>
         </div>

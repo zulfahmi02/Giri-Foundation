@@ -240,7 +240,9 @@ test('contact page converts plain location text into a valid google maps embed u
             false,
         )
         ->assertDontSee('src="Bojonegoro, Provinsi Jawa Timur, Indonesia"', false)
-        ->assertSee('break-all', false);
+        ->assertSee('break-all', false)
+        ->assertSee('text-[clamp(1.15rem,1.65vw,1.8rem)]', false)
+        ->assertSee('text-[clamp(1.45rem,2.2vw,2.15rem)]', false);
 });
 
 test('editor can access the new video and division resources', function () {
