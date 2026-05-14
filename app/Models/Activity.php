@@ -59,6 +59,7 @@ class Activity extends Model
 
     public function resolvedFeaturedImageUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->featured_image_url);
+        return PublicStorageUrl::resolve($this->featured_image_url, verifyPublicDisk: true)
+            ?? PublicStorageUrl::fallbackImagePath();
     }
 }

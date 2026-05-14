@@ -125,7 +125,8 @@ class DonationCampaign extends Model
 
     public function resolvedBannerImageUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->banner_image_url);
+        return PublicStorageUrl::resolve($this->banner_image_url, verifyPublicDisk: true)
+            ?? PublicStorageUrl::fallbackImagePath();
     }
 
     private function translatedCampaignValue(string $attribute): string

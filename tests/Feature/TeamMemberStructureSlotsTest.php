@@ -93,6 +93,9 @@ test('team member create form shows structural slot selector for admins', functi
 });
 
 test('team member exposes a public photo url for uploaded and legacy image paths', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('team-members/anggota-tim.jpg', 'photo');
+
     $uploadedPhotoMember = TeamMember::factory()->create([
         'photo_url' => 'team-members/anggota-tim.jpg',
     ]);
@@ -106,6 +109,9 @@ test('team member exposes a public photo url for uploaded and legacy image paths
 });
 
 test('about page renders uploaded team member photos from public storage', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('team-members/direktur.jpg', 'photo');
+
     $this->seed(GiriFoundationSeeder::class);
 
     TeamMember::query()

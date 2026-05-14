@@ -126,6 +126,7 @@ class Document extends Model
 
     public function resolvedThumbnailUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->thumbnail_url);
+        return PublicStorageUrl::resolve($this->thumbnail_url, verifyPublicDisk: true)
+            ?? PublicStorageUrl::fallbackImagePath();
     }
 }

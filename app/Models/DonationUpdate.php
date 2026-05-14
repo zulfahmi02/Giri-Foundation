@@ -41,6 +41,7 @@ class DonationUpdate extends Model
 
     public function resolvedImageUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->image_url);
+        return PublicStorageUrl::resolve($this->image_url, verifyPublicDisk: true)
+            ?? PublicStorageUrl::fallbackImagePath();
     }
 }

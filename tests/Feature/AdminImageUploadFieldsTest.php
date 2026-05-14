@@ -28,11 +28,13 @@ use App\Models\OrganizationProfile;
 use App\Models\Partner;
 use App\Models\Program;
 use App\Models\ProgramGallery;
+use App\Models\TeamMember;
 use App\Models\Video;
 use App\Support\PublicStorageUrl;
 use Filament\Forms\Components\FileUpload;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Storage;
 
 it('uses device file uploads for admin image fields', function (string $formClass, string $field, string $directory): void {
     $schema = $formClass::configure(Schema::make());
@@ -94,6 +96,22 @@ it('resolves uploaded image paths while preserving legacy urls', function (): vo
 });
 
 it('exposes public image urls from content models', function (): void {
+    Storage::fake('public');
+
+    collect([
+        'programs/unggulan.jpg',
+        'activities/foto.jpg',
+        'contents/cerita.jpg',
+        'donation-campaigns/banner.jpg',
+        'donation-updates/update.jpg',
+        'partners/logo.jpg',
+        'organization/logo.jpg',
+        'organization/favicon.png',
+        'programs/gallery.jpg',
+        'documents/thumbnails/cover.jpg',
+        'videos/thumb.jpg',
+    ])->each(fn (string $path) => Storage::disk('public')->put($path, 'image'));
+
     expect((new Program(['featured_image_url' => 'programs/unggulan.jpg']))->resolvedFeaturedImageUrl())->toBe('/storage/programs/unggulan.jpg')
         ->and((new Activity(['featured_image_url' => 'activities/foto.jpg']))->resolvedFeaturedImageUrl())->toBe('/storage/activities/foto.jpg')
         ->and((new Content(['featured_image_url' => 'contents/cerita.jpg']))->resolvedFeaturedImageUrl())->toBe('/storage/contents/cerita.jpg')
@@ -108,6 +126,22 @@ it('exposes public image urls from content models', function (): void {
             'youtube_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             'thumbnail_url' => 'videos/thumb.jpg',
         ]))->resolvedThumbnailUrl())->toBe('/storage/videos/thumb.jpg');
+});
+
+it('falls back cleanly when referenced public image uploads are missing', function (): void {
+    Storage::fake('public');
+
+    expect((new Program(['featured_image_url' => 'programs/missing.jpg']))->resolvedFeaturedImageUrl())->toBe('/image/logo.png')
+        ->and((new Activity(['featured_image_url' => 'activities/missing.jpg']))->resolvedFeaturedImageUrl())->toBe('/image/logo.png')
+        ->and((new Content(['featured_image_url' => 'contents/missing.jpg']))->resolvedFeaturedImageUrl())->toBe('/image/logo.png')
+        ->and((new DonationCampaign(['banner_image_url' => 'donation-campaigns/missing.jpg']))->resolvedBannerImageUrl())->toBe('/image/logo.png')
+        ->and((new DonationUpdate(['image_url' => 'donation-updates/missing.jpg']))->resolvedImageUrl())->toBe('/image/logo.png')
+        ->and((new Partner(['logo_url' => 'partners/missing.jpg']))->resolvedLogoUrl())->toBe('/image/logo.png')
+        ->and((new ProgramGallery(['file_url' => 'programs/gallery-missing.jpg']))->resolvedFileUrl())->toBe('/image/logo.png')
+        ->and((new Document(['thumbnail_url' => 'documents/thumbnails/missing.jpg']))->resolvedThumbnailUrl())->toBe('/image/logo.png')
+        ->and((new TeamMember(['photo_url' => 'team-members/missing.jpg']))->public_photo_url)->toBeNull()
+        ->and((new OrganizationProfile(['logo_url' => 'organization/missing.jpg']))->resolvedLogoUrl())->toBeNull()
+        ->and((new OrganizationProfile(['favicon_url' => 'organization/missing.png']))->resolvedFaviconUrl())->toBeNull();
 });
 
 it('falls back to youtube thumbnails for empty or legacy placeholder values', function (): void {

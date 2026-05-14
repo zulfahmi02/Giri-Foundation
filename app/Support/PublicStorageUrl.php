@@ -2,11 +2,12 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PublicStorageUrl
 {
-    public static function resolve(?string $value): ?string
+    public static function resolve(?string $value, bool $verifyPublicDisk = false): ?string
     {
         if (blank($value)) {
             return null;
@@ -23,16 +24,30 @@ class PublicStorageUrl
         }
 
         if (Str::startsWith($path, '/')) {
+            if ($verifyPublicDisk && Str::startsWith($path, '/storage/')) {
+                $publicDiskPath = Str::after($path, '/storage/');
+
+                return self::publicDiskFileExists($publicDiskPath) ? $path : null;
+            }
+
             return $path;
         }
 
         $path = self::normalizeStoragePath($path);
 
-        if (Str::startsWith($path, ['storage/', 'image/'])) {
+        if (Str::startsWith($path, 'image/')) {
             return '/'.ltrim($path, '/');
         }
 
-        return '/storage/'.ltrim($path, '/');
+        $publicDiskPath = Str::startsWith($path, 'storage/')
+            ? Str::after($path, 'storage/')
+            : ltrim($path, '/');
+
+        if ($verifyPublicDisk && ! self::publicDiskFileExists($publicDiskPath)) {
+            return null;
+        }
+
+        return '/storage/'.ltrim($publicDiskPath, '/');
     }
 
     private static function normalizeStoragePath(string $path): string
@@ -44,5 +59,15 @@ class PublicStorageUrl
         }
 
         return $path;
+    }
+
+    public static function fallbackImagePath(): string
+    {
+        return '/image/logo.png';
+    }
+
+    private static function publicDiskFileExists(string $path): bool
+    {
+        return Storage::disk('public')->exists(ltrim($path, '/'));
     }
 }

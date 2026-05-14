@@ -51,12 +51,12 @@ class OrganizationProfile extends Model
 
     public function resolvedLogoUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->logo_url);
+        return PublicStorageUrl::resolve($this->logo_url, verifyPublicDisk: true);
     }
 
     public function resolvedFaviconUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->favicon_url);
+        return PublicStorageUrl::resolve($this->favicon_url, verifyPublicDisk: true);
     }
 
     public function resolvedGoogleMapsEmbedUrl(): ?string

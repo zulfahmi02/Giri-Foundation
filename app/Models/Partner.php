@@ -48,6 +48,7 @@ class Partner extends Model
 
     public function resolvedLogoUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->logo_url);
+        return PublicStorageUrl::resolve($this->logo_url, verifyPublicDisk: true)
+            ?? PublicStorageUrl::fallbackImagePath();
     }
 }

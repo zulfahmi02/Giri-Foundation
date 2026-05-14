@@ -43,6 +43,7 @@ class ProgramGallery extends Model
 
     public function resolvedFileUrl(): ?string
     {
-        return PublicStorageUrl::resolve($this->file_url);
+        return PublicStorageUrl::resolve($this->file_url, verifyPublicDisk: true)
+            ?? PublicStorageUrl::fallbackImagePath();
     }
 }

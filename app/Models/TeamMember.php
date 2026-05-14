@@ -75,7 +75,7 @@ class TeamMember extends Model
     protected function publicPhotoUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => PublicStorageUrl::resolve($this->getRawOriginal('photo_url')),
+            get: fn (): ?string => PublicStorageUrl::resolve($this->getRawOriginal('photo_url'), verifyPublicDisk: true),
         );
     }
 
