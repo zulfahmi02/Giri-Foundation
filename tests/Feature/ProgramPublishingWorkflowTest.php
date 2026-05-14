@@ -7,6 +7,8 @@ use App\Models\ProgramCategory;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Forms\Components\Select;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
 test('published programs created from the admin form receive a publication timestamp automatically', function () {
@@ -193,4 +195,57 @@ test('program listing stays stable for published programs without partners', fun
     $this->get('/programs')
         ->assertSuccessful()
         ->assertSee('Program Tanpa Mitra');
+});
+
+test('program creation reports duplicate slug as a form error instead of crashing after an image upload', function () {
+    Storage::fake('public');
+
+    $editorRole = Role::query()->firstOrCreate(
+        ['name' => 'Editor'],
+        ['description' => 'Mengelola konten.'],
+    );
+
+    $editor = User::factory()->create([
+        'app_authentication_secret' => 'totp-secret',
+    ]);
+
+    $editor->roles()->sync([$editorRole->id]);
+
+    $category = ProgramCategory::query()->create([
+        'name' => 'Program Uji Slug',
+        'slug' => 'program-uji-slug',
+        'description' => 'Kategori untuk pengujian slug duplikat.',
+    ]);
+
+    Program::query()->create([
+        'title' => 'Tanpa Mitra',
+        'slug' => 'tanpa-mitra',
+        'description' => 'Program yang sudah ada agar slug bentrok.',
+        'category_id' => $category->id,
+        'status' => 'published',
+        'phase' => 'active',
+        'beneficiaries_count' => 10,
+        'published_at' => now(),
+    ]);
+
+    $this->actingAs($editor);
+
+    Livewire::test(CreateProgram::class)
+        ->fillForm([
+            'title' => 'Tanpa Mitra',
+            'slug' => 'tanpa-mitra',
+            'description' => 'Percobaan membuat program dengan slug yang sudah dipakai.',
+            'category_id' => $category->id,
+            'status' => 'published',
+            'phase' => 'active',
+            'beneficiaries_count' => 25,
+            'created_by' => $editor->id,
+            'featured_image_url' => UploadedFile::fake()->image('program-bentrok.png'),
+        ])
+        ->call('create')
+        ->assertHasFormErrors([
+            'slug' => 'unique',
+        ]);
+
+    expect(Program::query()->where('slug', 'tanpa-mitra')->count())->toBe(1);
 });

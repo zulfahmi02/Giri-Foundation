@@ -38,8 +38,12 @@ class FilamentSlugGenerator
         return TextInput::make('slug')
             ->label('Alamat URL')
             ->required()
-            ->readOnly()
-            ->helperText('Otomatis dibuat dari judul atau nama. Tidak perlu diisi manual.')
+            ->maxLength(255)
+            ->unique(ignoreRecord: true)
+            ->helperText('Otomatis dibuat dari judul atau nama. Bisa disesuaikan jika bentrok.')
+            ->validationMessages([
+                'unique' => 'Alamat URL ini sudah dipakai. Silakan ubah slug atau judulnya.',
+            ])
             ->dehydrateStateUsing(function (Get $get, ?string $state) use ($sourceField): string {
                 $slugSource = filled($state) ? $state : (string) ($get($sourceField) ?? '');
 
