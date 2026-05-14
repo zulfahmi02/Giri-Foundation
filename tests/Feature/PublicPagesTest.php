@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\DonationCampaign;
+use App\Support\FrontendCache;
 use Database\Seeders\GiriFoundationSeeder;
 
 test('public pages render successfully', function (string $uri, string $visibleText) {
@@ -40,3 +42,26 @@ test('core public pages still render without seeded content', function (string $
     ['/about', 'Profil organisasi sedang dilengkapi.'],
     ['/donate', 'Kampanye donasi belum tersedia'],
 ]);
+
+test('donate page falls back to the bundled logo when the campaign banner file is missing', function () {
+    DonationCampaign::query()->create([
+        'title' => 'Banner Hilang',
+        'slug' => 'banner-hilang',
+        'short_description' => 'Kampanye dengan banner yang hilang di storage.',
+        'description' => 'Frontend harus tetap stabil saat file banner tidak ditemukan.',
+        'target_amount' => 1000000,
+        'collected_amount' => 125000,
+        'start_date' => now()->subDay(),
+        'end_date' => now()->addDays(30),
+        'banner_image_url' => 'donation-campaigns/missing-banner.jpg',
+        'status' => 'active',
+        'is_featured' => true,
+    ]);
+
+    FrontendCache::bump(FrontendCache::DonatePage);
+
+    $this->get('/donate')
+        ->assertSuccessful()
+        ->assertSee('src="/image/logo.png"', false)
+        ->assertDontSee('src="/storage/donation-campaigns/missing-banner.jpg"', false);
+});
