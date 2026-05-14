@@ -22,13 +22,17 @@ class HomeController extends Controller
             function (): array {
                 $profile = OrganizationProfile::query()
                     ->oldest('id')
-                    ->firstOrFail();
+                    ->first();
+
+                $heroSummary = filled($profile?->short_description)
+                    ? $profile->short_description
+                    : null;
 
                 return [
                     'profile' => $profile,
-                    'heroSummary' => Str::contains($profile->short_description, 'Building resilient communities')
+                    'heroSummary' => filled($heroSummary) && Str::contains($heroSummary, 'Building resilient communities')
                         ? 'Membangun komunitas yang tangguh melalui tindakan autentik, cerita editorial, dan kemitraan jangka panjang.'
-                        : $profile->short_description,
+                        : $heroSummary,
                     'featuredProgram' => Program::query()
                         ->published()
                         ->inPhase('active')

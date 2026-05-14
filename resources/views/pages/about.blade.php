@@ -2,10 +2,21 @@
 
 @section('content')
     @php
-        $brandLogo = $profile->resolvedLogoUrl() ?: asset('image/logo.png');
-        $brandName = $page->sectionValue('brand.title', $profile->name);
+        $brandLogo = $profile?->resolvedLogoUrl() ?: asset('image/logo.png');
+        $brandName = $page->sectionValue('brand.title', $profile?->name ?? 'GIRI FOUNDATION');
         $brandSubtitle = $page->sectionValue('brand.subtitle', 'Yayasan untuk inisiatif sosial, budaya, dan keberlanjutan komunitas.');
         $brandNote = $page->sectionValue('brand.note', 'Berakar di Bali dan bekerja bersama komunitas lintas wilayah secara jangka panjang.');
+        $heroBody = $page->heroValue('body', $profile?->short_description ?? $brandSubtitle);
+        $profileDescription = $page->sectionValue(
+            'profile.description',
+            $profile?->full_description ?: 'Profil organisasi sedang dilengkapi. Untuk sementara, halaman ini menampilkan identitas dasar dan arah kerja yayasan.',
+        );
+        $profileParagraphs = collect(preg_split("/\r\n|\n|\r/", $profileDescription) ?: [])
+            ->filter(fn (string $paragraph): bool => filled($paragraph));
+        $vision = $profile?->vision ?: 'Mewujudkan pemberdayaan masyarakat yang berkelanjutan, inklusif, dan bertanggung jawab.';
+        $mission = $profile?->mission ?: 'Membangun program, kolaborasi, dan tata kelola yang memberi manfaat nyata bagi masyarakat.';
+        $values = collect(preg_split("/\r\n|\n|\r/", $profile?->values ?: "Integritas\nKolaborasi\nKeberlanjutan") ?: [])
+            ->filter(fn (string $value): bool => filled($value));
     @endphp
 
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-12 lg:px-10 lg:pt-10 lg:pb-16">
@@ -20,7 +31,7 @@
             </div>
             <div class="lg:col-span-5 lg:pt-2">
                 <p class="text-base leading-7 text-[var(--ink-muted)] md:text-lg">
-                    {{ $page->heroValue('body', $profile->short_description) }}
+                    {{ $heroBody }}
                 </p>
             </div>
         </div>
@@ -52,10 +63,8 @@
             <p class="section-label mb-4">{{ $page->sectionValue('profile.kicker', 'Profil Lembaga') }}</p>
             <h2 class="font-editorial text-4xl md:text-5xl">{{ $page->sectionValue('profile.title', 'Siapa kami dan bagaimana kami bekerja.') }}</h2>
             <div class="editorial-prose mt-8 max-w-4xl text-base leading-8 text-[var(--ink-muted)]">
-                @foreach (preg_split("/\r\n|\n|\r/", $profile->full_description) as $paragraph)
-                    @if (filled($paragraph))
-                        <p>{{ $paragraph }}</p>
-                    @endif
+                @foreach ($profileParagraphs as $paragraph)
+                    <p>{{ $paragraph }}</p>
                 @endforeach
             </div>
         </div>
@@ -66,11 +75,11 @@
             <div class="grid gap-8 lg:grid-cols-2">
                 <div class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-5">Visi</p>
-                    <h2 class="font-editorial text-4xl leading-tight">{{ $profile->vision }}</h2>
+                    <h2 class="font-editorial text-4xl leading-tight">{{ $vision }}</h2>
                 </div>
                 <div class="surface-card rounded-[1.75rem] p-8">
                     <p class="section-label mb-5">Misi</p>
-                    <p class="text-lg leading-8 text-[var(--ink-muted)]">{{ $profile->mission }}</p>
+                    <p class="text-lg leading-8 text-[var(--ink-muted)]">{{ $mission }}</p>
                 </div>
             </div>
         </div>
@@ -86,15 +95,13 @@
             $valuesDescriptionTemplate = $page->sectionValue('values.description_template', ':value membentuk cara GIRI merancang program, mendokumentasikan dampak, dan menjaga akuntabilitas kepada komunitas.');
         @endphp
         <div class="grid gap-6 md:grid-cols-3">
-            @foreach (preg_split("/\r\n|\n|\r/", $profile->values) as $value)
-                @if (filled($value))
-                    <article class="surface-card rounded-[1.75rem] p-8">
-                        <h3 class="font-editorial text-3xl">{{ $value }}</h3>
-                        <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">
-                            {{ str_replace(':value', $value, $valuesDescriptionTemplate) }}
-                        </p>
-                    </article>
-                @endif
+            @foreach ($values as $value)
+                <article class="surface-card rounded-[1.75rem] p-8">
+                    <h3 class="font-editorial text-3xl">{{ $value }}</h3>
+                    <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">
+                        {{ str_replace(':value', $value, $valuesDescriptionTemplate) }}
+                    </p>
+                </article>
             @endforeach
         </div>
     </section>

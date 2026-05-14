@@ -30,3 +30,13 @@ test('site layout uses the bundled fallback logo and favicon', function () {
         ->assertSee('image/logo.png', false)
         ->assertSee('rel="icon"', false);
 });
+
+test('core public pages still render without seeded content', function (string $uri, string $visibleText) {
+    $this->get($uri)
+        ->assertSuccessful()
+        ->assertSee($visibleText);
+})->with([
+    ['/', 'Terhubung Dengan Kami'],
+    ['/about', 'Profil organisasi sedang dilengkapi.'],
+    ['/donate', 'Kampanye donasi belum tersedia'],
+]);

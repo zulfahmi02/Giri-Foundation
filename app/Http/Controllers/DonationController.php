@@ -22,7 +22,7 @@ class DonationController extends Controller
         $donatePageData = FrontendCache::remember(
             'donate:data',
             fn (): array => [
-                'campaign' => DonationCampaign::query()->with('updates')->preferredForFrontend()->firstOrFail(),
+                'campaign' => DonationCampaign::query()->with('updates')->preferredForFrontend()->first(),
                 'documents' => Document::query()->publiclyAvailable()->latest('published_at')->take(3)->get(),
             ],
             [FrontendCache::DonatePage],
@@ -36,7 +36,14 @@ class DonationController extends Controller
 
     public function store(StoreDonationRequest $request, PublicSubmissionNotifier $notifier): RedirectResponse
     {
-        $campaign = DonationCampaign::query()->preferredForFrontend()->firstOrFail();
+        $campaign = DonationCampaign::query()->preferredForFrontend()->first();
+
+        if (! $campaign) {
+            return to_route('donate.show')
+                ->withErrors(['form' => 'Kampanye donasi belum tersedia saat ini.'])
+                ->withInput();
+        }
+
         $validated = $request->validated();
 
         $donation = DB::transaction(function () use ($campaign, $validated): Donation {

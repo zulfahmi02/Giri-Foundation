@@ -25,7 +25,7 @@ class PageController extends Controller
                 return [
                     'profile' => OrganizationProfile::query()
                         ->oldest('id')
-                        ->firstOrFail(),
+                        ->first(),
                     'teamMembers' => TeamMember::buildHierarchy($teamMembers),
                 ];
             },

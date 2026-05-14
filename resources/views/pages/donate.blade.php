@@ -1,6 +1,18 @@
 @extends('layouts.site')
 
 @section('content')
+    @php
+        $campaignAvailable = $campaign !== null;
+        $heroBody = $page->heroValue(
+            'body',
+            $campaign?->displayShortDescription() ?: 'Halaman ini tetap aktif meski kampanye donasi belum dipublikasikan. Tim dapat menambahkan kampanye aktif kapan saja tanpa mengubah struktur halaman.',
+        );
+        $campaignTitle = $campaign?->displayTitle() ?: 'Kampanye donasi belum tersedia';
+        $campaignDescription = $campaign?->displayDescription() ?: 'Belum ada kampanye aktif atau selesai yang dipublikasikan untuk frontend. Saat kampanye tersedia, ringkasan, progres, dan form donasi akan muncul di area ini.';
+        $campaignImageUrl = $campaign?->resolvedBannerImageUrl() ?: asset('image/logo.png');
+        $campaignImageAlt = $campaign?->displayTitle() ?: 'Placeholder kampanye donasi';
+    @endphp
+
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-16 lg:px-10 lg:pt-10 lg:pb-20">
         <div class="grid gap-8 lg:grid-cols-12 lg:items-start">
             <div class="lg:col-span-5">
@@ -11,79 +23,97 @@
                     {{ $page->heroValue('title_suffix', 'yang berkelanjutan, bukan gestur sesaat.') }}
                 </h1>
                 <p class="mt-6 text-base leading-7 text-[var(--ink-muted)] md:text-lg">
-                    {{ $page->heroValue('body', $campaign->displayShortDescription()) }}
+                    {{ $heroBody }}
                 </p>
                 <div class="mt-8 overflow-hidden rounded-[2rem]">
-                    <img src="{{ $campaign->resolvedBannerImageUrl() }}" alt="{{ $campaign->displayTitle() }}" class="h-[20rem] w-full object-cover md:h-[22rem]">
+                    <img src="{{ $campaignImageUrl }}" alt="{{ $campaignImageAlt }}" class="h-[20rem] w-full object-cover md:h-[22rem]">
                 </div>
             </div>
 
             <div class="lg:col-span-7">
                 <div class="surface-card rounded-[2rem] p-8 lg:p-10">
+                    @if ($errors->any())
+                        <div class="mb-8 rounded-2xl border border-[color:rgba(133,64,54,0.18)] bg-[color:rgba(133,64,54,0.08)] px-5 py-4 text-sm leading-7 text-[var(--tertiary)]">
+                            <p class="font-semibold">Mohon periksa kembali form donasi Anda.</p>
+                            @if ($errors->has('form'))
+                                <p class="mt-1">{{ $errors->first('form') }}</p>
+                            @endif
+                        </div>
+                    @endif
+
                     <div class="mb-8">
                         <p class="section-label mb-4">Kampanye Saat Ini</p>
-                        <h2 class="font-editorial text-4xl">{{ $campaign->displayTitle() }}</h2>
-                        <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--ink-muted)]">{{ $campaign->displayDescription() }}</p>
+                        <h2 class="font-editorial text-4xl">{{ $campaignTitle }}</h2>
+                        <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--ink-muted)]">{{ $campaignDescription }}</p>
                     </div>
 
-                    @php
-                        $progress = $campaign->target_amount > 0 ? min(100, (int) round(($campaign->collected_amount / $campaign->target_amount) * 100)) : 0;
-                    @endphp
+                    @if ($campaignAvailable)
+                        @php
+                            $progress = $campaign->target_amount > 0 ? min(100, (int) round(($campaign->collected_amount / $campaign->target_amount) * 100)) : 0;
+                        @endphp
 
-                    <div class="mb-8 rounded-[1.5rem] bg-[var(--surface-muted)] p-5">
-                        <div class="mb-3 flex justify-between text-sm font-semibold">
-                            <span class="text-[var(--primary)]">Rp{{ number_format((float) $campaign->collected_amount, 0, ',', '.') }} terkumpul</span>
-                            <span class="text-[var(--ink-muted)]">Target: Rp{{ number_format((float) $campaign->target_amount, 0, ',', '.') }}</span>
+                        <div class="mb-8 rounded-[1.5rem] bg-[var(--surface-muted)] p-5">
+                            <div class="mb-3 flex justify-between text-sm font-semibold">
+                                <span class="text-[var(--primary)]">Rp{{ number_format((float) $campaign->collected_amount, 0, ',', '.') }} terkumpul</span>
+                                <span class="text-[var(--ink-muted)]">Target: Rp{{ number_format((float) $campaign->target_amount, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="h-3 overflow-hidden rounded-full bg-[var(--outline)]/40">
+                                <div class="h-full rounded-full bg-[var(--primary)]" style="width: {{ $progress }}%"></div>
+                            </div>
                         </div>
-                        <div class="h-3 overflow-hidden rounded-full bg-[var(--outline)]/40">
-                            <div class="h-full rounded-full bg-[var(--primary)]" style="width: {{ $progress }}%"></div>
-                        </div>
-                    </div>
 
-                    <form method="POST" action="{{ route('donate.store') }}" class="grid gap-5 md:grid-cols-2">
-                        @csrf
-                        <div>
-                            <label for="full_name" class="section-label mb-3 block">Nama Lengkap</label>
-                            <input id="full_name" name="full_name" value="{{ old('full_name') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]" required>
+                        <form method="POST" action="{{ route('donate.store') }}" class="grid gap-5 md:grid-cols-2">
+                            @csrf
+                            <div>
+                                <label for="full_name" class="section-label mb-3 block">Nama Lengkap</label>
+                                <input id="full_name" name="full_name" value="{{ old('full_name') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]" required>
+                            </div>
+                            <div>
+                                <label for="email" class="section-label mb-3 block">Email</label>
+                                <input id="email" name="email" type="email" value="{{ old('email') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]" required>
+                            </div>
+                            <div>
+                                <label for="phone" class="section-label mb-3 block">Telepon</label>
+                                <input id="phone" name="phone" value="{{ old('phone') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">
+                            </div>
+                            <div>
+                                <label for="amount" class="section-label mb-3 block">Jumlah Donasi</label>
+                                <input id="amount" name="amount" type="number" min="5" step="0.01" value="{{ old('amount') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]" required>
+                            </div>
+                            <div>
+                                <label for="payment_method" class="section-label mb-3 block">Metode</label>
+                                <select id="payment_method" name="payment_method" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">
+                                    <option value="bank_transfer">Transfer Bank</option>
+                                    <option value="corporate_gift">Donasi Korporat</option>
+                                    <option value="major_gift">Donasi Besar</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="payment_channel" class="section-label mb-3 block">Kanal</label>
+                                <input id="payment_channel" name="payment_channel" value="{{ old('payment_channel', 'manual') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="message" class="section-label mb-3 block">Pesan</label>
+                                <textarea id="message" name="message" rows="4" class="w-full rounded-2xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">{{ old('message') }}</textarea>
+                            </div>
+                            <label class="md:col-span-2 inline-flex items-center gap-3 text-sm text-[var(--ink-muted)]">
+                                <input type="checkbox" name="is_anonymous" value="1" class="h-4 w-4 rounded border-[var(--outline)] text-[var(--primary)]">
+                                Donasi secara anonim
+                            </label>
+                            <div class="md:col-span-2">
+                                <button class="rounded-xl bg-[var(--primary)] px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white">
+                                    Catat Niat Donasi
+                                </button>
+                            </div>
+                        </form>
+                    @else
+                        <div class="rounded-[1.5rem] bg-[var(--surface-muted)] p-6">
+                            <p class="text-sm leading-7 text-[var(--ink-muted)]">
+                                Form donasi akan otomatis tersedia setelah tim mempublikasikan minimal satu kampanye. Sementara itu, Anda tetap bisa membagikan kebutuhan dukungan melalui
+                                <a href="{{ route('contact.show') }}" class="font-semibold text-[var(--primary)] transition hover:text-[var(--primary-soft)]">halaman kontak</a>.
+                            </p>
                         </div>
-                        <div>
-                            <label for="email" class="section-label mb-3 block">Email</label>
-                            <input id="email" name="email" type="email" value="{{ old('email') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]" required>
-                        </div>
-                        <div>
-                            <label for="phone" class="section-label mb-3 block">Telepon</label>
-                            <input id="phone" name="phone" value="{{ old('phone') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">
-                        </div>
-                        <div>
-                            <label for="amount" class="section-label mb-3 block">Jumlah Donasi</label>
-                            <input id="amount" name="amount" type="number" min="5" step="0.01" value="{{ old('amount') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]" required>
-                        </div>
-                        <div>
-                            <label for="payment_method" class="section-label mb-3 block">Metode</label>
-                            <select id="payment_method" name="payment_method" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">
-                                <option value="bank_transfer">Transfer Bank</option>
-                                <option value="corporate_gift">Donasi Korporat</option>
-                                <option value="major_gift">Donasi Besar</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="payment_channel" class="section-label mb-3 block">Kanal</label>
-                            <input id="payment_channel" name="payment_channel" value="{{ old('payment_channel', 'manual') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label for="message" class="section-label mb-3 block">Pesan</label>
-                            <textarea id="message" name="message" rows="4" class="w-full rounded-2xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]">{{ old('message') }}</textarea>
-                        </div>
-                        <label class="md:col-span-2 inline-flex items-center gap-3 text-sm text-[var(--ink-muted)]">
-                            <input type="checkbox" name="is_anonymous" value="1" class="h-4 w-4 rounded border-[var(--outline)] text-[var(--primary)]">
-                            Donasi secara anonim
-                        </label>
-                        <div class="md:col-span-2">
-                            <button class="rounded-xl bg-[var(--primary)] px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white">
-                                Catat Niat Donasi
-                            </button>
-                        </div>
-                    </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -100,13 +130,19 @@
             </div>
 
             <div class="grid gap-8 md:grid-cols-3">
-                @foreach ($documents as $document)
+                @forelse ($documents as $document)
                     <article class="surface-card rounded-[1.75rem] p-8">
                         <p class="section-label mb-4">{{ $document->category }}</p>
                         <h3 class="font-editorial text-3xl">{{ $document->title }}</h3>
                         <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $document->description }}</p>
                     </article>
-                @endforeach
+                @empty
+                    <article class="surface-card rounded-[1.75rem] p-8 md:col-span-3">
+                        <p class="text-sm leading-7 text-[var(--ink-muted)]">
+                            Dokumen pendukung akan tampil di sini setelah arsip publik ditambahkan ke panel admin.
+                        </p>
+                    </article>
+                @endforelse
             </div>
         </div>
     </section>

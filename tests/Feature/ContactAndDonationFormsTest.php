@@ -217,6 +217,21 @@ test('donation form stores donor and donation intent', function () {
     });
 });
 
+test('donation form redirects back with a form error when no campaign is available', function () {
+    $this->post(route('donate.store'), [
+        'full_name' => 'Ayu Lestari',
+        'email' => 'ayu@example.com',
+        'phone' => '+62 812 9000 1000',
+        'amount' => 250,
+        'payment_method' => 'bank_transfer',
+        'payment_channel' => 'manual',
+        'message' => 'For the school solar campaign.',
+        'is_anonymous' => '0',
+    ])
+        ->assertRedirect(route('donate.show'))
+        ->assertSessionHasErrors(['form']);
+});
+
 test('contact form is rate limited after five submissions per minute', function () {
     $this->seed(GiriFoundationSeeder::class);
     Queue::fake();
