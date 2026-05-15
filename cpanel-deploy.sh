@@ -143,18 +143,60 @@ TXT
 }
 
 sync_public_storage() {
-    log "Syncing public storage uploads into $WEB_ROOT/storage"
+    local app_public_storage="$APP_ROOT/storage/app/public"
+    local public_storage="$WEB_ROOT/storage"
 
-    mkdir -p "$APP_ROOT/storage/app/public" "$WEB_ROOT/storage"
+    log "Publishing public storage uploads at $public_storage"
+
+    mkdir -p "$app_public_storage" "$WEB_ROOT"
+
+    if [ -L "$public_storage" ]; then
+        local current_target
+
+        current_target="$(readlink "$public_storage" || true)"
+
+        if [ "$current_target" = "$app_public_storage" ]; then
+            log "$public_storage already links to $app_public_storage"
+
+            return
+        fi
+
+        rm "$public_storage"
+    fi
+
+    if [ -d "$public_storage" ]; then
+        log "Merging existing $public_storage uploads back into $app_public_storage"
+
+        if command -v rsync >/dev/null 2>&1; then
+            run rsync -a "$public_storage/" "$app_public_storage/"
+        else
+            log "rsync not available, falling back to cp -R"
+            find "$public_storage" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$app_public_storage/" \;
+        fi
+
+        rm -rf "$public_storage"
+    elif [ -e "$public_storage" ]; then
+        rm -f "$public_storage"
+    fi
+
+    if ln -s "$app_public_storage" "$public_storage" 2>/dev/null; then
+        log "Linked $public_storage to $app_public_storage"
+
+        return
+    fi
+
+    log "Symlink creation failed; mirroring $app_public_storage into $public_storage"
+    mkdir -p "$public_storage"
 
     if command -v rsync >/dev/null 2>&1; then
-        run rsync -a --delete "$APP_ROOT/storage/app/public/" "$WEB_ROOT/storage/"
+        run rsync -a --delete "$app_public_storage/" "$public_storage/"
+
         return
     fi
 
     log "rsync not available, falling back to cp -R"
-    find "$WEB_ROOT/storage" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-    find "$APP_ROOT/storage/app/public" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$WEB_ROOT/storage/" \;
+    find "$public_storage" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+    find "$app_public_storage" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$public_storage/" \;
 }
 
 main() {

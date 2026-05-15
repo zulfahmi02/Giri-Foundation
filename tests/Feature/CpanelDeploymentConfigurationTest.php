@@ -12,6 +12,7 @@ test('cpanel deployment files exist and reference the deploy script', function (
     $workflowConfig = File::get(base_path('.github/workflows/deploy-cpanel.yml'));
     $deployScript = File::get(base_path('cpanel-deploy.sh'));
     $productionDeployScript = File::get(base_path('deploy-production.sh'));
+    $filesystemConfig = File::get(config_path('filesystems.php'));
 
     expect($deploymentConfig)->toContain('deployment:')
         ->and($deploymentConfig)->toContain('/bin/bash ./cpanel-deploy.sh')
@@ -33,9 +34,11 @@ test('cpanel deployment files exist and reference the deploy script', function (
         ->and($deployScript)->toContain('artisan queue:restart')
         ->and($deployScript)->toContain('public_html')
         ->and($deployScript)->toContain('robots.txt')
-        ->and($deployScript)->toContain('Syncing public storage uploads into $WEB_ROOT/storage')
-        ->and($deployScript)->toContain('mkdir -p "$APP_ROOT/storage/app/public" "$WEB_ROOT/storage"')
-        ->and($deployScript)->toContain('rsync -a --delete "$APP_ROOT/storage/app/public/" "$WEB_ROOT/storage/"')
+        ->and($deployScript)->toContain('Publishing public storage uploads at $public_storage')
+        ->and($deployScript)->toContain('Merging existing $public_storage uploads back into $app_public_storage')
+        ->and($deployScript)->toContain('ln -s "$app_public_storage" "$public_storage"')
+        ->and($deployScript)->toContain('Symlink creation failed; mirroring $app_public_storage into $public_storage')
+        ->and($deployScript)->toContain('rsync -a --delete "$app_public_storage/" "$public_storage/"')
         ->and($productionDeployScript)->toContain('rsync -az --delete')
         ->and($productionDeployScript)->toContain('tar-over-SSH sync')
         ->and($productionDeployScript)->toContain("mkdir -p '\$DEPLOY_PATH'")
@@ -43,5 +46,6 @@ test('cpanel deployment files exist and reference the deploy script', function (
         ->and($productionDeployScript)->toContain('CPANEL_WEB_ROOT')
         ->and($productionDeployScript)->toContain("REMOTE_WEB_ROOT_DEFAULT='\$HOME/public_html'")
         ->and($productionDeployScript)->toContain('CPANEL_BUILD_FRONTEND')
-        ->and($productionDeployScript)->toContain('/bin/bash ./cpanel-deploy.sh');
+        ->and($productionDeployScript)->toContain('/bin/bash ./cpanel-deploy.sh')
+        ->and($filesystemConfig)->toContain("env('PUBLIC_DISK_ROOT', storage_path('app/public'))");
 });
