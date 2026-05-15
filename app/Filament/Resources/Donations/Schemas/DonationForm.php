@@ -5,8 +5,9 @@ namespace App\Filament\Resources\Donations\Schemas;
 use App\Support\AdminStateOptions;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class DonationForm
@@ -41,6 +42,9 @@ class DonationForm
                     ->options(AdminStateOptions::donationPaymentStatuses())
                     ->default('pending'),
                 DateTimePicker::make('paid_at'),
+                Toggle::make('is_anonymous')
+                    ->label('Donasi anonim')
+                    ->default(false),
                 Textarea::make('message')
                     ->columnSpanFull(),
                 TextInput::make('proof_url')

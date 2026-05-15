@@ -47,14 +47,34 @@ class DonationController extends Controller
         $validated = $request->validated();
 
         $donation = DB::transaction(function () use ($campaign, $validated): Donation {
-            $donor = Donor::query()->updateOrCreate(
-                ['email' => $validated['email']],
-                [
+            Donor::query()->upsert(
+                [[
                     'full_name' => $validated['full_name'],
+                    'email' => $validated['email'],
                     'phone' => $validated['phone'] ?? null,
-                    'is_anonymous' => (bool) ($validated['is_anonymous'] ?? false),
-                ],
+                ]],
+                uniqueBy: ['email'],
+                update: ['updated_at'],
             );
+
+            $donor = Donor::query()
+                ->where('email', $validated['email'])
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $donorUpdates = array_filter(
+                [
+                    'full_name' => blank($donor->full_name) ? $validated['full_name'] : null,
+                    'phone' => blank($donor->phone) && filled($validated['phone'] ?? null)
+                        ? $validated['phone']
+                        : null,
+                ],
+                static fn (mixed $value): bool => $value !== null,
+            );
+
+            if ($donorUpdates !== []) {
+                $donor->update($donorUpdates);
+            }
 
             return Donation::query()->create([
                 'campaign_id' => $campaign->id,
@@ -65,8 +85,9 @@ class DonationController extends Controller
                 'payment_channel' => $validated['payment_channel'] ?? null,
                 'payment_status' => 'pending',
                 'message' => $validated['message'] ?? null,
+                'is_anonymous' => $validated['is_anonymous'] ?? false,
             ]);
-        });
+        }, 5);
 
         $notifier->sendDonationIntent($donation);
 

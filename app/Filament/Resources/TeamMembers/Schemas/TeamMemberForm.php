@@ -7,6 +7,7 @@ use App\Models\TeamMember;
 use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use App\Support\TeamMemberStructureSlots;
+use Closure;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -24,7 +25,6 @@ class TeamMemberForm
                 Toggle::make('is_structural')
                     ->label('Masuk struktur organisasi')
                     ->default(true)
-                    ->disabled(fn (?TeamMember $record): bool => filled($record?->structure_slot))
                     ->live()
                     ->afterStateUpdated(function (bool $state, callable $set): void {
                         if ($state) {
@@ -74,6 +74,20 @@ class TeamMemberForm
                             ->searchable()
                             ->preload()
                             ->live()
+                            ->rule(function (?TeamMember $record): Closure {
+                                return function (string $attribute, mixed $value, Closure $fail) use ($record): void {
+                                    $occupiedRecord = TeamMemberStructureSlots::occupantForSlot(
+                                        is_string($value) ? $value : null,
+                                        $record,
+                                    );
+
+                                    if ($occupiedRecord === null) {
+                                        return;
+                                    }
+
+                                    $fail(TeamMemberStructureSlots::occupiedSlotMessage($occupiedRecord));
+                                };
+                            })
                             ->helperText(fn (Get $get): string => TeamMemberStructureSlots::selectionHelperText($get('structure_slot')))
                             ->afterStateUpdated(function (?string $state, callable $set): void {
                                 foreach (TeamMemberStructureSlots::previewAttributes($state) as $field => $value) {

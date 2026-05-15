@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\DonationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Donation extends Model
 {
-    /** @use HasFactory<\Database\Factories\DonationFactory> */
+    /** @use HasFactory<DonationFactory> */
     use HasFactory;
 
     /**
@@ -26,6 +27,7 @@ class Donation extends Model
         'message',
         'proof_url',
         'external_transaction_id',
+        'is_anonymous',
     ];
 
     /**
@@ -36,6 +38,7 @@ class Donation extends Model
         return [
             'amount' => 'decimal:2',
             'paid_at' => 'datetime',
+            'is_anonymous' => 'boolean',
         ];
     }
 

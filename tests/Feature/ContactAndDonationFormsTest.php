@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\DonationCampaign;
+use App\Models\Donor;
 use App\Models\Role;
 use App\Models\User;
 use App\Support\Notifications\PublicSubmissionReceivedNotification;
@@ -207,6 +208,7 @@ test('donation form stores donor and donation intent', function () {
         'amount' => 250,
         'payment_method' => 'bank_transfer',
         'payment_status' => 'pending',
+        'is_anonymous' => false,
     ]);
 
     Queue::assertPushed(SendQueuedNotifications::class, function (SendQueuedNotifications $job) use ($admin): bool {
@@ -215,6 +217,55 @@ test('donation form stores donor and donation intent', function () {
             && $job->notification instanceof PublicSubmissionReceivedNotification
             && $job->notifiables->contains(fn ($notifiable): bool => $notifiable instanceof User && $notifiable->is($admin));
     });
+});
+
+test('donation form normalizes donor email and keeps anonymity per donation', function () {
+    $this->seed(GiriFoundationSeeder::class);
+    Queue::fake();
+
+    $admin = User::factory()->create([
+        'email' => 'admin-donation-normalized@example.com',
+        'status' => 'active',
+    ]);
+    $admin->roles()->sync([Role::query()->where('name', 'Admin')->value('id')]);
+
+    $this->post(route('donate.store'), [
+        'full_name' => 'Ayu Lestari',
+        'email' => ' Ayu@Example.com ',
+        'phone' => '+62 812 9000 1000',
+        'amount' => 250,
+        'payment_method' => 'bank_transfer',
+        'payment_channel' => 'manual',
+        'message' => 'First donation.',
+        'is_anonymous' => '0',
+    ])->assertRedirect(route('donate.show'));
+
+    $this->post(route('donate.store'), [
+        'full_name' => 'Ayu Changed',
+        'email' => 'ayu@example.com',
+        'phone' => '+62 811 1111 1111',
+        'amount' => 500,
+        'payment_method' => 'bank_transfer',
+        'payment_channel' => 'manual',
+        'message' => 'Second donation.',
+        'is_anonymous' => '1',
+    ])->assertRedirect(route('donate.show'));
+
+    $donor = Donor::query()
+        ->where('email', 'ayu@example.com')
+        ->sole();
+
+    expect($donor->email)->toBe('ayu@example.com')
+        ->and($donor->full_name)->toBe('Ayu Lestari')
+        ->and($donor->phone)->toBe('+62 812 9000 1000');
+
+    $donations = $donor->donations()
+        ->whereIn('message', ['First donation.', 'Second donation.'])
+        ->orderBy('id')
+        ->get();
+
+    expect($donations)->toHaveCount(2)
+        ->and($donations->pluck('is_anonymous')->all())->toBe([false, true]);
 });
 
 test('donation form redirects back with a form error when no campaign is available', function () {

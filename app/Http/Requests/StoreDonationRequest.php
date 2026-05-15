@@ -3,12 +3,29 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class StoreDonationRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $phone = trim((string) $this->input('phone', ''));
+        $paymentChannel = trim((string) $this->input('payment_channel', ''));
+        $message = trim((string) $this->input('message', ''));
+
+        $this->merge([
+            'full_name' => trim((string) $this->input('full_name', '')),
+            'email' => Str::lower(trim((string) $this->input('email', ''))),
+            'phone' => $phone !== '' ? $phone : null,
+            'payment_channel' => $paymentChannel !== '' ? $paymentChannel : null,
+            'message' => $message !== '' ? $message : null,
+            'is_anonymous' => $this->boolean('is_anonymous'),
+        ]);
     }
 
     /**

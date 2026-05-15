@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\DonorFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Donor extends Model
 {
-    /** @use HasFactory<\Database\Factories\DonorFactory> */
+    /** @use HasFactory<DonorFactory> */
     use HasFactory;
 
     /**
@@ -18,17 +21,13 @@ class Donor extends Model
         'full_name',
         'email',
         'phone',
-        'is_anonymous',
     ];
 
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected function email(): Attribute
     {
-        return [
-            'is_anonymous' => 'boolean',
-        ];
+        return Attribute::make(
+            set: static fn (string $value): string => Str::lower(trim($value)),
+        );
     }
 
     public function donations(): HasMany

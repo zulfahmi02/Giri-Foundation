@@ -1,6 +1,7 @@
 <?php
 
 use App\Filament\Resources\TeamMembers\Pages\CreateTeamMember;
+use App\Filament\Resources\TeamMembers\Pages\EditTeamMember;
 use App\Filament\Resources\TeamMembers\TeamMemberResource;
 use App\Models\Role;
 use App\Models\TeamMember;
@@ -9,16 +10,17 @@ use App\Support\TeamMemberStructureSlots;
 use Database\Seeders\GiriFoundationSeeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
 
-test('structural slot update replaces the existing occupant instead of creating a duplicate record', function () {
+test('structural slot creation is rejected when the slot is already occupied', function () {
     $this->seed(GiriFoundationSeeder::class);
 
     $existingPembina = TeamMember::query()
         ->where('structure_slot', TeamMemberStructureSlots::TrusteePrimary)
         ->firstOrFail();
 
-    $updatedPembina = TeamMemberStructureSlots::upsert([
+    expect(fn () => TeamMemberStructureSlots::upsert([
         'name' => 'Pembina Baru',
         'structure_slot' => TeamMemberStructureSlots::TrusteePrimary,
         'bio' => 'Pembina utama pengganti.',
@@ -27,17 +29,23 @@ test('structural slot update replaces the existing occupant instead of creating 
         'linkedin_url' => null,
         'is_structural' => true,
         'is_active' => true,
-    ]);
+    ]))->toThrow(ValidationException::class);
 
-    expect($updatedPembina->id)->toBe($existingPembina->id)
-        ->and($updatedPembina->name)->toBe('Pembina Baru')
-        ->and($updatedPembina->position)->toBe('Ketua Dewan Pembina')
-        ->and($updatedPembina->parent?->structure_slot)->toBe(TeamMemberStructureSlots::Advisor)
+    expect($existingPembina->fresh()->name)->toBe('M. Suaeb Abdullah')
         ->and(TeamMember::query()->where('structure_slot', TeamMemberStructureSlots::TrusteePrimary)->count())->toBe(1);
 });
 
 test('structural slots automatically fill hierarchy metadata', function () {
     $this->seed(GiriFoundationSeeder::class);
+
+    TeamMember::query()
+        ->where('structure_slot', TeamMemberStructureSlots::Director)
+        ->firstOrFail()
+        ->update([
+            'structure_slot' => null,
+            'is_structural' => false,
+            'slug' => 'direktur-sebelumnya',
+        ]);
 
     $director = TeamMemberStructureSlots::upsert([
         'name' => 'Direktur Operasional',
@@ -54,6 +62,43 @@ test('structural slots automatically fill hierarchy metadata', function () {
         ->and($director->divisionRecord?->slug)->toBe('dewan-pengurus')
         ->and($director->parent?->structure_slot)->toBe(TeamMemberStructureSlots::TrusteePrimary)
         ->and($director->sort_order)->toBe(50);
+});
+
+test('team member create form prevents overwriting an occupied structural slot', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $adminRole = Role::query()->firstOrCreate(
+        ['name' => 'Admin'],
+        ['description' => 'Mengelola akses panel.'],
+    );
+
+    $user = User::factory()->create([
+        'status' => 'active',
+        'app_authentication_secret' => 'totp-secret',
+    ]);
+
+    $user->roles()->sync([$adminRole->id]);
+
+    $this->actingAs($user);
+
+    $existingDirector = TeamMember::query()
+        ->where('structure_slot', TeamMemberStructureSlots::Director)
+        ->firstOrFail();
+
+    Livewire::test(CreateTeamMember::class)
+        ->fillForm([
+            'is_structural' => true,
+            'name' => 'Direktur Baru',
+            'structure_slot' => TeamMemberStructureSlots::Director,
+            'bio' => 'Calon direktur baru.',
+            'email' => 'direktur-baru@example.com',
+            'is_active' => true,
+        ])
+        ->call('create')
+        ->assertHasFormErrors(['structure_slot']);
+
+    expect($existingDirector->fresh()->name)->not->toBe('Direktur Baru')
+        ->and(TeamMember::query()->where('structure_slot', TeamMemberStructureSlots::Director)->count())->toBe(1);
 });
 
 test('team member create form shows structural slot selector for admins', function () {
@@ -90,6 +135,57 @@ test('team member create form shows structural slot selector for admins', functi
         ->assertDontSee('Pengaturan Manual')
         ->assertDontSee('Atasan langsung')
         ->assertDontSee('Urutan tampil');
+});
+
+test('admins can free an occupied structural slot by editing the existing team member', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $adminRole = Role::query()->firstOrCreate(
+        ['name' => 'Admin'],
+        ['description' => 'Mengelola akses panel.'],
+    );
+
+    $user = User::factory()->create([
+        'status' => 'active',
+        'app_authentication_secret' => 'totp-secret',
+    ]);
+
+    $user->roles()->sync([$adminRole->id]);
+
+    $this->actingAs($user);
+
+    $director = TeamMember::query()
+        ->where('structure_slot', TeamMemberStructureSlots::Director)
+        ->firstOrFail();
+
+    Livewire::test(EditTeamMember::class, ['record' => $director->getRouteKey()])
+        ->fillForm([
+            'is_structural' => false,
+            'name' => 'Direktur Alumni',
+            'position' => 'Direktur Alumni',
+            'sort_order' => 99,
+            'is_active' => true,
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors()
+        ->assertNotified();
+
+    expect($director->fresh()->structure_slot)->toBeNull()
+        ->and($director->fresh()->is_structural)->toBeFalse();
+
+    $replacementDirector = TeamMemberStructureSlots::upsert([
+        'name' => 'Direktur Pengganti',
+        'structure_slot' => TeamMemberStructureSlots::Director,
+        'bio' => 'Memimpin pelaksanaan program yayasan.',
+        'photo_url' => null,
+        'email' => 'direktur-pengganti@example.com',
+        'linkedin_url' => null,
+        'is_structural' => true,
+        'is_active' => true,
+    ]);
+
+    expect($replacementDirector->id)->not->toBe($director->id)
+        ->and($replacementDirector->structure_slot)->toBe(TeamMemberStructureSlots::Director);
 });
 
 test('team member exposes a public photo url for uploaded and legacy image paths', function () {

@@ -60,7 +60,7 @@ class PublicSubmissionNotifier
     {
         $donation->loadMissing(['campaign', 'donor']);
 
-        $donorName = $donation->donor?->is_anonymous
+        $donorName = $donation->is_anonymous
             ? 'Donatur anonim'
             : ($donation->donor?->full_name ?? 'Donatur baru');
 

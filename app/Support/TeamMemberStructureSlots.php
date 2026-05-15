@@ -6,6 +6,7 @@ use App\Models\Division;
 use App\Models\TeamMember;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class TeamMemberStructureSlots
 {
@@ -227,13 +228,23 @@ class TeamMemberStructureSlots
             return 'Pilih slot jabatan sesuai bagan organisasi. Sistem akan mengatur posisi, divisi, atasan, dan urutan tampil secara otomatis.';
         }
 
-        $occupiedRecord = self::recordForSlot($slot);
+        $occupiedRecord = self::occupantForSlot($slot);
 
         if ($occupiedRecord === null) {
             return 'Slot ini masih kosong dan akan diisi oleh personil yang Anda simpan.';
         }
 
-        return "Slot ini saat ini ditempati oleh {$occupiedRecord->name}. Menyimpan form akan memperbarui personil pada slot tersebut, bukan membuat slot baru.";
+        return self::occupiedSlotMessage($occupiedRecord);
+    }
+
+    public static function occupantForSlot(?string $slot, ?Model $ignoreRecord = null): ?TeamMember
+    {
+        return self::recordForSlot($slot, $ignoreRecord);
+    }
+
+    public static function occupiedSlotMessage(TeamMember $occupiedRecord): string
+    {
+        return "Slot ini saat ini ditempati oleh {$occupiedRecord->name}. Untuk menjaga histori personil, edit record tersebut atau kosongkan slotnya terlebih dahulu.";
     }
 
     /**
@@ -266,13 +277,10 @@ class TeamMemberStructureSlots
             ->where('slug', $definition['division_slug'])
             ->first();
 
-        $occupiedRecord = self::recordForSlot($slot, $record);
-        $slugOwner = $occupiedRecord ?? $record;
-
         return [
             ...$data,
             'structure_slot' => $slot,
-            'slug' => self::uniqueSlug((string) $data['name'], $slugOwner),
+            'slug' => self::uniqueSlug((string) $data['name'], $record),
             'position' => $definition['position'],
             'division' => $division?->name,
             'division_id' => $division?->id,
@@ -289,15 +297,25 @@ class TeamMemberStructureSlots
     {
         $data = self::applyToData($data, $record);
 
+        if (($data['is_structural'] ?? false) && filled($data['structure_slot'] ?? null)) {
+            $occupiedRecord = self::occupantForSlot((string) $data['structure_slot'], $record);
+
+            if ($occupiedRecord !== null) {
+                throw ValidationException::withMessages([
+                    'data.structure_slot' => self::occupiedSlotMessage($occupiedRecord),
+                ]);
+            }
+        }
+
         if (! ($data['is_structural'] ?? false) || blank($data['structure_slot'] ?? null)) {
-            $targetRecord = $record ?? new TeamMember();
+            $targetRecord = $record ?? new TeamMember;
             $targetRecord->fill($data);
             $targetRecord->save();
 
             return $targetRecord;
         }
 
-        $targetRecord = self::recordForSlot($data['structure_slot'], $record) ?? $record ?? new TeamMember();
+        $targetRecord = $record ?? new TeamMember;
 
         $targetRecord->fill($data);
         $targetRecord->save();

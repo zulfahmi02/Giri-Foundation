@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Donations\Schemas;
 
 use App\Support\AdminStateOptions;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -15,9 +16,12 @@ class DonationInfolist
                 TextEntry::make('campaign.title')
                     ->label('Campaign')
                     ->placeholder('-'),
-                TextEntry::make('donor.id')
+                TextEntry::make('donor.full_name')
                     ->label('Donor')
                     ->placeholder('-'),
+                IconEntry::make('is_anonymous')
+                    ->label('Anonim')
+                    ->boolean(),
                 TextEntry::make('invoice_number'),
                 TextEntry::make('amount')
                     ->numeric(),
