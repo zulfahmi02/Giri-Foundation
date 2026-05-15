@@ -16,7 +16,7 @@
             <span class="mb-6 inline-block rounded-full bg-[var(--secondary-soft)] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--secondary-ink)]">
                 {{ $program->category?->name ?? 'Program' }}
             </span>
-            <h1 class="font-editorial max-w-4xl text-4xl italic leading-none sm:text-5xl md:text-7xl lg:text-8xl">{{ $program->title }}</h1>
+            <h1 class="font-editorial max-w-4xl text-4xl italic leading-none sm:text-5xl lg:text-7xl xl:text-8xl">{{ $program->title }}</h1>
             <div class="mt-8 grid gap-6 text-sm sm:grid-cols-3 sm:gap-8 md:flex md:flex-wrap md:gap-10">
                 <div>
                     <p class="section-label mb-2 text-[var(--ink-muted)]">Lokasi</p>

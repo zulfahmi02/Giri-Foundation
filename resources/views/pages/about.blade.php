@@ -23,7 +23,7 @@
         <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Tentang Yayasan') }}</p>
         <div class="grid gap-8 lg:grid-cols-12 lg:items-start">
             <div class="lg:col-span-7">
-                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight md:text-6xl">
+                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
                     {{ trim($page->heroValue('title_prefix', 'Arsip hidup tentang kepedulian,')) }}
                     <span class="italic text-[var(--primary)]"> {{ trim($page->heroValue('highlight', 'keberlanjutan')) }} </span>
                     {{ trim($page->heroValue('title_suffix', ', dan daya lokal.')) }}
@@ -46,7 +46,7 @@
             </div>
 
             <div class="mx-auto mt-8 max-w-3xl">
-                <h2 class="font-editorial text-4xl italic leading-none tracking-tight md:text-6xl">{{ $brandName }}</h2>
+                <h2 class="font-editorial text-4xl italic leading-none tracking-tight sm:text-5xl lg:text-6xl">{{ $brandName }}</h2>
                 <p class="mt-6 text-base leading-8 text-[var(--ink-muted)] md:text-lg">
                     {{ $brandSubtitle }}
                 </p>

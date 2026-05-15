@@ -5,7 +5,7 @@
         <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Publikasi') }}</p>
         <div class="grid gap-8 lg:grid-cols-12 lg:items-start">
             <div class="lg:col-span-7">
-                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight md:text-6xl">
+                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
                     {{ trim($page->heroValue('title_prefix', 'Gagasan, arsip, dan')) }}
                     <span class="italic text-[var(--primary)]"> {{ trim($page->heroValue('highlight', 'narasi')) }} </span>
                     {{ trim($page->heroValue('title_suffix', 'yang kami terbitkan.')) }}

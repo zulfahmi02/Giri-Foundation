@@ -1,13 +1,17 @@
 @extends('layouts.site')
 
 @section('content')
+    @php
+        $heroTitleSuffix = trim((string) $page->heroValue('title_suffix', ''));
+    @endphp
+
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-12 lg:px-10 lg:pt-10 lg:pb-16">
         <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Arsip Dokumen') }}</p>
         <div class="grid gap-8 lg:grid-cols-12 lg:items-start">
             <div class="lg:col-span-7">
-                <h1 class="font-editorial text-4xl leading-[1.02] md:text-6xl">
+                <h1 class="font-editorial text-4xl leading-[1.02] sm:text-5xl lg:text-6xl">
                     {{ $page->heroValue('title_prefix', 'Dokumen &') }}
-                    <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'Wawasan') }}</span>{{ $page->heroValue('title_suffix', '') }}
+                    <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'Wawasan') }}</span>{{ $heroTitleSuffix !== '' && ! preg_match('/^[.,;:!?]/', $heroTitleSuffix) ? ' ' : '' }}{{ $heroTitleSuffix }}
                 </h1>
             </div>
             <div class="lg:col-span-5 lg:pt-2">

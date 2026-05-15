@@ -27,21 +27,21 @@
     ];
 @endphp
 
-<section class="surface-card rounded-[2rem] p-8 lg:p-10" data-inquiry-pathways>
+<section class="surface-card rounded-[2rem] p-6 sm:p-8 lg:p-10" data-inquiry-pathways>
     <div class="max-w-2xl">
         <p class="section-label mb-4">Pilih Jalur Komunikasi</p>
-        <h2 class="font-editorial text-3xl md:text-4xl">Supaya pesan Anda masuk ke inbox yang tepat sejak awal.</h2>
+        <h2 class="font-editorial text-3xl leading-tight sm:text-4xl">Supaya pesan Anda masuk ke inbox yang tepat sejak awal.</h2>
         <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)] md:text-base">
             Kami memisahkan pertanyaan umum, konsultasi, dan kemitraan agar tindak lanjut tim yayasan tidak tercampur.
         </p>
     </div>
 
-    <div class="mt-8 grid gap-5 md:grid-cols-3">
+    <div class="mt-8 grid gap-5 lg:grid-cols-3">
         @foreach ($inquiryPathways as $pathway)
             @php($isCurrentPathway = ($currentPathway ?? null) === $pathway['key'])
 
             <article @class([
-                'rounded-[1.5rem] border p-6 transition',
+                'rounded-[1.5rem] border p-5 transition sm:p-6',
                 'border-[color:rgba(0,96,76,0.18)] bg-[var(--secondary-soft)] shadow-[0_18px_38px_rgba(0,96,76,0.08)]' => $isCurrentPathway,
                 'border-[color:rgba(190,201,195,0.35)] bg-white hover:border-[color:rgba(0,96,76,0.2)]' => ! $isCurrentPathway,
             ])>

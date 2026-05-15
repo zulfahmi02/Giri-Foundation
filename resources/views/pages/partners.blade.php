@@ -5,7 +5,7 @@
         <div class="grid gap-12 lg:grid-cols-12 lg:items-center">
             <div class="lg:col-span-7">
                 <p class="section-label mb-6">{{ $page->heroValue('kicker', 'Kemitraan') }}</p>
-                <h1 class="font-editorial text-5xl leading-[0.95] md:text-7xl">
+                <h1 class="font-editorial text-4xl leading-[0.95] sm:text-5xl lg:text-7xl">
                     {{ $page->heroValue('title_prefix', 'Merancang') }}
                     <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'perubahan') }}</span>
                     {{ $page->heroValue('title_suffix', 'bersama.') }}

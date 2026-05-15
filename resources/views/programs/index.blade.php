@@ -1,13 +1,17 @@
 @extends('layouts.site')
 
 @section('content')
+    @php
+        $heroTitleSuffix = trim((string) $page->heroValue('title_suffix', '.'));
+    @endphp
+
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-12 lg:px-10 lg:pt-10 lg:pb-16">
         <div class="grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
             <div class="lg:col-span-7">
                 <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Program') }}</p>
-                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
+                <h1 class="font-editorial text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
                     {{ $page->heroValue('title_prefix', 'Mengarsipkan') }}
-                    <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'potensi') }}</span>{{ $page->heroValue('title_suffix', '.') }}
+                    <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'potensi') }}</span>{{ $heroTitleSuffix !== '' && ! preg_match('/^[.,;:!?]/', $heroTitleSuffix) ? ' ' : '' }}{{ $heroTitleSuffix }}
                 </h1>
             </div>
             <div class="lg:col-span-5 lg:pt-2">
@@ -51,14 +55,14 @@
             ])>
                 <div class="mb-10">
                     <p class="section-label mb-4">{{ $section['kicker'] }}</p>
-                    <h2 class="font-editorial text-3xl md:text-5xl">{{ $section['title'] }}</h2>
+                    <h2 class="font-editorial text-3xl leading-tight sm:text-4xl lg:text-5xl">{{ $section['title'] }}</h2>
                 </div>
 
                 <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                     @foreach ($section['collection'] as $program)
-                        <article class="surface-card overflow-hidden rounded-[1.75rem]">
-                            <img src="{{ $program->resolvedFeaturedImageUrl() }}" alt="Dokumentasi program {{ $program->title }}" class="h-52 w-full object-cover sm:h-64" loading="lazy" decoding="async">
-                            <div class="p-6 sm:p-8">
+                        <article class="surface-card overflow-hidden rounded-2xl sm:rounded-[1.75rem]">
+                            <img src="{{ $program->resolvedFeaturedImageUrl() }}" alt="Dokumentasi program {{ $program->title }}" class="h-48 w-full object-cover sm:h-56 lg:h-64" loading="lazy" decoding="async">
+                            <div class="p-5 sm:p-8">
                                 <div class="mb-4 flex flex-wrap items-center gap-3">
                                     <span class="rounded-lg bg-[var(--secondary-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--secondary-ink)]">
                                         {{ $program->category?->name ?? 'Program' }}

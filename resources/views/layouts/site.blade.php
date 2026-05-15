@@ -112,23 +112,23 @@
                 ];
             @endphp
             <header class="sticky top-0 z-50 border-b border-[color:rgba(190,201,195,0.25)] bg-[color:rgba(252,249,248,0.84)] backdrop-blur-xl">
-                <nav class="mx-auto grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 sm:w-[88vw] md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-8 lg:gap-10 lg:px-10 xl:px-12">
-                <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-4 justify-self-start">
+                <nav class="mx-auto grid w-full max-w-[92rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 sm:w-[92vw] sm:px-6 sm:py-5 xl:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_auto] xl:gap-6 xl:px-8 2xl:grid-cols-[minmax(0,28rem)_minmax(0,1fr)_auto] 2xl:gap-10 2xl:px-12">
+                <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 justify-self-start sm:gap-4">
                     <span class="overflow-hidden rounded-xl shadow-sm ring-1 ring-black/5">
-                        <img src="{{ $logoUrl }}" alt="{{ $siteName }}" class="h-14 w-14 object-cover sm:h-16 sm:w-16">
+                        <img src="{{ $logoUrl }}" alt="{{ $siteName }}" class="h-12 w-12 object-cover sm:h-14 sm:w-14 2xl:h-16 2xl:w-16">
                     </span>
-                    <span class="truncate font-editorial text-xl font-bold italic tracking-tight sm:text-2xl">
+                    <span class="max-w-[12rem] truncate font-editorial text-xl font-bold italic tracking-tight sm:max-w-[24rem] sm:text-2xl xl:max-w-[13rem] xl:text-xl 2xl:max-w-[28rem] 2xl:text-2xl">
                         {{ $siteName }}
                     </span>
                 </a>
 
-                <div class="hidden min-w-0 md:flex md:justify-center" data-desktop-nav-primary>
-                    <div class="flex items-center justify-center gap-8 lg:gap-9 xl:gap-10">
+                <div class="hidden min-w-0 xl:flex xl:justify-center" data-desktop-nav-primary>
+                    <div class="flex items-center justify-center gap-5 2xl:gap-10">
                         @foreach ($primaryNavigationLinks as $navigationLink)
                             <a
                                 href="{{ route($navigationLink['route']) }}"
                                 @class([
-                                    'font-editorial text-lg transition-colors hover:text-[var(--primary)]',
+                                    'whitespace-nowrap font-editorial text-[1.05rem] transition-colors hover:text-[var(--primary)] 2xl:text-lg',
                                     'text-[var(--primary)]' => request()->routeIs($navigationLink['pattern']),
                                     'text-[color:rgba(28,27,27,0.68)]' => ! request()->routeIs($navigationLink['pattern']),
                                 ])
@@ -139,12 +139,12 @@
                     </div>
                 </div>
 
-                <div class="hidden items-center justify-self-end md:flex md:gap-3" data-desktop-nav-secondary>
+                <div class="hidden items-center justify-self-end xl:flex xl:gap-3" data-desktop-nav-secondary>
                     <a
                         href="{{ route('donate.show') }}"
                         data-nav-donate-link
                         @class([
-                            'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] ring-1 shadow-[0_18px_38px_rgba(0,96,76,0.22)] transition hover:-translate-y-0.5',
+                            'inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold uppercase tracking-[0.12em] ring-1 shadow-[0_18px_38px_rgba(0,96,76,0.22)] transition hover:-translate-y-0.5 2xl:px-6 2xl:tracking-[0.14em]',
                             'bg-[var(--primary)] text-white ring-[color:rgba(0,96,76,0.12)] hover:bg-[var(--primary-soft)] hover:shadow-[0_22px_44px_rgba(0,96,76,0.26)]' => ! request()->routeIs('donate.*'),
                             'bg-[var(--secondary-soft)] text-[var(--primary)] ring-[color:rgba(0,96,76,0.18)] hover:bg-[color:rgba(200,234,220,0.9)]' => request()->routeIs('donate.*'),
                         ])
@@ -154,7 +154,7 @@
                     </a>
                 </div>
 
-                <details class="relative justify-self-end md:hidden" data-mobile-nav>
+                <details class="relative justify-self-end xl:hidden" data-mobile-nav>
                     <summary class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl border border-[color:rgba(190,201,195,0.4)] bg-white/90 text-[var(--ink)] shadow-sm transition hover:border-[var(--primary)] hover:text-[var(--primary)]">
                         <span class="sr-only">Buka menu navigasi</span>
                         <span class="material-symbols-outlined text-[2rem]">menu</span>
@@ -213,11 +213,11 @@
         <footer class="mt-24 border-t border-[color:rgba(190,201,195,0.18)] bg-[var(--surface-muted)]">
             <div class="mx-auto grid w-full gap-16 px-6 py-20 sm:w-[88vw] lg:grid-cols-4 lg:px-10 xl:px-12">
                 <div>
-                    <a href="{{ route('home') }}" class="inline-flex items-center gap-4">
+                    <a href="{{ route('home') }}" class="inline-flex min-w-0 items-center gap-4">
                         <span class="overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5">
                             <img src="{{ $logoUrl }}" alt="{{ $siteName }}" class="h-16 w-16 object-cover sm:h-[4.5rem] sm:w-[4.5rem]">
                         </span>
-                        <span class="font-editorial text-2xl">{{ $siteName }}</span>
+                        <span class="max-w-[15rem] truncate font-editorial text-2xl sm:max-w-none">{{ $siteName }}</span>
                     </a>
                     <p class="mt-6 max-w-sm text-sm leading-7 text-[var(--ink-muted)]">
                         {{ $siteSummary ?? 'Membangun dunia di mana ketangguhan komunitas menjadi dasar bagi kemajuan jangka panjang.' }}

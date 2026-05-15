@@ -8,7 +8,7 @@
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-16 lg:px-10 lg:pt-10 lg:pb-20">
         <div class="max-w-3xl">
             <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Kontak') }}</p>
-            <h1 class="font-editorial text-4xl leading-[0.95] md:text-6xl">
+            <h1 class="font-editorial text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
                 {{ $page->heroValue('title_prefix', 'Mari membentuk') }}
                 <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'masa depan') }}</span>
                 {{ $page->heroValue('title_suffix', 'bersama.') }}
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="surface-card rounded-[2rem] p-8 lg:col-span-7 lg:p-10">
+            <div class="surface-card rounded-[2rem] p-6 sm:p-8 lg:col-span-7 lg:p-10">
                 <h2 class="font-editorial text-3xl">{{ $page->sectionValue('form.title', 'Kirim pesan langsung kepada tim kami.') }}</h2>
 
                 <form method="POST" action="{{ route('contact.store') }}" class="mt-8 grid gap-6 md:grid-cols-2" data-submit-feedback-form>
@@ -107,7 +107,7 @@
                         @enderror
                     </div>
                     <div class="md:col-span-2">
-                        <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white transition disabled:cursor-wait disabled:opacity-75" data-submit-feedback-button>
+                        <button type="submit" class="inline-flex w-full items-center justify-center rounded-xl bg-[var(--primary)] px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white transition disabled:cursor-wait disabled:opacity-75 sm:w-auto" data-submit-feedback-button>
                             <span data-submit-idle>Kirim Pesan</span>
                             <span class="hidden" data-submit-loading>
                                 <span class="inline-flex items-center gap-3">
@@ -127,15 +127,15 @@
 
     <section class="bg-[var(--surface-muted)] py-20">
         <div class="mx-auto grid max-w-7xl justify-items-center gap-8 px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-10">
-            <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center">
+            <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-6 text-center sm:p-8">
                 <p class="section-label mb-4">WhatsApp</p>
                 <p class="max-w-full break-words text-center font-editorial text-[clamp(1.45rem,2.2vw,2.15rem)] leading-[1.15]">{{ $contactDetails['whatsapp'] }}</p>
             </article>
-            <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center">
+            <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-6 text-center sm:p-8">
                 <p class="section-label mb-4">Email</p>
                 <p class="max-w-full break-all text-center font-editorial text-[clamp(1.15rem,1.65vw,1.8rem)] leading-[1.15]">{{ $contactDetails['email'] }}</p>
             </article>
-            <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center md:col-span-2 lg:col-span-1">
+            <article class="surface-card flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-6 text-center sm:p-8 md:col-span-2 lg:col-span-1">
                 <p class="section-label mb-4">Telepon</p>
                 <p class="max-w-full break-words text-center font-editorial text-[clamp(1.45rem,2.2vw,2.15rem)] leading-[1.15]">{{ $contactDetails['phone'] }}</p>
             </article>
@@ -145,11 +145,11 @@
     <section class="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div class="mb-8">
             <p class="section-label mb-4">{{ $page->sectionValue('location.kicker', 'Lokasi') }}</p>
-            <h2 class="font-editorial text-4xl md:text-5xl">{{ $page->sectionValue('location.title', 'Alamat dan titik temu lembaga.') }}</h2>
+            <h2 class="font-editorial text-4xl leading-tight lg:text-5xl">{{ $page->sectionValue('location.title', 'Alamat dan titik temu lembaga.') }}</h2>
         </div>
 
         <div class="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
-            <article class="surface-card rounded-[1.75rem] p-8">
+            <article class="surface-card rounded-[1.75rem] p-6 sm:p-8">
                 <p class="text-sm leading-8 text-[var(--ink-muted)]">{{ $contactDetails['address'] }}</p>
             </article>
 

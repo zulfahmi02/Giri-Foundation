@@ -9,7 +9,7 @@
                 </div>
                 <div class="lg:col-span-5 lg:pt-6">
                     <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Cerita Pilihan') }}</p>
-                    <h1 class="font-editorial text-5xl leading-[1.02] text-[var(--primary)] md:text-6xl">
+                    <h1 class="font-editorial text-4xl leading-[1.02] text-[var(--primary)] sm:text-5xl lg:text-6xl">
                         {{ $featuredStory->displayTitle() }}
                     </h1>
                     <p class="mt-6 text-lg leading-8 text-[var(--ink-muted)]">{{ $featuredStory->displayExcerpt() }}</p>

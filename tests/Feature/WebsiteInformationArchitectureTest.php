@@ -22,6 +22,8 @@ test('home page navigation uses the refreshed information architecture', functio
         ->assertSee('data-desktop-nav-primary', false)
         ->assertSee('data-desktop-nav-secondary', false)
         ->assertSee('data-nav-donate-link', false)
+        ->assertSee('xl:flex', false)
+        ->assertSee('xl:hidden', false)
         ->assertSee('shadow-[0_18px_38px_rgba(0,96,76,0.22)]', false)
         ->assertSee('Buka menu navigasi')
         ->assertSee('data-mobile-nav', false)
@@ -52,8 +54,9 @@ test('program pages render mobile-oriented layout classes', function () {
 
     $this->get('/programs')
         ->assertSuccessful()
-        ->assertSee('h-52 w-full object-cover sm:h-64', false)
-        ->assertSee('font-editorial text-2xl leading-tight sm:text-3xl', false);
+        ->assertSee('h-48 w-full object-cover sm:h-56 lg:h-64', false)
+        ->assertSee('font-editorial text-2xl leading-tight sm:text-3xl', false)
+        ->assertSee('text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl', false);
 
     $this->get(route('programs.show', $program))
         ->assertSuccessful()
@@ -240,6 +243,8 @@ test('contact page converts plain location text into a valid google maps embed u
             false,
         )
         ->assertDontSee('src="Bojonegoro, Provinsi Jawa Timur, Indonesia"', false)
+        ->assertSee('lg:grid-cols-3', false)
+        ->assertSee('w-full items-center justify-center', false)
         ->assertSee('break-all', false)
         ->assertSee('text-[clamp(1.15rem,1.65vw,1.8rem)]', false)
         ->assertSee('text-[clamp(1.45rem,2.2vw,2.15rem)]', false);

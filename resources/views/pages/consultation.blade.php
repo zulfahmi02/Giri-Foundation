@@ -7,7 +7,7 @@
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-16 lg:px-10 lg:pt-10 lg:pb-20">
         <div class="max-w-3xl">
             <p class="section-label mb-5">{{ $page->heroValue('kicker', 'Konsultasi') }}</p>
-            <h1 class="font-editorial text-4xl leading-[0.95] md:text-6xl">
+            <h1 class="font-editorial text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
                 {{ $page->heroValue('title_prefix', 'Ajukan') }}
                 <span class="italic text-[var(--primary)]">{{ $page->heroValue('highlight', 'konsultasi') }}</span>
                 {{ $page->heroValue('title_suffix', 'yang lebih terarah.') }}

@@ -11,7 +11,7 @@
             ],
         ])
         <p class="section-label mb-6">{{ $story->category?->name }} • {{ optional($story->published_at)->translatedFormat('d F Y') }}</p>
-        <h1 class="font-editorial text-5xl leading-[1.05] md:text-7xl">{{ $story->displayTitle() }}</h1>
+        <h1 class="font-editorial text-4xl leading-[1.05] sm:text-5xl lg:text-7xl">{{ $story->displayTitle() }}</h1>
         <p class="mt-8 max-w-3xl text-xl leading-9 text-[var(--ink-muted)]">{{ $story->displayExcerpt() }}</p>
 
         <div class="mt-12 overflow-hidden rounded-[2rem]">
