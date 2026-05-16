@@ -108,7 +108,7 @@
                                     @endif
                                 </div>
 
-                                <div class="mt-auto pt-6">
+                                <div class="mt-auto pt-8 lg:pt-10">
                                     @if ($item->hasDownloadableFile())
                                         <a
                                             href="{{ route('resources.download', $item) }}"

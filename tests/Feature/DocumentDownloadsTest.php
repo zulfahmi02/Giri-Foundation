@@ -130,6 +130,7 @@ test('publication archive cards expose document download metadata and action', f
         ->assertSee('Thumbnail Laporan Publik Tahunan')
         ->assertSee('PDF')
         ->assertSee('0 unduhan')
+        ->assertSee('mt-auto pt-8 lg:pt-10', false)
         ->assertSee('Unduh Dokumen')
         ->assertSee(route('resources.download', $document), false)
         ->assertSee('Lihat Semua Dokumen')
