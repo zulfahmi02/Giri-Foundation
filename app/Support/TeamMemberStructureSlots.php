@@ -54,7 +54,7 @@ class TeamMemberStructureSlots
             ],
             self::TrusteePrimary => [
                 'label' => 'Ketua Pembina',
-                'display_label' => 'Ketua',
+                'display_label' => 'Pembina 1',
                 'position' => 'Ketua Dewan Pembina',
                 'division_slug' => 'dewan-pembina',
                 'parent_slot' => self::Advisor,
@@ -62,7 +62,7 @@ class TeamMemberStructureSlots
             ],
             self::TrusteeLeft => [
                 'label' => 'Anggota Pembina (kiri)',
-                'display_label' => 'Anggota',
+                'display_label' => 'Pembina 2',
                 'position' => 'Anggota Dewan Pembina',
                 'division_slug' => 'dewan-pembina',
                 'parent_slot' => self::Advisor,
@@ -70,7 +70,7 @@ class TeamMemberStructureSlots
             ],
             self::TrusteeRight => [
                 'label' => 'Anggota Pembina (kanan)',
-                'display_label' => 'Anggota',
+                'display_label' => 'Pembina 3',
                 'position' => 'Anggota Dewan Pembina',
                 'division_slug' => 'dewan-pembina',
                 'parent_slot' => self::Advisor,

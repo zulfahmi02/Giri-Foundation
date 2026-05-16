@@ -253,7 +253,10 @@ test('about page groups trustees above the director even when legacy parent ids 
         ->assertSuccessful()
         ->assertSee('data-team-structure="advisor-chair-branch"', false)
         ->assertSee('data-team-structure="trustee-companion-branch"', false)
-        ->assertSee('data-team-structure="trustee-director-branch"', false);
+        ->assertSee('data-team-structure="trustee-director-branch"', false)
+        ->assertSeeText('Pembina 1')
+        ->assertSeeText('Pembina 2')
+        ->assertSeeText('Pembina 3');
 });
 
 test('admins can upload a team member photo from the create form', function () {
@@ -304,9 +307,9 @@ test('team member structure slots expose distinct admin and public labels for tr
     expect(TeamMemberStructureSlots::label(TeamMemberStructureSlots::TrusteePrimary))->toBe('Ketua Pembina')
         ->and(TeamMemberStructureSlots::label(TeamMemberStructureSlots::TrusteeLeft))->toBe('Anggota Pembina (kiri)')
         ->and(TeamMemberStructureSlots::label(TeamMemberStructureSlots::TrusteeRight))->toBe('Anggota Pembina (kanan)')
-        ->and(TeamMemberStructureSlots::displayLabel(TeamMemberStructureSlots::TrusteePrimary))->toBe('Ketua')
-        ->and(TeamMemberStructureSlots::displayLabel(TeamMemberStructureSlots::TrusteeLeft))->toBe('Anggota')
-        ->and(TeamMemberStructureSlots::displayLabel(TeamMemberStructureSlots::TrusteeRight))->toBe('Anggota')
+        ->and(TeamMemberStructureSlots::displayLabel(TeamMemberStructureSlots::TrusteePrimary))->toBe('Pembina 1')
+        ->and(TeamMemberStructureSlots::displayLabel(TeamMemberStructureSlots::TrusteeLeft))->toBe('Pembina 2')
+        ->and(TeamMemberStructureSlots::displayLabel(TeamMemberStructureSlots::TrusteeRight))->toBe('Pembina 3')
         ->and(TeamMemberStructureSlots::usesLateralLayout(new TeamMember([
             'structure_slot' => TeamMemberStructureSlots::Advisor,
         ])))->toBeTrue();
