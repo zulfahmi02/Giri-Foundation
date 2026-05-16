@@ -170,10 +170,39 @@
                             <p class="section-label mb-4">{{ $page->sectionValue('publications.archive_label', 'Arsip') }}</p>
                             <div class="space-y-5">
                                 @foreach ($latestArchiveDocuments as $document)
-                                    <article class="surface-card rounded-[1.75rem] p-6">
-                                        <p class="section-label mb-3">{{ $document->category }}</p>
-                                        <h3 class="font-editorial text-2xl leading-tight">{{ $document->title }}</h3>
-                                        <p class="mt-3 text-sm leading-7 text-[var(--ink-muted)]">{{ $document->description }}</p>
+                                    <article class="surface-card overflow-hidden rounded-[1.75rem]">
+                                        <img
+                                            src="{{ $document->resolvedThumbnailUrl() }}"
+                                            alt="Thumbnail {{ $document->title }}"
+                                            class="aspect-[16/10] w-full object-cover"
+                                            loading="lazy"
+                                            decoding="async"
+                                        >
+                                        <div class="p-6">
+                                            <p class="section-label mb-3">{{ $document->category }}</p>
+                                            <h3 class="font-editorial text-2xl leading-tight">{{ $document->title }}</h3>
+                                            <p class="mt-3 text-sm leading-7 text-[var(--ink-muted)]">{{ $document->description }}</p>
+                                            <div class="mt-5 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+                                                <span class="rounded-full bg-[var(--surface-muted)] px-3 py-2">{{ $document->file_type ?: 'Dokumen' }}</span>
+                                                <span class="rounded-full bg-[var(--surface-muted)] px-3 py-2">{{ number_format((int) $document->download_count, 0, ',', '.') }} unduhan</span>
+                                                @if ($document->published_at)
+                                                    <span class="rounded-full bg-[var(--surface-muted)] px-3 py-2">{{ $document->published_at->translatedFormat('d F Y') }}</span>
+                                                @endif
+                                            </div>
+                                            @if ($document->hasDownloadableFile())
+                                                <a
+                                                    href="{{ route('resources.download', $document) }}"
+                                                    class="mt-6 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
+                                                >
+                                                    Unduh Dokumen
+                                                    <span class="material-symbols-outlined text-base">download</span>
+                                                </a>
+                                            @else
+                                                <p class="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+                                                    Berkas segera tersedia
+                                                </p>
+                                            @endif
+                                        </div>
                                     </article>
                                 @endforeach
                             </div>

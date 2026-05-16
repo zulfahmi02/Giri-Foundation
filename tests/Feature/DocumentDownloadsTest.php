@@ -136,6 +136,35 @@ test('publication archive cards expose document download metadata and action', f
         ->assertSee(route('resources.index'), false);
 });
 
+test('home page publication archive cards expose document thumbnails and download actions', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('documents/ringkasan-yayasan.pdf', 'ringkasan yayasan');
+    Storage::disk('public')->put('documents/thumbnails/ringkasan-yayasan.jpg', 'thumbnail ringkasan yayasan');
+
+    $document = Document::query()->create([
+        'title' => 'Ringkasan Yayasan',
+        'slug' => 'ringkasan-yayasan',
+        'category' => 'Profil Yayasan',
+        'description' => 'Dokumen ringkas profil yayasan yang dapat diunduh pengunjung.',
+        'file_url' => 'documents/ringkasan-yayasan.pdf',
+        'thumbnail_url' => 'documents/thumbnails/ringkasan-yayasan.jpg',
+        'file_type' => 'PDF',
+        'download_count' => 0,
+        'is_public' => true,
+        'published_at' => now(),
+    ]);
+
+    $this->get(route('home'))
+        ->assertSuccessful()
+        ->assertSee('Ringkasan Yayasan')
+        ->assertSee('/storage/documents/thumbnails/ringkasan-yayasan.jpg', false)
+        ->assertSee('Thumbnail Ringkasan Yayasan')
+        ->assertSee('PDF')
+        ->assertSee('0 unduhan')
+        ->assertSee('Unduh Dokumen')
+        ->assertSee(route('resources.download', $document), false);
+});
+
 test('public documents stored on the public disk can be downloaded', function () {
     Storage::fake('public');
     Storage::disk('public')->put('documents/panduan-program.pdf', 'arsip dokumen');
