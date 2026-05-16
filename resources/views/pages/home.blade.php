@@ -192,11 +192,11 @@
                                             <p class="section-label mb-3">{{ $document->category }}</p>
                                             <h3 class="font-editorial text-2xl leading-tight">{{ $document->title }}</h3>
                                             <p class="mt-3 text-sm leading-6 text-[var(--ink-muted)]">{{ $document->description }}</p>
-                                            <div class="mt-4 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--ink-muted)]">
-                                                <span class="rounded-full bg-[var(--surface-muted)] px-2.5 py-1.5">{{ $document->file_type ?: 'Dokumen' }}</span>
-                                                <span class="rounded-full bg-[var(--surface-muted)] px-2.5 py-1.5">{{ number_format((int) $document->download_count, 0, ',', '.') }} unduhan</span>
+                                            <div class="mt-4 flex flex-wrap gap-2.5 text-xs font-semibold uppercase leading-none tracking-[0.08em] text-[var(--ink-muted)]">
+                                                <span class="rounded-lg bg-[var(--surface-muted)] px-3.5 py-2">{{ $document->file_type ?: 'Dokumen' }}</span>
+                                                <span class="rounded-lg bg-[var(--surface-muted)] px-3.5 py-2">{{ number_format((int) $document->download_count, 0, ',', '.') }} unduhan</span>
                                                 @if ($document->published_at)
-                                                    <span class="rounded-full bg-[var(--surface-muted)] px-2.5 py-1.5">{{ $document->published_at->translatedFormat('d F Y') }}</span>
+                                                    <span class="rounded-lg bg-[var(--surface-muted)] px-3.5 py-2">{{ $document->published_at->translatedFormat('d F Y') }}</span>
                                                 @endif
                                             </div>
                                             @if ($document->hasDownloadableFile())

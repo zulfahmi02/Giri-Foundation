@@ -161,6 +161,8 @@ test('home page publication archive cards expose document thumbnails and downloa
         ->assertSee('Thumbnail Ringkasan Yayasan')
         ->assertSee('sm:grid-cols-[7rem,1fr]', false)
         ->assertSee('object-contain', false)
+        ->assertSee('text-xs font-semibold uppercase leading-none tracking-[0.08em]', false)
+        ->assertSee('px-3.5 py-2', false)
         ->assertSee('PDF')
         ->assertSee('0 unduhan')
         ->assertSee('Unduh Dokumen')
