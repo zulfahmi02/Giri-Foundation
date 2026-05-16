@@ -91,7 +91,7 @@ test('seed does not create a predictable default admin account', function () {
     ]);
 });
 
-test('configured bootstrap admin is required to set up multi factor authentication', function () {
+test('configured bootstrap admin can access the panel before setting up optional multi factor authentication', function () {
     $originalName = getenv('FILAMENT_ADMIN_NAME') ?: null;
     $originalEmail = getenv('FILAMENT_ADMIN_EMAIL') ?: null;
     $originalPassword = getenv('FILAMENT_ADMIN_PASSWORD') ?: null;
@@ -112,7 +112,8 @@ test('configured bootstrap admin is required to set up multi factor authenticati
 
     $this->actingAs($user)
         ->get('/admin')
-        ->assertRedirect(Filament::getPanel('admin')->getSetUpRequiredMultiFactorAuthenticationUrl());
+        ->assertSuccessful()
+        ->assertSee('GIRI Foundation');
 });
 
 test('editor can access editorial and operational resources in the admin panel', function (string $resourceClass) {
@@ -188,11 +189,11 @@ test('admins can access restricted admin resources', function (string $resourceC
     [DonationUpdateResource::class],
 ]);
 
-test('admin panel requires multi factor authentication', function () {
+test('admin panel offers optional multi factor authentication', function () {
     $panel = Filament::getPanel('admin');
 
     expect($panel->hasMultiFactorAuthentication())->toBeTrue()
-        ->and($panel->isMultiFactorAuthenticationRequired())->toBeTrue()
+        ->and($panel->isMultiFactorAuthenticationRequired())->toBeFalse()
         ->and(collect($panel->getMultiFactorAuthenticationProviders())->map->getId()->all())
         ->toContain('app');
 });
@@ -212,10 +213,6 @@ test('make filament user command creates a user that can access the local admin 
         $user = User::query()
             ->where('email', 'local-filament@giri.foundation')
             ->firstOrFail();
-
-        $user->forceFill([
-            'app_authentication_secret' => 'totp-secret',
-        ])->save();
 
         expect($user->password_hash)->not->toBeNull();
 
