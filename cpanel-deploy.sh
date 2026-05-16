@@ -73,6 +73,67 @@ resolve_app_url() {
     "$PHP_BIN" -r "require '$APP_ROOT/vendor/autoload.php'; \$app = require '$APP_ROOT/bootstrap/app.php'; \$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class); \$kernel->bootstrap(); echo rtrim((string) config('app.url'), '/');"
 }
 
+env_value() {
+    local value="$1"
+
+    if [[ "$value" =~ [[:space:]#\"\\] ]]; then
+        value="${value//\\/\\\\}"
+        value="${value//\"/\\\"}"
+        printf '"%s"\n' "$value"
+
+        return
+    fi
+
+    printf '%s\n' "$value"
+}
+
+set_env_value() {
+    local key="$1"
+    local value="$2"
+    local formatted_value
+    local escaped_replacement
+
+    formatted_value="$(env_value "$value")"
+    escaped_replacement="$(printf '%s' "$key=$formatted_value" | sed 's/[&/\]/\\&/g')"
+
+    if grep -q "^${key}=" "$APP_ROOT/.env"; then
+        sed -i "s/^${key}=.*/${escaped_replacement}/" "$APP_ROOT/.env"
+
+        return
+    fi
+
+    printf '\n%s=%s\n' "$key" "$formatted_value" >> "$APP_ROOT/.env"
+}
+
+copy_directory_contents() {
+    local source_directory="$1"
+    local target_directory="$2"
+
+    if [ ! -d "$source_directory" ]; then
+        return
+    fi
+
+    mkdir -p "$target_directory"
+
+    if command -v rsync >/dev/null 2>&1; then
+        run rsync -a "$source_directory/" "$target_directory/"
+
+        return
+    fi
+
+    log "rsync not available, falling back to cp -R"
+    find "$source_directory" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$target_directory/" \;
+}
+
+configure_public_disk_root() {
+    local public_storage="$WEB_ROOT/storage"
+
+    log "Configuring PUBLIC_DISK_ROOT to $public_storage"
+
+    mkdir -p "$public_storage"
+    set_env_value "PUBLIC_DISK_ROOT" "$public_storage"
+}
+
 sync_public_assets() {
     log "Syncing public assets into $WEB_ROOT"
 
@@ -145,58 +206,29 @@ TXT
 sync_public_storage() {
     local app_public_storage="$APP_ROOT/storage/app/public"
     local public_storage="$WEB_ROOT/storage"
+    local temporary_storage="$WEB_ROOT/.storage-publish-tmp"
 
     log "Publishing public storage uploads at $public_storage"
 
     mkdir -p "$app_public_storage" "$WEB_ROOT"
 
     if [ -L "$public_storage" ]; then
-        local current_target
-
-        current_target="$(readlink "$public_storage" || true)"
-
-        if [ "$current_target" = "$app_public_storage" ]; then
-            log "$public_storage already links to $app_public_storage"
-
-            return
-        fi
-
+        log "Replacing $public_storage symlink with a real directory for live uploads"
+        rm -rf "$temporary_storage"
+        mkdir -p "$temporary_storage"
+        copy_directory_contents "$public_storage" "$temporary_storage"
         rm "$public_storage"
-    fi
-
-    if [ -d "$public_storage" ]; then
-        log "Merging existing $public_storage uploads back into $app_public_storage"
-
-        if command -v rsync >/dev/null 2>&1; then
-            run rsync -a "$public_storage/" "$app_public_storage/"
-        else
-            log "rsync not available, falling back to cp -R"
-            find "$public_storage" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$app_public_storage/" \;
-        fi
-
-        rm -rf "$public_storage"
-    elif [ -e "$public_storage" ]; then
+        mkdir -p "$public_storage"
+        copy_directory_contents "$temporary_storage" "$public_storage"
+        rm -rf "$temporary_storage"
+    elif [ ! -d "$public_storage" ]; then
         rm -f "$public_storage"
+        mkdir -p "$public_storage"
     fi
 
-    if ln -s "$app_public_storage" "$public_storage" 2>/dev/null; then
-        log "Linked $public_storage to $app_public_storage"
-
-        return
-    fi
-
-    log "Symlink creation failed; mirroring $app_public_storage into $public_storage"
-    mkdir -p "$public_storage"
-
-    if command -v rsync >/dev/null 2>&1; then
-        run rsync -a --delete "$app_public_storage/" "$public_storage/"
-
-        return
-    fi
-
-    log "rsync not available, falling back to cp -R"
-    find "$public_storage" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-    find "$app_public_storage" -mindepth 1 -maxdepth 1 -exec /bin/cp -R {} "$public_storage/" \;
+    log "Merging existing Laravel public disk files into $public_storage"
+    copy_directory_contents "$app_public_storage" "$public_storage"
+    chmod -R ug+rwX "$public_storage" || true
 }
 
 main() {
@@ -213,6 +245,8 @@ main() {
 
     mkdir -p "$APP_ROOT/storage" "$APP_ROOT/bootstrap/cache"
     chmod -R ug+rwx "$APP_ROOT/storage" "$APP_ROOT/bootstrap/cache" || true
+
+    configure_public_disk_root
 
     run_composer_install "$composer_cmd"
 
