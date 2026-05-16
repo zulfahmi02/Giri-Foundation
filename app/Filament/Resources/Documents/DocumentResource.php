@@ -29,11 +29,11 @@ class DocumentResource extends Resource
 
     protected static ?int $navigationSort = 20;
 
-    protected static ?string $navigationLabel = 'Arsip Dokumen';
+    protected static ?string $navigationLabel = 'Dokumen Unduhan';
 
-    protected static ?string $modelLabel = 'dokumen';
+    protected static ?string $modelLabel = 'dokumen unduhan';
 
-    protected static ?string $pluralModelLabel = 'Dokumen';
+    protected static ?string $pluralModelLabel = 'Dokumen Unduhan';
 
     protected static ?string $recordTitleAttribute = 'title';
 

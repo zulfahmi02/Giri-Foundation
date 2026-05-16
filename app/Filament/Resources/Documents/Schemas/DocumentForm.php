@@ -20,11 +20,16 @@ class DocumentForm
             ->components([
                 FilamentSlugGenerator::source(
                     TextInput::make('title')
+                        ->label('Judul dokumen')
                         ->required(),
                 ),
                 FilamentSlugGenerator::field(),
-                TextInput::make('category'),
+                TextInput::make('category')
+                    ->label('Kategori')
+                    ->helperText('Contoh: Dokumen Organisasi, Laporan, Profil Yayasan, Tata Kelola.'),
                 Textarea::make('description')
+                    ->label('Deskripsi')
+                    ->helperText('Ringkasan singkat yang akan tampil di kartu dokumen.')
                     ->columnSpanFull(),
                 FileUpload::make('file_url')
                     ->label('Berkas dokumen')
@@ -44,27 +49,39 @@ class DocumentForm
                     ->openable()
                     ->downloadable()
                     ->requiredWithout('external_file_url')
-                    ->helperText('Unggah dokumen dari perangkat bila berkas disimpan di server ini.')
+                    ->helperText('Upload PDF, Word, Excel, PowerPoint, atau CSV agar pengunjung bisa mengunduh file dari website.')
                     ->columnSpanFull(),
                 TextInput::make('external_file_url')
                     ->label('URL eksternal dokumen')
                     ->url()
                     ->requiredWithout('file_url')
-                    ->helperText('Opsional. Isi jika dokumen berada di luar server ini.')
+                    ->helperText('Isi hanya jika dokumen berada di luar server, misalnya Google Drive atau website lain.')
                     ->columnSpanFull(),
-                FilamentImageUpload::make('thumbnail_url', 'documents/thumbnails', 'Gambar thumbnail'),
-                TextInput::make('file_type'),
+                FilamentImageUpload::make('thumbnail_url', 'documents/thumbnails', 'Gambar thumbnail')
+                    ->helperText('Opsional. Dipakai sebagai gambar pendukung dokumen, bukan file utama yang diunduh.'),
+                TextInput::make('file_type')
+                    ->label('Tipe file')
+                    ->helperText('Opsional. Jika kosong, sistem akan mengambil dari ekstensi file, misalnya PDF atau DOCX.'),
                 TextInput::make('file_size')
-                    ->numeric(),
+                    ->label('Ukuran file')
+                    ->numeric()
+                    ->helperText('Opsional. Untuk upload langsung, ukuran file akan dihitung otomatis.'),
                 TextInput::make('download_count')
+                    ->label('Jumlah unduhan')
                     ->required()
                     ->numeric()
                     ->default(0),
                 Toggle::make('is_public')
+                    ->label('Tampilkan di website')
                     ->required()
-                    ->default(true),
-                DateTimePicker::make('published_at'),
+                    ->default(true)
+                    ->helperText('Matikan jika dokumen hanya disimpan sebagai draft/internal.'),
+                DateTimePicker::make('published_at')
+                    ->label('Tanggal tampil di website')
+                    ->default(now())
+                    ->helperText('Wajib terisi agar dokumen muncul di halaman publik. Kosongkan hanya jika belum siap tampil.'),
                 Select::make('created_by')
+                    ->label('Dibuat oleh')
                     ->relationship('creator', 'name')
                     ->searchable()
                     ->preload()

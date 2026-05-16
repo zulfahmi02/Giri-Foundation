@@ -31,7 +31,7 @@ class ContentResource extends Resource
 
     protected static ?int $navigationSort = 10;
 
-    protected static ?string $navigationLabel = 'Artikel & Cerita';
+    protected static ?string $navigationLabel = 'Cerita & Artikel';
 
     protected static ?string $modelLabel = 'cerita';
 

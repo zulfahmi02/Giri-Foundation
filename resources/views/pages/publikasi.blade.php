@@ -73,7 +73,7 @@
 
                 <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
                     @foreach ($section['collection'] as $item)
-                        <article class="surface-card rounded-[1.75rem] p-8">
+                        <article class="surface-card flex flex-col rounded-[1.75rem] p-8">
                             <p class="section-label mb-3">
                                 {{ $section['kind'] === 'document' ? $item->category : ($item->category?->name ?? strtoupper($item->type)) }}
                             </p>
@@ -87,9 +87,44 @@
                             <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">
                                 {{ $section['kind'] === 'document' ? $item->description : ($section['kind'] === 'story' ? $item->displayExcerpt() : $item->excerpt) }}
                             </p>
+
+                            @if ($section['kind'] === 'document')
+                                <div class="mt-6 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-muted)]">
+                                    <span class="rounded-full bg-[var(--surface-muted)] px-3 py-2">{{ $item->file_type ?: 'Dokumen' }}</span>
+                                    <span class="rounded-full bg-[var(--surface-muted)] px-3 py-2">{{ number_format((int) $item->download_count, 0, ',', '.') }} unduhan</span>
+                                    @if ($item->published_at)
+                                        <span class="rounded-full bg-[var(--surface-muted)] px-3 py-2">{{ $item->published_at->translatedFormat('d F Y') }}</span>
+                                    @endif
+                                </div>
+
+                                <div class="mt-auto pt-6">
+                                    @if ($item->hasDownloadableFile())
+                                        <a
+                                            href="{{ route('resources.download', $item) }}"
+                                            class="inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
+                                        >
+                                            Unduh Dokumen
+                                            <span class="material-symbols-outlined text-base">download</span>
+                                        </a>
+                                    @else
+                                        <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+                                            Berkas segera tersedia
+                                        </p>
+                                    @endif
+                                </div>
+                            @endif
                         </article>
                     @endforeach
                 </div>
+
+                @if ($section['kind'] === 'document')
+                    <div class="mt-10">
+                        <a href="{{ route('resources.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary)]">
+                            {{ $page->sectionValue('archives.cta_label', 'Lihat Semua Dokumen') }}
+                            <span class="material-symbols-outlined text-base">arrow_forward</span>
+                        </a>
+                    </div>
+                @endif
 
                 @if ($section['collection']->hasPages())
                     <div class="mt-10">

@@ -165,6 +165,7 @@ class PageContentDefaults
                     'archives' => [
                         'kicker' => 'Arsip',
                         'title' => 'Dokumen organisasi yang dapat diakses publik.',
+                        'cta_label' => 'Lihat Semua Dokumen',
                     ],
                     'news' => [
                         'kicker' => 'Berita',

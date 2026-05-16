@@ -11,7 +11,7 @@ class HomeCluster extends Cluster
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
-    protected static ?string $navigationLabel = 'Beranda';
+    protected static ?string $navigationLabel = 'Konten Beranda';
 
     protected static ?int $navigationSort = 10;
 

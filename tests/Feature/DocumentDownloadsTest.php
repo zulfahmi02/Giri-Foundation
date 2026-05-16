@@ -65,12 +65,67 @@ test('resources page only lists public categories and hides unavailable download
         'published_at' => now(),
     ]);
 
+    Document::query()->create([
+        'title' => 'Dokumen Belum Dijadwalkan',
+        'slug' => 'dokumen-belum-dijadwalkan',
+        'category' => 'Draft',
+        'description' => 'Dokumen ini belum punya tanggal tampil.',
+        'file_url' => 'https://example.com/dokumen-belum-dijadwalkan.pdf',
+        'file_type' => 'PDF',
+        'download_count' => 0,
+        'is_public' => true,
+        'published_at' => null,
+    ]);
+
     $this->get(route('resources.index'))
         ->assertSuccessful()
         ->assertSee('Pedoman')
         ->assertDontSee('Rahasia Internal')
+        ->assertDontSee('Draft')
+        ->assertDontSee('Dokumen Belum Dijadwalkan')
         ->assertSee('Berkas segera tersedia')
         ->assertDontSee(route('resources.download', $unavailablePublicDocument), false);
+});
+
+test('publication archive cards expose document download metadata and action', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('documents/laporan-publik.pdf', 'laporan publik');
+
+    Page::query()->create([
+        'title' => 'Publikasi',
+        'slug' => 'publikasi',
+        'status' => 'published',
+        'published_at' => now(),
+    ]);
+
+    Page::query()->create([
+        'title' => 'Arsip Dokumen',
+        'slug' => 'resources',
+        'status' => 'published',
+        'published_at' => now(),
+    ]);
+
+    $document = Document::query()->create([
+        'title' => 'Laporan Publik Tahunan',
+        'slug' => 'laporan-publik-tahunan',
+        'category' => 'Laporan',
+        'description' => 'Laporan resmi yang dapat diunduh oleh pengunjung.',
+        'file_url' => 'documents/laporan-publik.pdf',
+        'file_type' => 'PDF',
+        'download_count' => 0,
+        'is_public' => true,
+        'published_at' => now(),
+    ]);
+
+    $this->get(route('publications.index'))
+        ->assertSuccessful()
+        ->assertSee('Laporan Publik Tahunan')
+        ->assertSee('PDF')
+        ->assertSee('0 unduhan')
+        ->assertSee('Unduh Dokumen')
+        ->assertSee(route('resources.download', $document), false)
+        ->assertSee('Lihat Semua Dokumen')
+        ->assertSee(route('resources.index'), false);
 });
 
 test('public documents stored on the public disk can be downloaded', function () {

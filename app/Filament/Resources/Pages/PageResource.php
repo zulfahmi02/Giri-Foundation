@@ -26,7 +26,7 @@ class PageResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Beranda';
+    protected static string|\UnitEnum|null $navigationGroup = 'Konten Beranda';
 
     protected static ?int $navigationSort = 10;
 

@@ -258,6 +258,8 @@ class PageForm
                                         TextInput::make('section_data.archives.title')
                                             ->label('Judul arsip')
                                             ->columnSpanFull(),
+                                        TextInput::make('section_data.archives.cta_label')
+                                            ->label('Label link arsip dokumen'),
                                         TextInput::make('section_data.news.kicker')
                                             ->label('Label berita'),
                                         TextInput::make('section_data.news.title')

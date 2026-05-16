@@ -29,11 +29,11 @@ class DivisionResource extends Resource
 
     protected static ?int $navigationSort = 30;
 
-    protected static ?string $navigationLabel = 'Divisi';
+    protected static ?string $navigationLabel = 'Divisi Organisasi';
 
-    protected static ?string $modelLabel = 'divisi';
+    protected static ?string $modelLabel = 'divisi organisasi';
 
-    protected static ?string $pluralModelLabel = 'Divisi';
+    protected static ?string $pluralModelLabel = 'Divisi Organisasi';
 
     protected static ?string $recordTitleAttribute = 'name';
 

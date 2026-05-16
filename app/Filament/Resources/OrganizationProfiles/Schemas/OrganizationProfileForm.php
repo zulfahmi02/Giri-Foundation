@@ -49,8 +49,8 @@ class OrganizationProfileForm
                     ->label('Alamat')
                     ->columnSpanFull(),
                 Textarea::make('google_maps_embed')
-                    ->label('Google Maps / Lokasi')
-                    ->helperText('Bisa isi alamat, URL Google Maps, atau kode iframe embed.')
+                    ->label('URL / Embed Google Maps')
+                    ->helperText('Tempel URL Google Maps, kode iframe embed, atau alamat lengkap. Field ini dipakai untuk peta lokasi di website.')
                     ->columnSpanFull(),
                 FilamentImageUpload::make('logo_url', 'organization', 'Logo organisasi'),
                 FilamentImageUpload::make('favicon_url', 'organization', 'Favicon'),

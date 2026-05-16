@@ -13,11 +13,15 @@ use App\Filament\Resources\ActivityLogs\ActivityLogResource;
 use App\Filament\Resources\ContactMessages\ContactMessageResource;
 use App\Filament\Resources\ContentCategories\ContentCategoryResource;
 use App\Filament\Resources\Contents\ContentResource;
+use App\Filament\Resources\Contents\Schemas\ContentForm;
+use App\Filament\Resources\Divisions\DivisionResource;
 use App\Filament\Resources\Documents\DocumentResource;
+use App\Filament\Resources\Documents\Schemas\DocumentForm;
 use App\Filament\Resources\DonationCampaigns\DonationCampaignResource;
 use App\Filament\Resources\Donations\DonationResource;
 use App\Filament\Resources\MediaLibraries\MediaLibraryResource;
 use App\Filament\Resources\OrganizationProfiles\OrganizationProfileResource;
+use App\Filament\Resources\OrganizationProfiles\Schemas\OrganizationProfileForm;
 use App\Filament\Resources\Pages\PageResource;
 use App\Filament\Resources\Partners\PartnerResource;
 use App\Filament\Resources\ProgramCategories\ProgramCategoryResource;
@@ -26,12 +30,14 @@ use App\Filament\Resources\Roles\RoleResource;
 use App\Filament\Resources\Settings\SettingResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Filament\Resources\Videos\VideoResource;
+use App\Models\Document;
 use App\Models\MediaLibrary;
 use App\Models\OrganizationProfile;
 use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Facades\Filament;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\DB;
 
 function createPanelUserForUxTest(string $roleName): User
@@ -48,6 +54,31 @@ function createPanelUserForUxTest(string $roleName): User
     $user->roles()->sync([$role->id]);
 
     return $user;
+}
+
+function adminPanelFormHelperText(string $formClass, string $statePath): string
+{
+    $schema = $formClass::configure(Schema::make());
+    $component = $schema->getComponentByStatePath($statePath, withHidden: true);
+
+    if ($component === null) {
+        return '';
+    }
+
+    $reflection = new ReflectionClass($component);
+    $childComponentsProperty = $reflection->getProperty('childComponents');
+    $childComponentsProperty->setAccessible(true);
+
+    $helperComponents = $childComponentsProperty->getValue($component)[$component::BELOW_CONTENT_SCHEMA_KEY] ?? [];
+
+    if ($helperComponents instanceof Closure) {
+        $helperComponents = $helperComponents($component);
+    }
+
+    return collect(is_array($helperComponents) ? $helperComponents : [$helperComponents])
+        ->map(fn (mixed $component): string => method_exists($component, 'getContent') ? (string) $component->getContent() : '')
+        ->filter()
+        ->implode(' ');
 }
 
 test('admin panel groups resources by website navbar clusters', function () {
@@ -91,6 +122,100 @@ test('admin cluster entry points prioritize primary client workflows', function 
         ->and(RoleResource::getNavigationSort())->toBe(20)
         ->and(SettingResource::getNavigationSort())->toBe(30)
         ->and(ActivityLogResource::getNavigationSort())->toBe(40);
+});
+
+test('admin navigation labels clarify website editing workflows', function () {
+    expect(HomeCluster::getNavigationLabel())->toBe('Konten Beranda')
+        ->and(ContentResource::getNavigationLabel())->toBe('Cerita & Artikel')
+        ->and(DocumentResource::getNavigationLabel())->toBe('Dokumen Unduhan')
+        ->and(DocumentResource::getModelLabel())->toBe('dokumen unduhan')
+        ->and(DocumentResource::getPluralModelLabel())->toBe('Dokumen Unduhan')
+        ->and(DivisionResource::getNavigationLabel())->toBe('Divisi Organisasi')
+        ->and(DivisionResource::getPluralModelLabel())->toBe('Divisi Organisasi');
+});
+
+test('publication admin forms explain editorial content and document downloads', function () {
+    $user = createPanelUserForUxTest('Admin');
+
+    expect(adminPanelFormHelperText(ContentForm::class, 'type'))->toContain('Untuk PDF atau dokumen unduhan')
+        ->and(adminPanelFormHelperText(ContentForm::class, 'featured_image_url'))->toContain('Dipakai sebagai thumbnail/kartu Cerita & Artikel')
+        ->and(adminPanelFormHelperText(ContentForm::class, 'seo_title'))->toContain('Judul untuk Google dan preview saat link dibagikan')
+        ->and(adminPanelFormHelperText(DocumentForm::class, 'file_url'))->toContain('Upload PDF, Word, Excel, PowerPoint, atau CSV')
+        ->and(adminPanelFormHelperText(DocumentForm::class, 'published_at'))->toContain('Wajib terisi agar dokumen muncul di halaman publik');
+
+    $this->actingAs($user)
+        ->get((string) parse_url(ContentResource::getUrl('create', panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertSee('Jenis konten')
+        ->assertSee('Gambar sampul')
+        ->assertSee('Judul SEO');
+
+    $this->actingAs($user)
+        ->get((string) parse_url(DocumentResource::getUrl('create', panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertSee('Berkas dokumen')
+        ->assertSee('Tanggal tampil di website')
+        ->assertSee('Tampilkan di website');
+});
+
+test('document table explains why records are visible or hidden from the website', function () {
+    $user = createPanelUserForUxTest('Admin');
+
+    Document::query()->create([
+        'title' => 'Dokumen Tampil',
+        'slug' => 'dokumen-tampil',
+        'category' => 'Publik',
+        'description' => 'Dokumen yang sudah tampil.',
+        'file_url' => 'https://example.com/dokumen-tampil.pdf',
+        'file_type' => 'PDF',
+        'download_count' => 0,
+        'is_public' => true,
+        'published_at' => now(),
+    ]);
+
+    Document::query()->create([
+        'title' => 'Dokumen Tanggal Kosong',
+        'slug' => 'dokumen-tanggal-kosong',
+        'category' => 'Draft',
+        'description' => 'Dokumen tanpa tanggal tampil.',
+        'file_url' => 'https://example.com/dokumen-tanggal-kosong.pdf',
+        'file_type' => 'PDF',
+        'download_count' => 0,
+        'is_public' => true,
+        'published_at' => null,
+    ]);
+
+    Document::query()->create([
+        'title' => 'Dokumen Internal',
+        'slug' => 'dokumen-internal',
+        'category' => 'Internal',
+        'description' => 'Dokumen internal.',
+        'file_url' => 'https://example.com/dokumen-internal.pdf',
+        'file_type' => 'PDF',
+        'download_count' => 0,
+        'is_public' => false,
+        'published_at' => now(),
+    ]);
+
+    $this->actingAs($user)
+        ->get((string) parse_url(DocumentResource::getUrl(panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertSee('Status Website')
+        ->assertSee('Tampil di website')
+        ->assertSee('Tanggal kosong')
+        ->assertSee('Belum publik');
+});
+
+test('organization profile form clarifies google maps input', function () {
+    $user = createPanelUserForUxTest('Admin');
+
+    expect(adminPanelFormHelperText(OrganizationProfileForm::class, 'google_maps_embed'))
+        ->toContain('Tempel URL Google Maps, kode iframe embed, atau alamat lengkap');
+
+    $this->actingAs($user)
+        ->get((string) parse_url(OrganizationProfileResource::getUrl('create', panel: 'admin'), PHP_URL_PATH))
+        ->assertSuccessful()
+        ->assertSee('URL / Embed Google Maps');
 });
 
 test('dashboard highlights actionable admin work', function () {
