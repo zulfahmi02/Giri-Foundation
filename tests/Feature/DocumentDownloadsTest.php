@@ -171,6 +171,37 @@ test('home page publication archive cards expose document thumbnails and downloa
         ->assertSee(route('resources.download', $document), false);
 });
 
+test('donate page document cards expose document thumbnails and download actions', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('documents/tata-kelola-donasi.pdf', 'tata kelola donasi');
+    Storage::disk('public')->put('documents/thumbnails/tata-kelola-donasi.jpg', 'thumbnail tata kelola donasi');
+
+    $document = Document::query()->create([
+        'title' => 'Tata Kelola Donasi',
+        'slug' => 'tata-kelola-donasi',
+        'category' => 'Akuntabilitas',
+        'description' => 'Dokumen pendukung tata kelola dukungan yayasan.',
+        'file_url' => 'documents/tata-kelola-donasi.pdf',
+        'thumbnail_url' => 'documents/thumbnails/tata-kelola-donasi.jpg',
+        'file_type' => 'PDF',
+        'download_count' => 0,
+        'is_public' => true,
+        'published_at' => now(),
+    ]);
+
+    $this->get(route('donate.show'))
+        ->assertSuccessful()
+        ->assertSee('Tata Kelola Donasi')
+        ->assertSee('/storage/documents/thumbnails/tata-kelola-donasi.jpg', false)
+        ->assertSee('Thumbnail Tata Kelola Donasi')
+        ->assertSee('object-contain p-2', false)
+        ->assertSee('PDF')
+        ->assertSee('0 unduhan')
+        ->assertSee('mt-auto pt-8 lg:pt-10', false)
+        ->assertSee('Unduh Dokumen')
+        ->assertSee(route('resources.download', $document), false);
+});
+
 test('public documents stored on the public disk can be downloaded', function () {
     Storage::fake('public');
     Storage::disk('public')->put('documents/panduan-program.pdf', 'arsip dokumen');

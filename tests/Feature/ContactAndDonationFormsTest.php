@@ -427,7 +427,7 @@ test('contact page renders form feedback and centered contact cards', function (
         ->assertSee('Mengirim...')
         ->assertSee('animate-spin', false)
         ->assertSee('justify-items-center gap-8 px-6 md:grid-cols-2 lg:grid-cols-3', false)
-        ->assertSee('flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-8 text-center', false);
+        ->assertSee('flex w-full max-w-sm flex-col items-center rounded-[1.75rem] p-6 text-center sm:p-8', false);
 });
 
 test('contact submit loading state is wired through the public javascript bundle', function () {

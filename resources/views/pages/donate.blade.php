@@ -129,15 +129,53 @@
                 <a href="{{ route('resources.index') }}" class="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary)]">{{ $page->sectionValue('documents.link_label', 'Buka arsip') }}</a>
             </div>
 
-            <div class="grid gap-8 md:grid-cols-3">
+            <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
                 @forelse ($documents as $document)
-                    <article class="surface-card rounded-[1.75rem] p-8">
-                        <p class="section-label mb-4">{{ $document->category }}</p>
-                        <h3 class="font-editorial text-3xl">{{ $document->title }}</h3>
-                        <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $document->description }}</p>
+                    <article class="surface-card flex flex-col overflow-hidden rounded-[1.75rem]">
+                        <div class="aspect-[16/10] overflow-hidden bg-[var(--surface-muted)]">
+                            <img
+                                src="{{ $document->resolvedThumbnailUrl() }}"
+                                alt="Thumbnail {{ $document->title }}"
+                                class="h-full w-full object-contain p-2"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                        </div>
+
+                        <div class="flex flex-1 flex-col p-8">
+                            <p class="section-label mb-4">{{ $document->category }}</p>
+                            <h3 class="font-editorial text-3xl leading-tight">{{ $document->title }}</h3>
+                            @if (filled($document->description))
+                                <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $document->description }}</p>
+                            @endif
+
+                            <div class="mt-6 flex flex-wrap gap-2.5 text-xs font-semibold uppercase leading-none tracking-[0.08em] text-[var(--ink-muted)]">
+                                <span class="rounded-lg bg-[var(--surface-muted)] px-3.5 py-2">{{ $document->file_type ?: 'Dokumen' }}</span>
+                                <span class="rounded-lg bg-[var(--surface-muted)] px-3.5 py-2">{{ number_format((int) $document->download_count, 0, ',', '.') }} unduhan</span>
+                                @if ($document->published_at)
+                                    <span class="rounded-lg bg-[var(--surface-muted)] px-3.5 py-2">{{ $document->published_at->translatedFormat('d F Y') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="mt-auto pt-8 lg:pt-10">
+                                @if ($document->hasDownloadableFile())
+                                    <a
+                                        href="{{ route('resources.download', $document) }}"
+                                        class="inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
+                                    >
+                                        Unduh Dokumen
+                                        <span class="material-symbols-outlined text-base">download</span>
+                                    </a>
+                                @else
+                                    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+                                        Berkas segera tersedia
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
                     </article>
                 @empty
-                    <article class="surface-card rounded-[1.75rem] p-8 md:col-span-3">
+                    <article class="surface-card rounded-[1.75rem] p-8 md:col-span-2 xl:col-span-3">
                         <p class="text-sm leading-7 text-[var(--ink-muted)]">
                             Dokumen pendukung akan tampil di sini setelah arsip publik ditambahkan ke panel admin.
                         </p>
