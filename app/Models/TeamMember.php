@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\PublicStorageUrl;
+use App\Support\TeamMemberStructureSlots;
 use Database\Factories\TeamMemberFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -85,8 +86,32 @@ class TeamMember extends Model
      */
     public static function buildHierarchy(Collection $teamMembers): Collection
     {
+        $teamMembersById = $teamMembers->keyBy('id');
+        $teamMembersBySlot = $teamMembers
+            ->filter(fn (self $teamMember): bool => filled($teamMember->structure_slot))
+            ->keyBy('structure_slot');
+        $structureDefinitions = TeamMemberStructureSlots::definitions();
+
         $childrenByParent = $teamMembers->groupBy(
-            fn (self $teamMember): string|int => $teamMember->parent_id ?? 'root',
+            function (self $teamMember) use ($teamMembersById, $teamMembersBySlot, $structureDefinitions): string|int {
+                $parentSlot = filled($teamMember->structure_slot)
+                    ? ($structureDefinitions[$teamMember->structure_slot]['parent_slot'] ?? null)
+                    : null;
+
+                $slotParent = filled($parentSlot)
+                    ? $teamMembersBySlot->get($parentSlot)
+                    : null;
+
+                if ($slotParent instanceof self && $slotParent->getKey() !== $teamMember->getKey()) {
+                    return $slotParent->getKey();
+                }
+
+                if ($teamMember->parent_id !== null && $teamMembersById->has($teamMember->parent_id)) {
+                    return $teamMember->parent_id;
+                }
+
+                return 'root';
+            },
         );
 
         $attachChildren = function (self $teamMember) use (&$attachChildren, $childrenByParent): self {

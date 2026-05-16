@@ -223,6 +223,39 @@ test('about page renders uploaded team member photos from public storage', funct
         ->assertSee('Profil Personil');
 });
 
+test('about page groups trustees above the director even when legacy parent ids are missing', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    TeamMember::query()
+        ->where('structure_slot', TeamMemberStructureSlots::Director)
+        ->firstOrFail()
+        ->update([
+            'parent_id' => null,
+        ]);
+
+    $teamMembers = TeamMember::query()
+        ->where('is_active', true)
+        ->structural()
+        ->with('divisionRecord')
+        ->orderBy('sort_order')
+        ->get();
+
+    $hierarchy = TeamMember::buildHierarchy($teamMembers);
+    $advisor = $hierarchy->firstWhere('structure_slot', TeamMemberStructureSlots::Advisor);
+    $trusteeChair = $advisor?->children->firstWhere('structure_slot', TeamMemberStructureSlots::TrusteePrimary);
+    $director = $trusteeChair?->children->firstWhere('structure_slot', TeamMemberStructureSlots::Director);
+
+    expect($hierarchy->pluck('structure_slot')->all())->toBe([TeamMemberStructureSlots::Advisor])
+        ->and($trusteeChair)->not->toBeNull()
+        ->and($director)->not->toBeNull();
+
+    $this->get(route('about'))
+        ->assertSuccessful()
+        ->assertSee('data-team-structure="advisor-chair-branch"', false)
+        ->assertSee('data-team-structure="trustee-companion-branch"', false)
+        ->assertSee('data-team-structure="trustee-director-branch"', false);
+});
+
 test('admins can upload a team member photo from the create form', function () {
     Storage::fake('public');
 
