@@ -202,13 +202,13 @@
                                             @if ($document->hasDownloadableFile())
                                                 <a
                                                     href="{{ route('resources.download', $document) }}"
-                                                    class="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
+                                                    class="mt-8 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
                                                 >
                                                     Unduh Dokumen
                                                     <span class="material-symbols-outlined text-base">download</span>
                                                 </a>
                                             @else
-                                                <p class="mt-5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+                                                <p class="mt-8 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
                                                     Berkas segera tersedia
                                                 </p>
                                             @endif
