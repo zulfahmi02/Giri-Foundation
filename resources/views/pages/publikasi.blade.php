@@ -74,6 +74,17 @@
                 <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
                     @foreach ($section['collection'] as $item)
                         <article class="surface-card flex flex-col rounded-[1.75rem] p-8">
+                            @if ($section['kind'] === 'document')
+                                <div class="mb-6 aspect-[16/10] overflow-hidden rounded-2xl bg-[var(--surface-muted)]">
+                                    <img
+                                        src="{{ $item->resolvedThumbnailUrl() }}"
+                                        alt="Thumbnail {{ $item->title }}"
+                                        class="h-full w-full object-cover"
+                                        loading="lazy"
+                                    >
+                                </div>
+                            @endif
+
                             <p class="section-label mb-3">
                                 {{ $section['kind'] === 'document' ? $item->category : ($item->category?->name ?? strtoupper($item->type)) }}
                             </p>

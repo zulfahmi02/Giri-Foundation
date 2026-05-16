@@ -47,29 +47,39 @@
         <div class="mt-10 space-y-6">
             @foreach ($documents as $document)
                 <article class="surface-card rounded-[1.75rem] p-8">
-                    <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                        <div class="max-w-3xl">
-                            <p class="section-label mb-4">{{ $document->category }}</p>
-                            <h2 class="font-editorial text-3xl">{{ $document->title }}</h2>
-                            <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $document->description }}</p>
+                    <div class="grid gap-6 lg:grid-cols-[18rem,1fr] lg:items-center">
+                        <div class="aspect-[4/3] overflow-hidden rounded-2xl bg-[var(--surface-muted)]">
+                            <img
+                                src="{{ $document->resolvedThumbnailUrl() }}"
+                                alt="Thumbnail {{ $document->title }}"
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            >
                         </div>
-                        <div class="text-sm text-[var(--ink-muted)] md:text-right">
-                            <p class="font-semibold text-[var(--primary)]">{{ $document->file_type }}</p>
-                            <p class="mt-1">{{ number_format((int) $document->download_count, 0, ',', '.') }} unduhan</p>
-                            <p class="mt-1">{{ optional($document->published_at)->translatedFormat('d F Y') }}</p>
-                            @if ($document->hasDownloadableFile())
-                                <a
-                                    href="{{ route('resources.download', $document) }}"
-                                    class="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
-                                >
-                                    Unduh Dokumen
-                                    <span class="material-symbols-outlined text-base">download</span>
-                                </a>
-                            @else
-                                <p class="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
-                                    Berkas segera tersedia
-                                </p>
-                            @endif
+                        <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                            <div class="max-w-3xl">
+                                <p class="section-label mb-4">{{ $document->category }}</p>
+                                <h2 class="font-editorial text-3xl">{{ $document->title }}</h2>
+                                <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $document->description }}</p>
+                            </div>
+                            <div class="text-sm text-[var(--ink-muted)] md:text-right">
+                                <p class="font-semibold text-[var(--primary)]">{{ $document->file_type }}</p>
+                                <p class="mt-1">{{ number_format((int) $document->download_count, 0, ',', '.') }} unduhan</p>
+                                <p class="mt-1">{{ optional($document->published_at)->translatedFormat('d F Y') }}</p>
+                                @if ($document->hasDownloadableFile())
+                                    <a
+                                        href="{{ route('resources.download', $document) }}"
+                                        class="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--primary-soft)]"
+                                    >
+                                        Unduh Dokumen
+                                        <span class="material-symbols-outlined text-base">download</span>
+                                    </a>
+                                @else
+                                    <p class="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+                                        Berkas segera tersedia
+                                    </p>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </article>

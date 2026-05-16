@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 test('resources page shows a download action for public documents', function () {
     Storage::fake('public');
     Storage::disk('public')->put('documents/panduan-program.pdf', 'arsip dokumen');
+    Storage::disk('public')->put('documents/thumbnails/panduan-program.jpg', 'thumbnail dokumen');
 
     Page::query()->create([
         'title' => 'Arsip Dokumen',
@@ -21,6 +22,7 @@ test('resources page shows a download action for public documents', function () 
         'category' => 'Pedoman',
         'description' => 'Dokumen panduan program.',
         'file_url' => 'documents/panduan-program.pdf',
+        'thumbnail_url' => 'documents/thumbnails/panduan-program.jpg',
         'file_type' => 'PDF',
         'download_count' => 0,
         'is_public' => true,
@@ -29,6 +31,8 @@ test('resources page shows a download action for public documents', function () 
 
     $this->get(route('resources.index'))
         ->assertSuccessful()
+        ->assertSee('/storage/documents/thumbnails/panduan-program.jpg', false)
+        ->assertSee('Thumbnail Panduan Program')
         ->assertSee(route('resources.download', $document), false)
         ->assertSee('Unduh Dokumen');
 });
@@ -90,6 +94,7 @@ test('resources page only lists public categories and hides unavailable download
 test('publication archive cards expose document download metadata and action', function () {
     Storage::fake('public');
     Storage::disk('public')->put('documents/laporan-publik.pdf', 'laporan publik');
+    Storage::disk('public')->put('documents/thumbnails/laporan-publik.jpg', 'thumbnail laporan publik');
 
     Page::query()->create([
         'title' => 'Publikasi',
@@ -111,6 +116,7 @@ test('publication archive cards expose document download metadata and action', f
         'category' => 'Laporan',
         'description' => 'Laporan resmi yang dapat diunduh oleh pengunjung.',
         'file_url' => 'documents/laporan-publik.pdf',
+        'thumbnail_url' => 'documents/thumbnails/laporan-publik.jpg',
         'file_type' => 'PDF',
         'download_count' => 0,
         'is_public' => true,
@@ -120,6 +126,8 @@ test('publication archive cards expose document download metadata and action', f
     $this->get(route('publications.index'))
         ->assertSuccessful()
         ->assertSee('Laporan Publik Tahunan')
+        ->assertSee('/storage/documents/thumbnails/laporan-publik.jpg', false)
+        ->assertSee('Thumbnail Laporan Publik Tahunan')
         ->assertSee('PDF')
         ->assertSee('0 unduhan')
         ->assertSee('Unduh Dokumen')
