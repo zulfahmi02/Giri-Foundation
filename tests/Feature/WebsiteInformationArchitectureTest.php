@@ -165,6 +165,22 @@ test('about page remains available when personnel data is removed', function () 
         ->assertDontSee('Personil');
 });
 
+test('about page renders long organization values as narrative text instead of narrow repeated cards', function () {
+    OrganizationProfile::factory()->create([
+        'name' => 'GIRI FOUNDATION',
+        'slug' => 'giri-foundation',
+        'values' => 'Asah, Asih, Asuh menjadi filosofi gerak GIRI Foundation. Asah bermakna peningkatan kapasitas sumber daya manusia, Asih bermakna saling menguatkan dan membesarkan, sedangkan Asuh bermakna saling membina dalam semangat kekeluargaan, musyawarah, dan keberpihakan pada kebenaran serta keadilan.',
+    ]);
+
+    $response = $this->get('/about')
+        ->assertSuccessful()
+        ->assertSee('Asah, Asih, Asuh menjadi filosofi gerak GIRI Foundation.')
+        ->assertSee('editorial-prose text-base leading-8', false)
+        ->assertDontSee('membentuk cara GIRI merancang program');
+
+    expect(substr_count($response->getContent(), 'Asah, Asih, Asuh menjadi filosofi gerak GIRI Foundation.'))->toBe(1);
+});
+
 test('legacy public routes remain reachable', function (string $uri) {
     $this->seed(GiriFoundationSeeder::class);
 

@@ -17,6 +17,7 @@
         $mission = $profile?->mission ?: 'Membangun program, kolaborasi, dan tata kelola yang memberi manfaat nyata bagi masyarakat.';
         $values = collect(preg_split("/\r\n|\n|\r/", $profile?->values ?: "Integritas\nKolaborasi\nKeberlanjutan") ?: [])
             ->filter(fn (string $value): bool => filled($value));
+        $valuesAreNarrative = $values->count() === 1 && \Illuminate\Support\Str::length($values->first()) > 80;
     @endphp
 
     <section class="mx-auto max-w-7xl px-6 pt-8 pb-12 lg:px-10 lg:pt-10 lg:pb-16">
@@ -94,16 +95,26 @@
         @php
             $valuesDescriptionTemplate = $page->sectionValue('values.description_template', ':value membentuk cara GIRI merancang program, mendokumentasikan dampak, dan menjaga akuntabilitas kepada komunitas.');
         @endphp
-        <div class="grid gap-6 md:grid-cols-3">
-            @foreach ($values as $value)
-                <article class="surface-card rounded-[1.75rem] p-8">
-                    <h3 class="font-editorial text-3xl">{{ $value }}</h3>
-                    <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">
-                        {{ str_replace(':value', $value, $valuesDescriptionTemplate) }}
-                    </p>
-                </article>
-            @endforeach
-        </div>
+        @if ($valuesAreNarrative)
+            <article class="surface-card max-w-4xl rounded-[1.75rem] p-8 md:p-10">
+                <div class="editorial-prose text-base leading-8 text-[var(--ink-muted)] md:text-lg">
+                    @foreach ($values as $value)
+                        <p>{{ $value }}</p>
+                    @endforeach
+                </div>
+            </article>
+        @else
+            <div class="grid gap-6 md:grid-cols-3">
+                @foreach ($values as $value)
+                    <article class="surface-card rounded-[1.75rem] p-8">
+                        <h3 class="font-editorial text-3xl">{{ $value }}</h3>
+                        <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">
+                            {{ str_replace(':value', $value, $valuesDescriptionTemplate) }}
+                        </p>
+                    </article>
+                @endforeach
+            </div>
+        @endif
     </section>
 
     @if ($teamMembers->isNotEmpty())
