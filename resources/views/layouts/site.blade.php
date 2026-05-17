@@ -2,9 +2,10 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @php
-            $siteName = $siteProfile?->name ?? 'GIRI FOUNDATION';
+            $siteName = config('seo.site_name') ?: ($siteProfile?->name ?? 'GIRI Foundation');
             $logoUrl = $siteProfile?->resolvedLogoUrl() ?: asset('image/logo.png');
-            $faviconUrl = $siteProfile?->resolvedFaviconUrl() ?: $logoUrl;
+            $faviconUrl = $siteProfile?->resolvedFaviconUrl();
+            $faviconPngUrl = $faviconUrl ?: $logoUrl;
         @endphp
 
         <meta charset="utf-8">
@@ -31,7 +32,9 @@
         @if (filled($seo->siteVerification ?? null))
             <meta name="google-site-verification" content="{{ $seo->siteVerification }}">
         @endif
-        <link rel="icon" type="image/png" href="{{ $faviconUrl }}">
+        <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+        <link rel="icon" type="image/png" sizes="500x500" href="{{ $faviconPngUrl }}">
+        <link rel="apple-touch-icon" href="{{ $faviconPngUrl }}">
         @foreach (($seo->structuredData ?? []) as $structuredData)
             <script type="application/ld+json">{!! json_encode($structuredData, JSON_UNESCAPED_UNICODE) !!}</script>
         @endforeach

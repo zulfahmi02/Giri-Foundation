@@ -35,7 +35,8 @@ class SeoData
     public static function fromViewData(array $viewData, Request $request): self
     {
         $siteProfile = $viewData['siteProfile'] ?? null;
-        $siteName = $siteProfile?->name ?? config('app.name', 'GIRI Foundation');
+        $siteName = static::resolveSiteName($siteProfile?->name);
+        $siteAlternateName = (string) config('seo.site_alternate_name', 'Yayasan Giri Nusantara Sejahtera');
         $siteSummary = (string) ($viewData['siteSummary'] ?? $siteProfile?->short_description ?? 'GIRI Foundation Indonesia');
         $page = $viewData['page'] ?? null;
         $story = $request->routeIs('stories.show') && ($viewData['story'] ?? null) instanceof Content
@@ -71,6 +72,7 @@ class SeoData
             structuredData: static::structuredData(
                 siteProfile: $siteProfile,
                 siteName: $siteName,
+                siteAlternateName: $siteAlternateName,
                 siteSummary: $siteSummary,
                 title: $title,
                 description: $description,
@@ -107,6 +109,21 @@ class SeoData
         }
 
         return (string) ($viewData['title'] ?? $siteName);
+    }
+
+    private static function resolveSiteName(?string $profileName): string
+    {
+        $configuredSiteName = config('seo.site_name');
+
+        if (filled($configuredSiteName)) {
+            return (string) $configuredSiteName;
+        }
+
+        if (filled($profileName)) {
+            return (string) $profileName;
+        }
+
+        return 'GIRI Foundation';
     }
 
     private static function resolveDescription(
@@ -167,6 +184,10 @@ class SeoData
             ],
         ];
 
+        if ($request->routeIs('home')) {
+            return $breadcrumbs;
+        }
+
         if ($request->routeIs('about')) {
             $breadcrumbs[] = ['label' => 'Tentang', 'url' => route('about')];
         } elseif ($request->routeIs('programs.index')) {
@@ -210,6 +231,7 @@ class SeoData
     private static function structuredData(
         ?OrganizationProfile $siteProfile,
         string $siteName,
+        string $siteAlternateName,
         string $siteSummary,
         string $title,
         string $description,
@@ -220,13 +242,18 @@ class SeoData
         Request $request,
     ): array {
         $logoUrl = static::resolveImageUrl($siteProfile?->resolvedLogoUrl() ?: 'image/logo.png', $request);
+        $homeUrl = route('home');
+        $websiteId = "{$homeUrl}#website";
+        $organizationId = "{$homeUrl}#organization";
 
         $schemas = [
             static::filterSchema([
                 '@context' => 'https://schema.org',
                 '@type' => 'Organization',
+                '@id' => $organizationId,
                 'name' => $siteName,
-                'url' => route('home'),
+                'alternateName' => $siteAlternateName,
+                'url' => $homeUrl,
                 'description' => $siteSummary,
                 'logo' => $logoUrl,
                 'email' => $siteProfile?->email,
@@ -237,10 +264,15 @@ class SeoData
             static::filterSchema([
                 '@context' => 'https://schema.org',
                 '@type' => 'WebSite',
+                '@id' => $websiteId,
                 'name' => $siteName,
-                'url' => route('home'),
+                'alternateName' => $siteAlternateName,
+                'url' => $homeUrl,
                 'description' => $siteSummary,
                 'inLanguage' => str_replace('_', '-', config('app.locale', 'id')),
+                'publisher' => [
+                    '@id' => $organizationId,
+                ],
             ]),
             static::filterSchema([
                 '@context' => 'https://schema.org',
@@ -250,8 +282,10 @@ class SeoData
                 'description' => $description,
                 'isPartOf' => [
                     '@type' => 'WebSite',
+                    '@id' => $websiteId,
                     'name' => $siteName,
-                    'url' => route('home'),
+                    'alternateName' => $siteAlternateName,
+                    'url' => $homeUrl,
                 ],
             ]),
         ];

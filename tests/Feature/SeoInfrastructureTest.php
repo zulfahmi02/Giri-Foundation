@@ -9,13 +9,21 @@ test('home page exposes verification, canonical, and structured data metadata', 
 
     $this->seed(GiriFoundationSeeder::class);
 
+    $websiteId = str_replace('/', '\/', route('home').'#website');
+
     $this->get('/')
         ->assertSuccessful()
         ->assertSee('name="google-site-verification" content="gsc-verification-token"', false)
         ->assertSee('<link rel="canonical" href="'.route('home').'">', false)
+        ->assertSee('<link rel="icon" href="'.asset('favicon.ico').'" sizes="any">', false)
+        ->assertSee('property="og:site_name" content="GIRI Foundation"', false)
         ->assertSee('property="og:type" content="website"', false)
         ->assertSee('"@type":"Organization"', false)
-        ->assertSee('"@type":"WebSite"', false);
+        ->assertSee('"@type":"WebSite"', false)
+        ->assertSee('"@id":"'.$websiteId.'"', false)
+        ->assertSee('"name":"GIRI Foundation"', false)
+        ->assertSee('"alternateName":"Yayasan Giri Nusantara Sejahtera"', false)
+        ->assertDontSee('"position":2,"name":"Beranda"', false);
 });
 
 test('resource search pages are marked as noindex', function () {
