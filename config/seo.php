@@ -17,4 +17,48 @@ return [
         'gclid',
         'fbclid',
     ],
+
+    'canonical_query_parameters_by_route' => [
+        'programs.index' => [
+            'active_page',
+            'partnership_page',
+            'upcoming_page',
+            'archived_page',
+        ],
+        'media.index' => [
+            'activities_page',
+            'videos_page',
+        ],
+        'publications.index' => [
+            'stories_page',
+            'journals_page',
+            'news_page',
+            'articles_page',
+            'opinions_page',
+            'archives_page',
+        ],
+        'stories.index' => [
+            'stories_page',
+        ],
+        'resources.index' => [
+            'category',
+            'documents_page',
+        ],
+    ],
+
+    'canonical_pagination_parameters' => [
+        'active_page',
+        'partnership_page',
+        'upcoming_page',
+        'archived_page',
+        'activities_page',
+        'videos_page',
+        'stories_page',
+        'journals_page',
+        'news_page',
+        'articles_page',
+        'opinions_page',
+        'archives_page',
+        'documents_page',
+    ],
 ];

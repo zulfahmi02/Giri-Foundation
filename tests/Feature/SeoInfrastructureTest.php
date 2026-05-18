@@ -46,10 +46,32 @@ test('story detail pages expose article metadata', function () {
     $this->get(route('stories.show', $story))
         ->assertSuccessful()
         ->assertSee('property="og:type" content="article"', false)
+        ->assertSee('property="og:image:alt" content="'.$story->displayTitle().'"', false)
+        ->assertSee('property="article:published_time" content="'.$story->published_at->toIso8601String().'"', false)
+        ->assertSee('property="article:modified_time" content="'.$story->updated_at->toIso8601String().'"', false)
+        ->assertSee('property="article:author" content="'.$story->displayAuthorName().'"', false)
+        ->assertSee('name="twitter:image:alt" content="'.$story->displayTitle().'"', false)
         ->assertSee('"@type":"Article"', false)
         ->assertSee('"@type":"BreadcrumbList"', false)
+        ->assertSee('"potentialAction":{"@type":"SearchAction"', false)
         ->assertSee('aria-label="Breadcrumb"', false)
         ->assertSee($story->displaySeoTitle());
+});
+
+test('canonical urls ignore unapproved query parameters and normalize first pagination pages', function () {
+    $this->seed(GiriFoundationSeeder::class);
+
+    $this->get('/stories?utm_source=newsletter&stories_page=1')
+        ->assertSuccessful()
+        ->assertSee('<link rel="canonical" href="'.route('stories.index').'">', false);
+
+    $this->get('/stories?stories_page=2&utm_source=newsletter')
+        ->assertSuccessful()
+        ->assertSee('<link rel="canonical" href="'.route('stories.index').'?stories_page=2">', false);
+
+    $this->get('/about?preview=true')
+        ->assertSuccessful()
+        ->assertSee('<link rel="canonical" href="'.route('about').'">', false);
 });
 
 test('program detail pages expose breadcrumb metadata and navigation links', function () {

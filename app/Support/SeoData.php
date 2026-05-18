@@ -7,6 +7,7 @@ use App\Models\OrganizationProfile;
 use App\Models\Page;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class SeoData
@@ -24,6 +25,10 @@ class SeoData
         public string $twitterCard,
         public string $siteName,
         public ?string $imageUrl,
+        public ?string $imageAlt,
+        public ?string $publishedTime,
+        public ?string $modifiedTime,
+        public ?string $authorName,
         public ?string $siteVerification,
         public array $structuredData,
         public array $breadcrumbs,
@@ -51,12 +56,16 @@ class SeoData
         $canonicalUrl = static::resolveCanonicalUrl($request);
         $robots = static::resolveRobots($request);
         $breadcrumbs = static::resolveBreadcrumbs($request, $page, $story, $program);
+        $publishedTime = static::resolvePublishedTime($page, $story, $program);
+        $modifiedTime = static::resolveModifiedTime($page, $story, $program);
+        $authorName = $story?->displayAuthorName();
         $imageUrl = static::resolveImageUrl(
             $story instanceof Content
                 ? $story->resolvedFeaturedImageUrl()
                 : ($program instanceof Program ? $program->resolvedFeaturedImageUrl() : ($siteProfile?->resolvedLogoUrl() ?: 'image/logo.png')),
             $request,
         );
+        $imageAlt = static::resolveImageAlt($siteName, $story, $program);
         $openGraphType = $story instanceof Content ? 'article' : 'website';
 
         return new self(
@@ -68,6 +77,10 @@ class SeoData
             twitterCard: $imageUrl ? 'summary_large_image' : 'summary',
             siteName: $siteName,
             imageUrl: $imageUrl,
+            imageAlt: $imageAlt,
+            publishedTime: $publishedTime,
+            modifiedTime: $modifiedTime,
+            authorName: $authorName,
             siteVerification: config('seo.google_site_verification'),
             structuredData: static::structuredData(
                 siteProfile: $siteProfile,
@@ -78,6 +91,8 @@ class SeoData
                 description: $description,
                 canonicalUrl: $canonicalUrl,
                 imageUrl: $imageUrl,
+                publishedTime: $publishedTime,
+                modifiedTime: $modifiedTime,
                 story: $story,
                 breadcrumbs: $breadcrumbs,
                 request: $request,
@@ -150,13 +165,17 @@ class SeoData
 
     private static function resolveCanonicalUrl(Request $request): string
     {
-        $canonicalUrl = $request->fullUrlWithoutQuery(config('seo.canonical_ignored_query_parameters', []));
+        $queryParameters = static::canonicalQueryParameters($request);
 
         if ($request->routeIs('resources.index') && filled($request->string('search')->toString())) {
             return route('resources.index');
         }
 
-        return $canonicalUrl;
+        if ($queryParameters === []) {
+            return $request->url();
+        }
+
+        return $request->url().'?'.Arr::query($queryParameters);
     }
 
     private static function resolveRobots(Request $request): string
@@ -166,6 +185,94 @@ class SeoData
         }
 
         return 'index,follow';
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private static function canonicalQueryParameters(Request $request): array
+    {
+        $routeName = $request->route()?->getName();
+
+        if (! is_string($routeName)) {
+            return [];
+        }
+
+        $parametersByRoute = config('seo.canonical_query_parameters_by_route', []);
+
+        if (! is_array($parametersByRoute)) {
+            return [];
+        }
+
+        $allowedParameters = $parametersByRoute[$routeName] ?? [];
+
+        if (! is_array($allowedParameters)) {
+            return [];
+        }
+
+        $paginationParameters = config('seo.canonical_pagination_parameters', []);
+        $canonicalParameters = [];
+
+        foreach ($allowedParameters as $parameter) {
+            if (! is_string($parameter) || ! $request->query->has($parameter)) {
+                continue;
+            }
+
+            $value = trim((string) $request->query($parameter));
+
+            if ($value === '') {
+                continue;
+            }
+
+            if (in_array($parameter, $paginationParameters, true)) {
+                $page = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 2]]);
+
+                if ($page === false) {
+                    continue;
+                }
+
+                $canonicalParameters[$parameter] = (string) $page;
+
+                continue;
+            }
+
+            $canonicalParameters[$parameter] = $value;
+        }
+
+        return $canonicalParameters;
+    }
+
+    private static function resolveImageAlt(string $siteName, ?Content $story, ?Program $program): string
+    {
+        if ($story instanceof Content) {
+            return $story->displayTitle();
+        }
+
+        if ($program instanceof Program) {
+            return $program->title;
+        }
+
+        return $siteName;
+    }
+
+    private static function resolvePublishedTime(?Page $page, ?Content $story, ?Program $program): ?string
+    {
+        return match (true) {
+            $story instanceof Content => $story->published_at?->toIso8601String(),
+            $program instanceof Program => $program->published_at?->toIso8601String(),
+            $page instanceof Page => $page->published_at?->toIso8601String(),
+            default => null,
+        };
+    }
+
+    private static function resolveModifiedTime(?Page $page, ?Content $story, ?Program $program): ?string
+    {
+        return match (true) {
+            $story instanceof Content => $story->updated_at?->toIso8601String(),
+            $program instanceof Program => $program->updated_at?->toIso8601String(),
+            $page instanceof Page => $page->updated_at?->toIso8601String(),
+            default => null,
+        };
     }
 
     /**
@@ -237,6 +344,8 @@ class SeoData
         string $description,
         string $canonicalUrl,
         ?string $imageUrl,
+        ?string $publishedTime,
+        ?string $modifiedTime,
         ?Content $story,
         array $breadcrumbs,
         Request $request,
@@ -270,6 +379,11 @@ class SeoData
                 'url' => $homeUrl,
                 'description' => $siteSummary,
                 'inLanguage' => str_replace('_', '-', config('app.locale', 'id')),
+                'potentialAction' => [
+                    '@type' => 'SearchAction',
+                    'target' => route('resources.index').'?search={search_term_string}',
+                    'query-input' => 'required name=search_term_string',
+                ],
                 'publisher' => [
                     '@id' => $organizationId,
                 ],
@@ -280,6 +394,13 @@ class SeoData
                 'name' => $title,
                 'url' => $canonicalUrl,
                 'description' => $description,
+                'inLanguage' => str_replace('_', '-', config('app.locale', 'id')),
+                'datePublished' => $publishedTime,
+                'dateModified' => $modifiedTime,
+                'primaryImageOfPage' => $imageUrl ? [
+                    '@type' => 'ImageObject',
+                    'url' => $imageUrl,
+                ] : null,
                 'isPartOf' => [
                     '@type' => 'WebSite',
                     '@id' => $websiteId,
@@ -314,8 +435,8 @@ class SeoData
                 'description' => $description,
                 'url' => $canonicalUrl,
                 'image' => $imageUrl ? [$imageUrl] : null,
-                'datePublished' => $story->published_at?->toIso8601String(),
-                'dateModified' => $story->updated_at?->toIso8601String(),
+                'datePublished' => $publishedTime,
+                'dateModified' => $modifiedTime,
                 'mainEntityOfPage' => $canonicalUrl,
                 'author' => [
                     '@type' => 'Person',

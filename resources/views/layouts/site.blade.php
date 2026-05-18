@@ -22,12 +22,25 @@
         <meta property="og:url" content="{{ $seo->canonicalUrl ?? url()->current() }}">
         @if (filled($seo->imageUrl ?? null))
             <meta property="og:image" content="{{ $seo->imageUrl }}">
+            <meta property="og:image:alt" content="{{ $seo->imageAlt }}">
+        @endif
+        @if (($seo->openGraphType ?? null) === 'article')
+            @if (filled($seo->publishedTime ?? null))
+                <meta property="article:published_time" content="{{ $seo->publishedTime }}">
+            @endif
+            @if (filled($seo->modifiedTime ?? null))
+                <meta property="article:modified_time" content="{{ $seo->modifiedTime }}">
+            @endif
+            @if (filled($seo->authorName ?? null))
+                <meta property="article:author" content="{{ $seo->authorName }}">
+            @endif
         @endif
         <meta name="twitter:card" content="{{ $seo->twitterCard ?? 'summary' }}">
         <meta name="twitter:title" content="{{ $seo->title ?? $siteName }}">
         <meta name="twitter:description" content="{{ $seo->description ?? ($siteSummary ?? 'GIRI Foundation Indonesia') }}">
         @if (filled($seo->imageUrl ?? null))
             <meta name="twitter:image" content="{{ $seo->imageUrl }}">
+            <meta name="twitter:image:alt" content="{{ $seo->imageAlt }}">
         @endif
         @if (filled($seo->siteVerification ?? null))
             <meta name="google-site-verification" content="{{ $seo->siteVerification }}">
