@@ -64,6 +64,9 @@
 
                         <form method="POST" action="{{ route('donate.store') }}" class="grid gap-5 md:grid-cols-2">
                             @csrf
+                            <div style="display:none" aria-hidden="true">
+                                <input type="text" name="website" value="" tabindex="-1" autocomplete="off">
+                            </div>
                             <div>
                                 <label for="full_name" class="section-label mb-3 block">Nama Lengkap</label>
                                 <input id="full_name" name="full_name" value="{{ old('full_name') }}" class="w-full rounded-xl border border-[color:rgba(190,201,195,0.45)] bg-transparent px-4 py-3.5 outline-none transition focus:border-[var(--primary)]" required>

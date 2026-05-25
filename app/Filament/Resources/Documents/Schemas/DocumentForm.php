@@ -68,9 +68,10 @@ class DocumentForm
                     ->helperText('Opsional. Untuk upload langsung, ukuran file akan dihitung otomatis.'),
                 TextInput::make('download_count')
                     ->label('Jumlah unduhan')
-                    ->required()
                     ->numeric()
-                    ->default(0),
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->helperText('Dihitung otomatis setiap kali dokumen diunduh.'),
                 Toggle::make('is_public')
                     ->label('Tampilkan di website')
                     ->required()

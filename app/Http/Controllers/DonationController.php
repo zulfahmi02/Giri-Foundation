@@ -12,8 +12,8 @@ use App\Support\FrontendCache;
 use App\Support\PublicSubmissionNotifier;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DonationController extends Controller
 {
@@ -47,39 +47,37 @@ class DonationController extends Controller
         $validated = $request->validated();
 
         $donation = DB::transaction(function () use ($campaign, $validated): Donation {
-            Donor::query()->upsert(
-                [[
+            try {
+                $donor = Donor::query()->create([
                     'full_name' => $validated['full_name'],
                     'email' => $validated['email'],
                     'phone' => $validated['phone'] ?? null,
-                ]],
-                uniqueBy: ['email'],
-                update: ['updated_at'],
-            );
+                ]);
+            } catch (UniqueConstraintViolationException) {
+                $donor = Donor::query()
+                    ->where('email', $validated['email'])
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-            $donor = Donor::query()
-                ->where('email', $validated['email'])
-                ->lockForUpdate()
-                ->firstOrFail();
+                $donorUpdates = array_filter(
+                    [
+                        'full_name' => blank($donor->full_name) ? $validated['full_name'] : null,
+                        'phone' => blank($donor->phone) && filled($validated['phone'] ?? null)
+                            ? $validated['phone']
+                            : null,
+                    ],
+                    static fn (mixed $value): bool => $value !== null,
+                );
 
-            $donorUpdates = array_filter(
-                [
-                    'full_name' => blank($donor->full_name) ? $validated['full_name'] : null,
-                    'phone' => blank($donor->phone) && filled($validated['phone'] ?? null)
-                        ? $validated['phone']
-                        : null,
-                ],
-                static fn (mixed $value): bool => $value !== null,
-            );
-
-            if ($donorUpdates !== []) {
-                $donor->update($donorUpdates);
+                if ($donorUpdates !== []) {
+                    $donor->update($donorUpdates);
+                }
             }
 
             return Donation::query()->create([
                 'campaign_id' => $campaign->id,
                 'donor_id' => $donor->id,
-                'invoice_number' => 'DON-'.now()->format('YmdHis').'-'.Str::upper(Str::random(4)),
+                'invoice_number' => Donation::generateInvoiceNumber(),
                 'amount' => $validated['amount'],
                 'payment_method' => $validated['payment_method'],
                 'payment_channel' => $validated['payment_channel'] ?? null,

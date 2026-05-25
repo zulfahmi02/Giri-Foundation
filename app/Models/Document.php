@@ -28,7 +28,6 @@ class Document extends Model
         'thumbnail_url',
         'file_type',
         'file_size',
-        'download_count',
         'is_public',
         'published_at',
         'created_by',
@@ -77,31 +76,24 @@ class Document extends Model
 
     public function downloadablePath(): ?string
     {
-        $fileUrl = trim($this->file_url);
+        $fileUrl = trim($this->file_url ?? '');
 
         if ($fileUrl === '' || $fileUrl === '#' || $this->isExternalFile()) {
             return null;
         }
 
-        $normalizedPath = ltrim($fileUrl, '/');
-
-        if (Storage::disk('public')->exists($fileUrl)) {
-            return Storage::disk('public')->path($fileUrl);
+        // Normalize to a storage-disk relative path: strip leading slash and
+        // any 'storage/' URL prefix left over from older upload conventions.
+        $diskPath = ltrim($fileUrl, '/');
+        if (str_starts_with($diskPath, 'storage/')) {
+            $diskPath = substr($diskPath, 8);
         }
 
-        if (Storage::disk('public')->exists($normalizedPath)) {
-            return Storage::disk('public')->path($normalizedPath);
+        if (Storage::disk('public')->exists($diskPath)) {
+            return Storage::disk('public')->path($diskPath);
         }
 
-        if (str_starts_with($normalizedPath, 'storage/')) {
-            $publicDiskPath = Str::after($normalizedPath, 'storage/');
-
-            if (Storage::disk('public')->exists($publicDiskPath)) {
-                return Storage::disk('public')->path($publicDiskPath);
-            }
-        }
-
-        $publicPath = public_path($normalizedPath);
+        $publicPath = public_path($diskPath);
 
         return is_file($publicPath) ? $publicPath : null;
     }

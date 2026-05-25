@@ -24,20 +24,29 @@ class DonationCampaignForm
                 ),
                 FilamentSlugGenerator::field(),
                 Textarea::make('short_description')
+                    ->label('Ringkasan singkat')
+                    ->helperText('Deskripsi pendek yang muncul di kartu kampanye. Maksimal 2-3 kalimat.')
                     ->columnSpanFull(),
                 Textarea::make('description')
+                    ->label('Deskripsi lengkap')
+                    ->helperText('Penjelasan lengkap kampanye yang tampil di halaman donasi.')
                     ->required()
                     ->columnSpanFull(),
                 TextInput::make('target_amount')
+                    ->label('Target donasi (Rp)')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->helperText('Jumlah dana yang ingin dikumpulkan dari kampanye ini.'),
                 TextInput::make('collected_amount')
-                    ->required()
                     ->numeric()
-                    ->default(0),
-                DatePicker::make('start_date'),
-                DatePicker::make('end_date'),
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->helperText('Dihitung otomatis dari donasi yang sudah terkonfirmasi (status: paid).'),
+                DatePicker::make('start_date')
+                    ->label('Tanggal mulai kampanye'),
+                DatePicker::make('end_date')
+                    ->label('Tanggal berakhir kampanye'),
                 FilamentImageUpload::make('banner_image_url', 'donation-campaigns', 'Gambar banner'),
                 Select::make('status')
                     ->required()
@@ -48,6 +57,7 @@ class DonationCampaignForm
                     ->default(false)
                     ->helperText('Kampanye publik yang ditandai unggulan akan menggantikan unggulan sebelumnya secara otomatis.'),
                 Select::make('published_by')
+                    ->label('Diterbitkan oleh')
                     ->relationship('publisher', 'name')
                     ->searchable()
                     ->preload()

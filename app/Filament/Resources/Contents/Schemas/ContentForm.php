@@ -19,6 +19,7 @@ class ContentForm
             ->components([
                 FilamentSlugGenerator::source(
                     TextInput::make('title')
+                        ->label('Judul')
                         ->required(),
                 ),
                 FilamentSlugGenerator::field(),

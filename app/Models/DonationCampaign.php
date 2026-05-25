@@ -88,6 +88,15 @@ class DonationCampaign extends Model
         return in_array($this->status, ['active', 'completed'], true);
     }
 
+    public function syncCollectedAmount(): void
+    {
+        $total = $this->donations()
+            ->where('payment_status', 'paid')
+            ->sum('amount');
+
+        $this->update(['collected_amount' => $total]);
+    }
+
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'published_by');
@@ -110,62 +119,22 @@ class DonationCampaign extends Model
 
     public function displayTitle(): string
     {
-        return $this->translatedCampaignValue('title');
+        return (string) ($this->title ?? '');
     }
 
     public function displayShortDescription(): string
     {
-        return $this->translatedCampaignValue('short_description');
+        return (string) ($this->short_description ?? '');
     }
 
     public function displayDescription(): string
     {
-        return $this->translatedCampaignValue('description');
+        return (string) ($this->description ?? '');
     }
 
     public function resolvedBannerImageUrl(): ?string
     {
         return PublicStorageUrl::resolve($this->banner_image_url, verifyPublicDisk: true)
             ?? PublicStorageUrl::fallbackImagePath();
-    }
-
-    private function translatedCampaignValue(string $attribute): string
-    {
-        $value = (string) ($this->{$attribute} ?? '');
-
-        if (! app()->isLocale('id')) {
-            return $value;
-        }
-
-        $translation = $this->campaignTranslationMap()[$this->slug][$attribute] ?? null;
-
-        if (! is_array($translation)) {
-            return $value;
-        }
-
-        return $value === $translation['english'] ? $translation['indonesian'] : $value;
-    }
-
-    /**
-     * @return array<string, array<string, array{english: string, indonesian: string}>>
-     */
-    private function campaignTranslationMap(): array
-    {
-        return [
-            'solar-power-for-giri-central-school' => [
-                'title' => [
-                    'english' => 'Solar Power for GIRI Central School',
-                    'indonesian' => 'Tenaga Surya untuk Sekolah GIRI Central',
-                ],
-                'short_description' => [
-                    'english' => 'Help fund a resilient energy system for a remote learning center.',
-                    'indonesian' => 'Bantu mendanai sistem energi tangguh untuk pusat belajar di wilayah terpencil.',
-                ],
-                'description' => [
-                    'english' => 'This campaign equips GIRI Central School with reliable solar power so classrooms, digital labs, and evening study programs can operate without disruption.',
-                    'indonesian' => 'Kampanye ini membekali Sekolah GIRI Central dengan tenaga surya yang andal agar ruang kelas, laboratorium digital, dan program belajar malam dapat berjalan tanpa gangguan.',
-                ],
-            ],
-        ];
     }
 }

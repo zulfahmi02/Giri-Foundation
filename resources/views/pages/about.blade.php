@@ -3,7 +3,7 @@
 @section('content')
     @php
         $brandLogo = $profile?->resolvedLogoUrl() ?: asset('image/logo.png');
-        $brandName = $page->sectionValue('brand.title', $profile?->name ?? 'GIRI FOUNDATION');
+        $brandName = $profile?->name ?? $page->sectionValue('brand.title', 'GIRI FOUNDATION');
         $brandSubtitle = $page->sectionValue('brand.subtitle', 'Yayasan untuk inisiatif sosial, budaya, dan keberlanjutan komunitas.');
         $brandNote = $page->sectionValue('brand.note', 'Berakar di Bali dan bekerja bersama komunitas lintas wilayah secara jangka panjang.');
         $heroBody = $page->heroValue('body', $profile?->short_description ?? $brandSubtitle);

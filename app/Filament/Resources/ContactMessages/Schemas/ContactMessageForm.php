@@ -15,22 +15,28 @@ class ContactMessageForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nama pengirim')
                     ->required(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Email')
                     ->email()
                     ->required(),
                 TextInput::make('phone')
+                    ->label('Nomor telepon')
                     ->tel(),
                 TextInput::make('subject')
+                    ->label('Subjek pesan')
                     ->required(),
                 Textarea::make('message')
+                    ->label('Isi pesan')
                     ->required()
                     ->columnSpanFull(),
                 Select::make('status')
+                    ->label('Status penanganan')
                     ->required()
                     ->options(AdminStateOptions::contactMessageStatuses())
-                    ->default('new'),
+                    ->default('new')
+                    ->helperText('Ubah status setelah pesan ditindaklanjuti.'),
             ]);
     }
 }

@@ -51,6 +51,11 @@ class RoleResource extends Resource
         return RolesTable::configure($table);
     }
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
     public static function getRelations(): array
     {
         return [

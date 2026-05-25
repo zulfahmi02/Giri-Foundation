@@ -17,6 +17,7 @@ class StorePartnershipInquiryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'website' => ['nullable', 'max:0'],
             'organization_name' => ['required', 'string', 'max:255'],
             'contact_person' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],

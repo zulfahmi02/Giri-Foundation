@@ -34,6 +34,7 @@ class StoreDonationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'website' => ['nullable', 'max:0'],
             'full_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:50'],
