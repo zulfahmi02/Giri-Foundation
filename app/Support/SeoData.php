@@ -364,7 +364,10 @@ class SeoData
                 'alternateName' => $siteAlternateName,
                 'url' => $homeUrl,
                 'description' => $siteSummary,
-                'logo' => $logoUrl,
+                'logo' => $logoUrl ? [
+                    '@type' => 'ImageObject',
+                    'url' => $logoUrl,
+                ] : null,
                 'email' => $siteProfile?->email,
                 'telephone' => $siteProfile?->phone,
                 'address' => $siteProfile?->address,
@@ -388,6 +391,21 @@ class SeoData
                     '@id' => $organizationId,
                 ],
             ]),
+            [
+                '@context' => 'https://schema.org',
+                '@type' => 'ItemList',
+                'name' => 'Navigasi Utama',
+                'itemListElement' => [
+                    ['@type' => 'SiteNavigationElement', 'position' => 1, 'name' => 'Beranda', 'url' => route('home')],
+                    ['@type' => 'SiteNavigationElement', 'position' => 2, 'name' => 'Program', 'url' => route('programs.index')],
+                    ['@type' => 'SiteNavigationElement', 'position' => 3, 'name' => 'Media', 'url' => route('media.index')],
+                    ['@type' => 'SiteNavigationElement', 'position' => 4, 'name' => 'Publikasi', 'url' => route('publications.index')],
+                    ['@type' => 'SiteNavigationElement', 'position' => 5, 'name' => 'Tentang Kami', 'url' => route('about')],
+                    ['@type' => 'SiteNavigationElement', 'position' => 6, 'name' => 'Kontak', 'url' => route('contact.show')],
+                    ['@type' => 'SiteNavigationElement', 'position' => 7, 'name' => 'Donasi', 'url' => route('donate.show')],
+                    ['@type' => 'SiteNavigationElement', 'position' => 8, 'name' => 'Kemitraan', 'url' => route('partners.index')],
+                ],
+            ],
             static::filterSchema([
                 '@context' => 'https://schema.org',
                 '@type' => 'WebPage',
