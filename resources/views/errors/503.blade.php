@@ -193,22 +193,6 @@
                 text-transform: uppercase;
             }
 
-            .card__code {
-                font-family: Georgia, "Times New Roman", serif;
-                font-size: clamp(3rem, 6vw, 4.5rem);
-                font-weight: 500;
-                line-height: 1;
-                color: var(--ink);
-                margin-bottom: 0.5rem;
-            }
-
-            .card__title {
-                font-size: 1rem;
-                font-weight: 600;
-                color: var(--ink);
-                margin-bottom: 0.75rem;
-            }
-
             .card__copy {
                 color: var(--ink-muted);
                 font-size: 0.9rem;
@@ -311,8 +295,6 @@
                             <span class="card__badge">Sementara</span>
                         </div>
 
-                        <p class="card__code">503</p>
-                        <p class="card__title">Service Unavailable</p>
                         <p class="card__copy">
                             Permintaan sementara belum dapat diproses.
                             Jika ada kebutuhan mendesak, silakan hubungi
