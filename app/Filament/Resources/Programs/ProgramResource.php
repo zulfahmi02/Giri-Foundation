@@ -11,6 +11,7 @@ use App\Filament\Resources\Programs\Schemas\ProgramForm;
 use App\Filament\Resources\Programs\Schemas\ProgramInfolist;
 use App\Filament\Resources\Programs\Tables\ProgramsTable;
 use App\Models\Program;
+use Illuminate\Support\Facades\Cache;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -27,7 +28,7 @@ class ProgramResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Program';
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 10;
 
@@ -63,9 +64,9 @@ class ProgramResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $draftPrograms = Program::query()
+        $draftPrograms = Cache::remember('nav_badge_programs_draft', 60, fn () => Program::query()
             ->where('status', 'draft')
-            ->count();
+            ->count());
 
         return $draftPrograms > 0 ? (string) $draftPrograms : null;
     }

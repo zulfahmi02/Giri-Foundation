@@ -35,8 +35,13 @@ class AdminPanelProvider extends PanelProvider
                 AppAuthentication::make()->recoverable(),
             ])
             ->brandName('GIRI Foundation')
+            ->brandLogo(asset('image/logo.png'))
+            ->brandLogoHeight('2.25rem')
+            ->darkModeBrandLogo(asset('image/logo.png'))
+            ->favicon(asset('favicon.ico'))
             ->colors([
-                'primary' => Color::Emerald,
+                'primary' => Color::hex('#00604c'),
+                'gray' => Color::Stone,
             ])
             ->maxContentWidth(Width::Full)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

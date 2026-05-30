@@ -11,6 +11,7 @@ use App\Filament\Resources\ContactMessages\Schemas\ContactMessageForm;
 use App\Filament\Resources\ContactMessages\Schemas\ContactMessageInfolist;
 use App\Filament\Resources\ContactMessages\Tables\ContactMessagesTable;
 use App\Models\ContactMessage;
+use Illuminate\Support\Facades\Cache;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -25,7 +26,7 @@ class ContactMessageResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Kontak';
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 10;
 
@@ -66,9 +67,9 @@ class ContactMessageResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $newMessages = ContactMessage::query()
+        $newMessages = Cache::remember('nav_badge_contact_messages_new', 60, fn () => ContactMessage::query()
             ->where('status', 'new')
-            ->count();
+            ->count());
 
         return $newMessages > 0 ? (string) $newMessages : null;
     }

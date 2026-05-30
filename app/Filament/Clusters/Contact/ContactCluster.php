@@ -6,6 +6,7 @@ use App\Models\Consultation;
 use App\Models\ContactMessage;
 use App\Models\PartnershipInquiry;
 use BackedEnum;
+use Illuminate\Support\Facades\Cache;
 use Filament\Clusters\Cluster;
 use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Support\Icons\Heroicon;
@@ -22,9 +23,9 @@ class ContactCluster extends Cluster
 
     public static function getNavigationBadge(): ?string
     {
-        $pendingInboxItems = ContactMessage::query()->where('status', 'new')->count()
-            + PartnershipInquiry::query()->where('status', 'new')->count()
-            + Consultation::query()->where('status', 'new')->count();
+        $pendingInboxItems = Cache::remember('nav_badge_contact_messages_new', 60, fn () => ContactMessage::query()->where('status', 'new')->count())
+            + Cache::remember('nav_badge_partnership_inquiries_new', 60, fn () => PartnershipInquiry::query()->where('status', 'new')->count())
+            + Cache::remember('nav_badge_consultations_new', 60, fn () => Consultation::query()->where('status', 'new')->count());
 
         return $pendingInboxItems > 0 ? (string) $pendingInboxItems : null;
     }

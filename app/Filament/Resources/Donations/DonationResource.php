@@ -10,6 +10,7 @@ use App\Filament\Resources\Donations\Schemas\DonationForm;
 use App\Filament\Resources\Donations\Schemas\DonationInfolist;
 use App\Filament\Resources\Donations\Tables\DonationsTable;
 use App\Models\Donation;
+use Illuminate\Support\Facades\Cache;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -24,7 +25,7 @@ class DonationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Donasi';
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 30;
 
@@ -60,9 +61,9 @@ class DonationResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $pendingDonations = Donation::query()
+        $pendingDonations = Cache::remember('nav_badge_donations_pending', 60, fn () => Donation::query()
             ->where('payment_status', 'pending')
-            ->count();
+            ->count());
 
         return $pendingDonations > 0 ? (string) $pendingDonations : null;
     }

@@ -11,6 +11,7 @@ use App\Filament\Resources\Consultations\Schemas\ConsultationForm;
 use App\Filament\Resources\Consultations\Schemas\ConsultationInfolist;
 use App\Filament\Resources\Consultations\Tables\ConsultationsTable;
 use App\Models\Consultation;
+use Illuminate\Support\Facades\Cache;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -25,7 +26,7 @@ class ConsultationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Kontak';
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 30;
 
@@ -66,9 +67,9 @@ class ConsultationResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $newConsultations = Consultation::query()
+        $newConsultations = Cache::remember('nav_badge_consultations_new', 60, fn () => Consultation::query()
             ->where('status', 'new')
-            ->count();
+            ->count());
 
         return $newConsultations > 0 ? (string) $newConsultations : null;
     }

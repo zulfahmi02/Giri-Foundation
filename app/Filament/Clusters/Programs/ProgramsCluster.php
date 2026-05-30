@@ -4,6 +4,7 @@ namespace App\Filament\Clusters\Programs;
 
 use App\Models\Program;
 use BackedEnum;
+use Illuminate\Support\Facades\Cache;
 use Filament\Clusters\Cluster;
 use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Support\Icons\Heroicon;
@@ -20,10 +21,10 @@ class ProgramsCluster extends Cluster
 
     public static function getNavigationBadge(): ?string
     {
-        $activePrograms = Program::query()
+        $activePrograms = Cache::remember('nav_badge_programs_active', 60, fn () => Program::query()
             ->where('status', 'published')
             ->where('phase', 'active')
-            ->count();
+            ->count());
 
         return $activePrograms > 0 ? (string) $activePrograms : null;
     }

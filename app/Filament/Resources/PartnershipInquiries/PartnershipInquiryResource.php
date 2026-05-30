@@ -11,6 +11,7 @@ use App\Filament\Resources\PartnershipInquiries\Schemas\PartnershipInquiryForm;
 use App\Filament\Resources\PartnershipInquiries\Schemas\PartnershipInquiryInfolist;
 use App\Filament\Resources\PartnershipInquiries\Tables\PartnershipInquiriesTable;
 use App\Models\PartnershipInquiry;
+use Illuminate\Support\Facades\Cache;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -25,7 +26,7 @@ class PartnershipInquiryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Kontak';
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 20;
 
@@ -66,9 +67,9 @@ class PartnershipInquiryResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $newInquiries = PartnershipInquiry::query()
+        $newInquiries = Cache::remember('nav_badge_partnership_inquiries_new', 60, fn () => PartnershipInquiry::query()
             ->where('status', 'new')
-            ->count();
+            ->count());
 
         return $newInquiries > 0 ? (string) $newInquiries : null;
     }

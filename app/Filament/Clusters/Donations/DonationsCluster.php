@@ -4,6 +4,7 @@ namespace App\Filament\Clusters\Donations;
 
 use App\Models\Donation;
 use BackedEnum;
+use Illuminate\Support\Facades\Cache;
 use Filament\Clusters\Cluster;
 use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Support\Icons\Heroicon;
@@ -20,9 +21,9 @@ class DonationsCluster extends Cluster
 
     public static function getNavigationBadge(): ?string
     {
-        $pendingDonations = Donation::query()
+        $pendingDonations = Cache::remember('nav_badge_donations_pending', 60, fn () => Donation::query()
             ->where('payment_status', 'pending')
-            ->count();
+            ->count());
 
         return $pendingDonations > 0 ? (string) $pendingDonations : null;
     }

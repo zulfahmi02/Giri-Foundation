@@ -11,6 +11,7 @@ use App\Filament\Resources\Contents\Schemas\ContentForm;
 use App\Filament\Resources\Contents\Schemas\ContentInfolist;
 use App\Filament\Resources\Contents\Tables\ContentsTable;
 use App\Models\Content;
+use Illuminate\Support\Facades\Cache;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -27,7 +28,7 @@ class ContentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Publikasi';
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 10;
 
@@ -63,9 +64,9 @@ class ContentResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $draftContents = Content::query()
+        $draftContents = Cache::remember('nav_badge_contents_draft', 60, fn () => Content::query()
             ->where('status', 'draft')
-            ->count();
+            ->count());
 
         return $draftContents > 0 ? (string) $draftContents : null;
     }

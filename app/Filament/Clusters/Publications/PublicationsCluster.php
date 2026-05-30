@@ -4,6 +4,7 @@ namespace App\Filament\Clusters\Publications;
 
 use App\Models\Content;
 use BackedEnum;
+use Illuminate\Support\Facades\Cache;
 use Filament\Clusters\Cluster;
 use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Support\Icons\Heroicon;
@@ -20,9 +21,9 @@ class PublicationsCluster extends Cluster
 
     public static function getNavigationBadge(): ?string
     {
-        $draftContents = Content::query()
+        $draftContents = Cache::remember('nav_badge_contents_draft', 60, fn () => Content::query()
             ->where('status', 'draft')
-            ->count();
+            ->count());
 
         return $draftContents > 0 ? (string) $draftContents : null;
     }
