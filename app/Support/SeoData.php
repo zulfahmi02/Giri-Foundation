@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Activity;
 use App\Models\Content;
 use App\Models\OrganizationProfile;
 use App\Models\Page;
@@ -50,23 +51,30 @@ class SeoData
         $program = $request->routeIs('programs.show') && ($viewData['program'] ?? null) instanceof Program
             ? $viewData['program']
             : null;
+        $activity = $request->routeIs('activities.show') && ($viewData['activity'] ?? null) instanceof Activity
+            ? $viewData['activity']
+            : null;
 
-        $title = static::resolveTitle($viewData, $siteName, $page, $story, $program);
-        $description = static::resolveDescription($viewData, $siteSummary, $page, $story, $program);
+        $title = static::resolveTitle($viewData, $siteName, $page, $story, $program, $activity);
+        $description = static::resolveDescription($viewData, $siteSummary, $page, $story, $program, $activity);
         $canonicalUrl = static::resolveCanonicalUrl($request);
         $robots = static::resolveRobots($request);
-        $breadcrumbs = static::resolveBreadcrumbs($request, $page, $story, $program);
-        $publishedTime = static::resolvePublishedTime($page, $story, $program);
-        $modifiedTime = static::resolveModifiedTime($page, $story, $program);
+        $breadcrumbs = static::resolveBreadcrumbs($request, $page, $story, $program, $activity);
+        $publishedTime = static::resolvePublishedTime($page, $story, $program, $activity);
+        $modifiedTime = static::resolveModifiedTime($page, $story, $program, $activity);
         $authorName = $story?->displayAuthorName();
         $imageUrl = static::resolveImageUrl(
             $story instanceof Content
                 ? $story->resolvedFeaturedImageUrl()
-                : ($program instanceof Program ? $program->resolvedFeaturedImageUrl() : ($siteProfile?->resolvedLogoUrl() ?: 'image/logo.png')),
+                : ($program instanceof Program
+                    ? $program->resolvedFeaturedImageUrl()
+                    : ($activity instanceof Activity
+                        ? $activity->resolvedFeaturedImageUrl()
+                        : ($siteProfile?->resolvedLogoUrl() ?: 'image/logo.png'))),
             $request,
         );
-        $imageAlt = static::resolveImageAlt($siteName, $story, $program);
-        $openGraphType = $story instanceof Content ? 'article' : 'website';
+        $imageAlt = static::resolveImageAlt($siteName, $story, $program, $activity);
+        $openGraphType = $story instanceof Content || $activity instanceof Activity ? 'article' : 'website';
 
         return new self(
             title: $title,
@@ -94,6 +102,7 @@ class SeoData
                 publishedTime: $publishedTime,
                 modifiedTime: $modifiedTime,
                 story: $story,
+                activity: $activity,
                 breadcrumbs: $breadcrumbs,
                 request: $request,
             ),
@@ -107,6 +116,7 @@ class SeoData
         ?Page $page,
         ?Content $story,
         ?Program $program,
+        ?Activity $activity,
     ): string {
         if ($story instanceof Content) {
             return static::appendSiteName(
@@ -117,6 +127,10 @@ class SeoData
 
         if ($program instanceof Program) {
             return static::appendSiteName($program->title, $siteName);
+        }
+
+        if ($activity instanceof Activity) {
+            return static::appendSiteName($activity->title, $siteName);
         }
 
         if ($page instanceof Page) {
@@ -147,6 +161,7 @@ class SeoData
         ?Page $page,
         ?Content $story,
         ?Program $program,
+        ?Activity $activity,
     ): string {
         if ($story instanceof Content) {
             return (string) ($story->displaySeoDescription() ?: $story->displayExcerpt() ?: $siteSummary);
@@ -154,6 +169,10 @@ class SeoData
 
         if ($program instanceof Program) {
             return (string) ($program->excerpt ?: Str::limit(strip_tags((string) $program->description), 160) ?: $siteSummary);
+        }
+
+        if ($activity instanceof Activity) {
+            return (string) ($activity->summary ?: Str::limit(strip_tags($activity->description), 160) ?: $siteSummary);
         }
 
         if ($page instanceof Page) {
@@ -242,7 +261,7 @@ class SeoData
         return $canonicalParameters;
     }
 
-    private static function resolveImageAlt(string $siteName, ?Content $story, ?Program $program): string
+    private static function resolveImageAlt(string $siteName, ?Content $story, ?Program $program, ?Activity $activity): string
     {
         if ($story instanceof Content) {
             return $story->displayTitle();
@@ -252,24 +271,30 @@ class SeoData
             return $program->title;
         }
 
+        if ($activity instanceof Activity) {
+            return $activity->title;
+        }
+
         return $siteName;
     }
 
-    private static function resolvePublishedTime(?Page $page, ?Content $story, ?Program $program): ?string
+    private static function resolvePublishedTime(?Page $page, ?Content $story, ?Program $program, ?Activity $activity): ?string
     {
         return match (true) {
             $story instanceof Content => $story->published_at?->toIso8601String(),
             $program instanceof Program => $program->published_at?->toIso8601String(),
+            $activity instanceof Activity => $activity->published_at?->toIso8601String(),
             $page instanceof Page => $page->published_at?->toIso8601String(),
             default => null,
         };
     }
 
-    private static function resolveModifiedTime(?Page $page, ?Content $story, ?Program $program): ?string
+    private static function resolveModifiedTime(?Page $page, ?Content $story, ?Program $program, ?Activity $activity): ?string
     {
         return match (true) {
             $story instanceof Content => $story->updated_at?->toIso8601String(),
             $program instanceof Program => $program->updated_at?->toIso8601String(),
+            $activity instanceof Activity => $activity->updated_at?->toIso8601String(),
             $page instanceof Page => $page->updated_at?->toIso8601String(),
             default => null,
         };
@@ -283,6 +308,7 @@ class SeoData
         ?Page $page,
         ?Content $story,
         ?Program $program,
+        ?Activity $activity,
     ): array {
         $breadcrumbs = [
             [
@@ -304,6 +330,9 @@ class SeoData
             $breadcrumbs[] = ['label' => $program->title, 'url' => route('programs.show', $program)];
         } elseif ($request->routeIs('media.index')) {
             $breadcrumbs[] = ['label' => 'Media', 'url' => route('media.index')];
+        } elseif ($request->routeIs('activities.show') && $activity instanceof Activity) {
+            $breadcrumbs[] = ['label' => 'Media', 'url' => route('media.index')];
+            $breadcrumbs[] = ['label' => $activity->title, 'url' => route('activities.show', $activity)];
         } elseif ($request->routeIs('publications.index')) {
             $breadcrumbs[] = ['label' => 'Publikasi', 'url' => route('publications.index')];
         } elseif ($request->routeIs('stories.index')) {
@@ -347,6 +376,7 @@ class SeoData
         ?string $publishedTime,
         ?string $modifiedTime,
         ?Content $story,
+        ?Activity $activity,
         array $breadcrumbs,
         Request $request,
     ): array {
@@ -460,6 +490,28 @@ class SeoData
                     '@type' => 'Person',
                     'name' => $story->displayAuthorName(),
                 ],
+                'publisher' => [
+                    '@type' => 'Organization',
+                    'name' => $siteName,
+                    'logo' => $logoUrl ? [
+                        '@type' => 'ImageObject',
+                        'url' => $logoUrl,
+                    ] : null,
+                ],
+            ]);
+        }
+
+        if ($activity instanceof Activity) {
+            $schemas[] = static::filterSchema([
+                '@context' => 'https://schema.org',
+                '@type' => 'Article',
+                'headline' => $activity->title,
+                'description' => $description,
+                'url' => $canonicalUrl,
+                'image' => $imageUrl ? [$imageUrl] : null,
+                'datePublished' => $publishedTime,
+                'dateModified' => $modifiedTime,
+                'mainEntityOfPage' => $canonicalUrl,
                 'publisher' => [
                     '@type' => 'Organization',
                     'name' => $siteName,

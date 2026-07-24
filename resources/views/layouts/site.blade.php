@@ -49,7 +49,7 @@
         <link rel="icon" type="image/png" sizes="500x500" href="{{ $faviconPngUrl }}">
         <link rel="apple-touch-icon" href="{{ $faviconPngUrl }}">
         @foreach (($seo->structuredData ?? []) as $structuredData)
-            <script type="application/ld+json">{!! json_encode($structuredData, JSON_UNESCAPED_UNICODE) !!}</script>
+            <script type="application/ld+json">{!! Illuminate\Support\Js::encode($structuredData) !!}</script>
         @endforeach
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])

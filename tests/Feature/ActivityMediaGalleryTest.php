@@ -56,6 +56,7 @@ it('removes photo and video records when their activity is deleted', function ()
 
 it('renders a published activity with multiple photos and videos without a program', function (): void {
     Storage::fake('public');
+    Storage::disk('public')->put('activities/foto-utama.jpg', 'image');
     Storage::disk('public')->put('activities/gallery/satu.jpg', 'image');
     Storage::disk('public')->put('activities/gallery/dua.jpg', 'image');
 
@@ -63,6 +64,7 @@ it('renders a published activity with multiple photos and videos without a progr
         'title' => 'Dokumentasi Kegiatan Mandiri',
         'slug' => 'dokumentasi-kegiatan-mandiri',
         'description' => 'Penjelasan lengkap kegiatan mandiri.',
+        'featured_image_url' => 'activities/foto-utama.jpg',
     ]);
 
     ActivityGallery::factory()->for($activity)->create([
@@ -84,6 +86,12 @@ it('renders a published activity with multiple photos and videos without a progr
         ->assertSuccessful()
         ->assertSee('Dokumentasi Kegiatan Mandiri')
         ->assertSee('Aktivitas Umum')
+        ->assertSee('property="og:type" content="article"', false)
+        ->assertSee('property="og:image" content="'.asset('storage/activities/foto-utama.jpg').'"', false)
+        ->assertSee('property="og:image:alt" content="Dokumentasi Kegiatan Mandiri"', false)
+        ->assertSee('name="twitter:image" content="'.asset('storage/activities/foto-utama.jpg').'"', false)
+        ->assertSee('property="article:published_time" content="'.$activity->published_at->toIso8601String().'"', false)
+        ->assertDontSee('property="article:author"', false)
         ->assertSee('Foto lapangan pertama')
         ->assertSee('Foto lapangan kedua')
         ->assertSee('from-black/90 via-black/55 to-black/15', false)
