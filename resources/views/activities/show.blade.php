@@ -1,21 +1,21 @@
 @extends('layouts.site')
 
 @section('content')
-    <header class="relative mb-16 min-h-[24rem] overflow-hidden sm:min-h-[30rem]">
-        <img src="{{ $activity->resolvedFeaturedImageUrl() }}" alt="Dokumentasi {{ $activity->title }}" class="h-[24rem] w-full object-cover sm:h-[30rem]" decoding="async" fetchpriority="high">
-        <div class="absolute inset-0 bg-gradient-to-t from-[color:rgba(252,249,248,0.94)] via-transparent to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-6 pb-8 sm:pb-12 lg:px-10">
+    <header class="relative mb-12 min-h-[30rem] overflow-hidden bg-[var(--ink)] sm:mb-16 sm:min-h-[36rem] lg:min-h-[40rem]">
+        <img src="{{ $activity->resolvedFeaturedImageUrl() }}" alt="Dokumentasi {{ $activity->title }}" class="absolute inset-0 h-full w-full object-cover object-center sm:object-[center_42%]" decoding="async" fetchpriority="high">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/15"></div>
+        <div class="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-6 pb-8 text-white sm:pb-12 lg:px-10 lg:pb-14">
             @include('pages.partials.breadcrumbs', [
-                'class' => 'mb-6',
+                'class' => 'mb-6 text-white/80 [&_a]:text-white/80 [&_a:hover]:text-white [&_span]:text-white/70',
                 'breadcrumbs' => [
                     ['label' => 'Beranda', 'url' => route('home')],
                     ['label' => 'Media', 'url' => route('media.index')],
                     ['label' => $activity->title, 'url' => route('activities.show', $activity)],
                 ],
             ])
-            <p class="section-label mb-4">{{ $activity->program?->title ?? 'Aktivitas Umum' }}</p>
-            <h1 class="font-editorial max-w-4xl text-4xl italic leading-none sm:text-5xl lg:text-7xl">{{ $activity->title }}</h1>
-            <div class="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm font-semibold">
+            <p class="section-label mb-4 !text-white/80 drop-shadow-sm">{{ $activity->program?->title ?? 'Aktivitas Umum' }}</p>
+            <h1 class="font-editorial max-w-5xl break-words text-[clamp(2.5rem,7vw,4.75rem)] italic leading-[0.95] tracking-[-0.02em] text-white drop-shadow-md [text-wrap:balance]">{{ $activity->title }}</h1>
+            <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold leading-6 text-white/90 drop-shadow-sm sm:gap-x-8">
                 @if ($activity->activity_date)
                     <span>{{ $activity->activity_date->translatedFormat('d F Y') }}</span>
                 @endif

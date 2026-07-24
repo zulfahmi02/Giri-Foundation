@@ -86,6 +86,8 @@ it('renders a published activity with multiple photos and videos without a progr
         ->assertSee('Aktivitas Umum')
         ->assertSee('Foto lapangan pertama')
         ->assertSee('Foto lapangan kedua')
+        ->assertSee('from-black/90 via-black/55 to-black/15', false)
+        ->assertSee('text-[clamp(2.5rem,7vw,4.75rem)]', false)
         ->assertSee('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ', false);
 
     $this->get(route('media.index'))
