@@ -28,12 +28,17 @@
 
             <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
                 @foreach ($activities as $activity)
-                    <article class="surface-card overflow-hidden rounded-[1.75rem]">
-                        <img src="{{ $activity->resolvedFeaturedImageUrl() }}" alt="{{ $activity->title }}" class="h-72 w-full object-cover">
+                    <article class="surface-card overflow-hidden rounded-[1.75rem] transition hover:-translate-y-1">
+                        <a href="{{ route('activities.show', $activity) }}" class="block">
+                            <img src="{{ $activity->resolvedFeaturedImageUrl() }}" alt="{{ $activity->title }}" class="h-72 w-full object-cover">
+                        </a>
                         <div class="p-8">
                             <p class="section-label mb-3">{{ optional($activity->activity_date)->translatedFormat('d F Y') }}</p>
-                            <h3 class="font-editorial text-3xl">{{ $activity->title }}</h3>
+                            <h3 class="font-editorial text-3xl">
+                                <a href="{{ route('activities.show', $activity) }}">{{ $activity->title }}</a>
+                            </h3>
                             <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $activity->summary }}</p>
+                            <a href="{{ route('activities.show', $activity) }}" class="mt-6 inline-flex text-sm font-semibold text-[var(--primary)]">Lihat dokumentasi →</a>
                         </div>
                     </article>
                 @endforeach

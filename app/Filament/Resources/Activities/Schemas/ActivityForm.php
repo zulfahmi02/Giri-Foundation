@@ -6,6 +6,7 @@ use App\Support\FilamentImageUpload;
 use App\Support\FilamentSlugGenerator;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -20,10 +21,10 @@ class ActivityForm
                 Select::make('program_id')
                     ->label('Program')
                     ->relationship('program', 'title')
-                    ->required()
                     ->searchable()
                     ->preload()
-                    ->helperText('Pilih program yang menjadi induk kegiatan ini.'),
+                    ->placeholder('Tidak terkait program')
+                    ->helperText('Opsional. Pilih program jika aktivitas ini merupakan bagian dari program tertentu.'),
                 FilamentSlugGenerator::source(
                     TextInput::make('title')
                         ->label('Judul kegiatan')
@@ -46,6 +47,44 @@ class ActivityForm
                     ->helperText('Contoh: Aula Desa Sukamaju, Kecamatan Cibogo.'),
                 FilamentImageUpload::make('featured_image_url', 'activities', 'Foto kegiatan')
                     ->helperText('Foto utama yang muncul sebagai thumbnail kegiatan.'),
+                Repeater::make('galleries')
+                    ->label('Galeri foto')
+                    ->relationship()
+                    ->schema([
+                        FilamentImageUpload::make('file_url', 'activities/gallery', 'Foto')
+                            ->required(),
+                        TextInput::make('caption')
+                            ->label('Keterangan foto')
+                            ->maxLength(255),
+                    ])
+                    ->orderColumn('sort_order')
+                    ->reorderable()
+                    ->collapsible()
+                    ->itemLabel(fn (array $state): string => $state['caption'] ?? 'Foto aktivitas')
+                    ->addActionLabel('Tambah foto')
+                    ->helperText('Tambahkan beberapa foto dan atur urutannya dengan menarik setiap item.')
+                    ->columnSpanFull(),
+                Repeater::make('videos')
+                    ->label('Video aktivitas')
+                    ->relationship()
+                    ->schema([
+                        TextInput::make('title')
+                            ->label('Judul video')
+                            ->maxLength(255),
+                        TextInput::make('youtube_url')
+                            ->label('URL YouTube')
+                            ->url()
+                            ->required()
+                            ->helperText('Gunakan URL video YouTube, YouTube Shorts, atau YouTube Live.')
+                            ->columnSpanFull(),
+                    ])
+                    ->orderColumn('sort_order')
+                    ->reorderable()
+                    ->collapsible()
+                    ->itemLabel(fn (array $state): string => $state['title'] ?? 'Video aktivitas')
+                    ->addActionLabel('Tambah video')
+                    ->helperText('Tambahkan beberapa video YouTube dan atur urutannya.')
+                    ->columnSpanFull(),
                 Select::make('status')
                     ->label('Status')
                     ->required()

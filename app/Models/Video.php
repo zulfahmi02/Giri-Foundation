@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\PublicStorageUrl;
+use App\Support\YouTubeVideo;
 use Database\Factories\VideoFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,24 +58,12 @@ class Video extends Model
 
     public function youtubeVideoId(): ?string
     {
-        $youtubeReference = trim((string) $this->youtube_url);
-
-        if (preg_match('~^[\w-]{11}$~', $youtubeReference) === 1) {
-            return $youtubeReference;
-        }
-
-        if (preg_match('~(?:v=|youtu\.be/|embed/|shorts/|live/)([\w-]{11})~', $youtubeReference, $matches) === 1) {
-            return $matches[1];
-        }
-
-        return null;
+        return YouTubeVideo::videoId($this->youtube_url);
     }
 
     public function embedUrl(): ?string
     {
-        $videoId = $this->youtubeVideoId();
-
-        return $videoId ? "https://www.youtube-nocookie.com/embed/{$videoId}" : null;
+        return YouTubeVideo::embedUrl($this->youtube_url);
     }
 
     public function resolvedThumbnailUrl(): ?string
@@ -83,9 +72,7 @@ class Video extends Model
             return PublicStorageUrl::resolve($this->thumbnail_url);
         }
 
-        $videoId = $this->youtubeVideoId();
-
-        return $videoId ? "https://i.ytimg.com/vi/{$videoId}/hqdefault.jpg" : null;
+        return YouTubeVideo::thumbnailUrl($this->youtube_url);
     }
 
     private function shouldUseYoutubeThumbnail(): bool

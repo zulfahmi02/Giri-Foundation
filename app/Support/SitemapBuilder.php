@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Activity;
 use App\Models\Content;
 use App\Models\Page;
 use App\Models\Program;
@@ -41,6 +42,7 @@ class SitemapBuilder
             fn (): array => [
                 ...$this->staticPages(),
                 ...$this->programPages(),
+                ...$this->activityPages(),
                 ...$this->storyPages(),
             ],
             [FrontendCache::Sitemap],
@@ -117,6 +119,23 @@ class SitemapBuilder
             ->map(fn (Content $story): array => [
                 'loc' => route('stories.show', $story),
                 'lastmod' => $story->updated_at?->toAtomString(),
+            ])
+            ->all();
+    }
+
+    /**
+     * @return list<array{loc: string, lastmod: string|null}>
+     */
+    private function activityPages(): array
+    {
+        return Activity::query()
+            ->published()
+            ->select(['id', 'slug', 'updated_at'])
+            ->latest('published_at')
+            ->get()
+            ->map(fn (Activity $activity): array => [
+                'loc' => route('activities.show', $activity),
+                'lastmod' => $activity->updated_at?->toAtomString(),
             ])
             ->all();
     }

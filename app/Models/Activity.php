@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Activity extends Model
 {
@@ -55,6 +56,21 @@ class Activity extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function galleries(): HasMany
+    {
+        return $this->hasMany(ActivityGallery::class)->orderBy('sort_order');
+    }
+
+    public function videos(): HasMany
+    {
+        return $this->hasMany(ActivityVideo::class)->orderBy('sort_order');
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 
     public function resolvedFeaturedImageUrl(): ?string

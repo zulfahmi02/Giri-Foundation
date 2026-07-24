@@ -31,9 +31,9 @@ class ActivityResource extends Resource
 
     protected static ?string $navigationLabel = 'Aktivitas';
 
-    protected static ?string $modelLabel = 'aktivitas program';
+    protected static ?string $modelLabel = 'aktivitas';
 
-    protected static ?string $pluralModelLabel = 'Aktivitas Program';
+    protected static ?string $pluralModelLabel = 'Aktivitas';
 
     protected static ?string $recordTitleAttribute = 'title';
 

@@ -107,7 +107,9 @@
                 @foreach ($program->activities->take(3) as $activity)
                     <article class="surface-card rounded-[1.75rem] p-6 sm:p-8">
                         <p class="section-label mb-4">{{ optional($activity->published_at)->translatedFormat('F Y') }}</p>
-                        <h3 class="font-editorial text-3xl">{{ $activity->title }}</h3>
+                        <h3 class="font-editorial text-3xl">
+                            <a href="{{ route('activities.show', $activity) }}">{{ $activity->title }}</a>
+                        </h3>
                         <p class="mt-4 text-sm leading-7 text-[var(--ink-muted)]">{{ $activity->summary }}</p>
                     </article>
                 @endforeach

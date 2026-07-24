@@ -77,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
         $this->registerFrontendCacheInvalidator(Activity::class, [
             FrontendCache::HomePage,
             FrontendCache::MediaPage,
+            FrontendCache::Sitemap,
         ]);
 
         $this->registerFrontendCacheInvalidator(Content::class, [

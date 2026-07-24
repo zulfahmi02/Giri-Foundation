@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DocumentController;
@@ -22,6 +23,7 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/programs', [ProgramController::class, 'index'])->name('programs.index');
 Route::get('/programs/{program}', [ProgramController::class, 'show'])->name('programs.show');
 Route::get('/media', [MediaController::class, 'index'])->name('media.index');
+Route::get('/media/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
 Route::get('/publikasi', [PublicationController::class, 'index'])->name('publications.index');
 Route::get('/stories', [StoryController::class, 'index'])->name('stories.index');
 Route::get('/stories/{content}', [StoryController::class, 'show'])->name('stories.show');

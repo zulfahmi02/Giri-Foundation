@@ -16,6 +16,8 @@ class ActivitiesTable
         return $table
             ->columns([
                 TextColumn::make('program.title')
+                    ->label('Program')
+                    ->placeholder('Umum')
                     ->searchable(),
                 TextColumn::make('title')
                     ->searchable(),
