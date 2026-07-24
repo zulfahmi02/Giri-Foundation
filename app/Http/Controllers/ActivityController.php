@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Support\ActivityShareLinks;
 use Illuminate\Contracts\View\View;
 
 class ActivityController extends Controller
@@ -20,6 +21,7 @@ class ActivityController extends Controller
             'activity' => $activity,
             'title' => $activity->title,
             'metaDescription' => $activity->summary,
+            'shareUrls' => ActivityShareLinks::for($activity),
         ]);
     }
 }
